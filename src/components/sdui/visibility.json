@@ -3,6 +3,7 @@
   "info": { "displayName": "Visibility", "description": "Rule-driven visibility for any component" },
   "options": {},
   "attributes": {
+    "rule": { "type": "relation", "relation": "oneToOne", "target": "api::rule-set.rule-set" },
     "elseHidden": { "type": "boolean", "default": true }
   }
 }

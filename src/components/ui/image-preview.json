@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_ui_image_previews",
+  "info": {
+    "displayName": "Image Preview",
+    "description": "Displays a base64 image from state. type: ui.image-preview"
+  },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "source": { "type": "component", "component": "sdui.source", "required": true }
+  }
+}

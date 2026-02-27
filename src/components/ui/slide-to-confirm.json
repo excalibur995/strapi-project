@@ -5,6 +5,7 @@
   "attributes": {
     "label": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
     "action": { "type": "component", "component": "sdui.action", "required": true },
+    "guardRules": { "type": "relation", "relation": "manyToMany", "target": "api::rule-set.rule-set" },
     "visibility": { "type": "component", "component": "sdui.visibility" }
   }
 }

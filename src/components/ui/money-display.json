@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_ui_money_displays",
+  "info": { "displayName": "Money Display", "description": "Read-only currency amount. type: ui.money-display" },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "currency": { "type": "string", "default": "IDR" },
+    "source": { "type": "component", "component": "sdui.source", "required": true }
+  }
+}

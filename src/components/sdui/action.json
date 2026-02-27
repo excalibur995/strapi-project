@@ -21,6 +21,7 @@
       "required": true
     },
     "payload": { "type": "json" },
+    "guards": { "type": "relation", "relation": "manyToMany", "target": "api::rule-set.rule-set" },
     "analytics": { "type": "json" }
   }
 }

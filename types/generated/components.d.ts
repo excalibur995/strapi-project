@@ -8,6 +8,7 @@ export interface SduiAction extends Struct.ComponentSchema {
   };
   attributes: {
     analytics: Schema.Attribute.JSON;
+    guards: Schema.Attribute.Relation<'manyToMany', 'api::rule-set.rule-set'>;
     key: Schema.Attribute.String & Schema.Attribute.Required;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -127,6 +128,7 @@ export interface SduiValidation extends Struct.ComponentSchema {
       ['required', 'minLength', 'maxLength', 'pattern', 'match', 'ruleSet']
     > &
       Schema.Attribute.Required;
+    ruleSet: Schema.Attribute.Relation<'oneToOne', 'api::rule-set.rule-set'>;
     value: Schema.Attribute.String;
   };
 }
@@ -139,6 +141,7 @@ export interface SduiVisibility extends Struct.ComponentSchema {
   };
   attributes: {
     elseHidden: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    rule: Schema.Attribute.Relation<'oneToOne', 'api::rule-set.rule-set'>;
   };
 }
 
@@ -420,6 +423,24 @@ export interface UiHero extends Struct.ComponentSchema {
   };
 }
 
+export interface UiImagePreview extends Struct.ComponentSchema {
+  collectionName: 'components_ui_image_previews';
+  info: {
+    description: 'Displays a base64 image from state. type: ui.image-preview';
+    displayName: 'Image Preview';
+  };
+  attributes: {
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    source: Schema.Attribute.Component<'sdui.source', false> &
+      Schema.Attribute.Required;
+  };
+}
+
 export interface UiItemList extends Struct.ComponentSchema {
   collectionName: 'components_ui_item_lists';
   info: {
@@ -500,6 +521,25 @@ export interface UiLocalState extends Struct.ComponentSchema {
     allowedStates: Schema.Attribute.JSON & Schema.Attribute.Required;
     initial: Schema.Attribute.String & Schema.Attribute.Required;
     key: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
+export interface UiMoneyDisplay extends Struct.ComponentSchema {
+  collectionName: 'components_ui_money_displays';
+  info: {
+    description: 'Read-only currency amount. type: ui.money-display';
+    displayName: 'Money Display';
+  };
+  attributes: {
+    currency: Schema.Attribute.String & Schema.Attribute.DefaultTo<'IDR'>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    source: Schema.Attribute.Component<'sdui.source', false> &
+      Schema.Attribute.Required;
   };
 }
 
@@ -663,6 +703,10 @@ export interface UiSlideToConfirm extends Struct.ComponentSchema {
   attributes: {
     action: Schema.Attribute.Component<'sdui.action', false> &
       Schema.Attribute.Required;
+    guardRules: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::rule-set.rule-set'
+    >;
     label: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -763,10 +807,12 @@ declare module '@strapi/strapi' {
       'ui.dropdown': UiDropdown;
       'ui.dropdown-async': UiDropdownAsync;
       'ui.hero': UiHero;
+      'ui.image-preview': UiImagePreview;
       'ui.item-list': UiItemList;
       'ui.kv-row': UiKvRow;
       'ui.list-item': UiListItem;
       'ui.local-state': UiLocalState;
+      'ui.money-display': UiMoneyDisplay;
       'ui.money-input': UiMoneyInput;
       'ui.option': UiOption;
       'ui.passcode-input': UiPasscodeInput;

@@ -12,6 +12,7 @@
       "required": true
     },
     "value": { "type": "string" },
-    "message": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } }
+    "message": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
+    "ruleSet": { "type": "relation", "relation": "oneToOne", "target": "api::rule-set.rule-set" }
   }
 }
