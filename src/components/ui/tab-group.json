@@ -1,0 +1,9 @@
+{
+  "collectionName": "components_ui_tab_groups",
+  "info": { "displayName": "Tab Group", "description": "Horizontal tab switcher. type: ui.tab-group" },
+  "options": {},
+  "attributes": {
+    "options": { "type": "component", "repeatable": true, "component": "ui.option", "required": true },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true }
+  }
+}

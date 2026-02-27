@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_ui_checkbox_lists",
+  "info": { "displayName": "Checkbox List", "description": "Multi-select checkbox group. type: ui.checkbox-list" },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "items": { "type": "component", "repeatable": true, "component": "ui.option", "required": true },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true },
+    "validation": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

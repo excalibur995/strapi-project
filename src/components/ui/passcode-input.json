@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_ui_passcode_inputs",
+  "info": { "displayName": "Passcode Input", "description": "Masked numeric passcode entry. type: ui.passcode-input" },
+  "options": {},
+  "attributes": {
+    "length": { "type": "integer", "required": true, "default": 6 },
+    "masked": { "type": "boolean", "default": true },
+    "keyboard": { "type": "enumeration", "enum": ["numpad", "default"], "default": "numpad" },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true },
+    "onForgot": { "type": "component", "component": "sdui.action" },
+    "onComplete": { "type": "component", "component": "sdui.on-complete", "required": true }
+  }
+}

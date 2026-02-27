@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_ui_radio_group_asyncs",
+  "info": {
+    "displayName": "Radio Group (Async)",
+    "description": "Single-select radio cards from live API. type: ui.radio-group-async"
+  },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "dataSource": { "type": "component", "component": "sdui.data-source", "required": true },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true },
+    "validation": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

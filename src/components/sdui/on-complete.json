@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_sdui_on_completes",
+  "info": { "displayName": "On Complete", "description": "Action fired when a component self-completes" },
+  "options": {},
+  "attributes": {
+    "key": { "type": "string", "required": true },
+    "type": { "type": "enumeration", "enum": ["navigate", "api_call", "open_sheet", "open_modal"], "required": true },
+    "payload": { "type": "json" }
+  }
+}

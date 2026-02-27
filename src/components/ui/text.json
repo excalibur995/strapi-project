@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_ui_texts",
+  "info": { "displayName": "Text", "description": "Static text block. type: ui.text" },
+  "options": {},
+  "attributes": {
+    "value": { "type": "text", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
+    "variant": { "type": "enumeration", "enum": ["title", "body", "caption", "label"], "default": "body" },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

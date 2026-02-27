@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_ui_slide_to_confirms",
+  "info": { "displayName": "Slide To Confirm" },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
+    "action": { "type": "component", "component": "sdui.action", "required": true },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_ui_camera_captures",
+  "info": { "displayName": "Camera Capture", "description": "Document camera with overlay. type: ui.camera-capture" },
+  "options": {},
+  "attributes": {
+    "mode": { "type": "enumeration", "enum": ["document", "selfie", "barcode"], "default": "document" },
+    "overlayShape": { "type": "enumeration", "enum": ["rectangle", "circle", "none"], "default": "rectangle" },
+    "overlayAspect": { "type": "string" },
+    "overlayHint": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true },
+    "onComplete": { "type": "component", "component": "sdui.on-complete", "required": true }
+  }
+}

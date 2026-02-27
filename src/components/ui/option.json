@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_ui_options",
+  "info": { "displayName": "Option", "description": "Single selectable option item" },
+  "options": {},
+  "attributes": {
+    "key": { "type": "string", "required": true },
+    "label": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
+    "description": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "icon": { "type": "string" },
+    "onTap": { "type": "component", "component": "sdui.action" }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "collectionName": "components_sdui_actions",
+  "info": { "displayName": "Action", "description": "Generic action for slots.actions and inline component events" },
+  "options": {},
+  "attributes": {
+    "key": { "type": "string", "required": true },
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "type": {
+      "type": "enumeration",
+      "enum": [
+        "navigate",
+        "start_journey",
+        "resume_journey",
+        "api_call",
+        "open_modal",
+        "open_sheet",
+        "open_confirm",
+        "open_native",
+        "set_state"
+      ],
+      "required": true
+    },
+    "payload": { "type": "json" },
+    "analytics": { "type": "json" }
+  }
+}

@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_ui_dropdowns",
+  "info": { "displayName": "Dropdown", "description": "Single-select from static options. type: ui.dropdown" },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "placeholder": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "searchable": { "type": "boolean", "default": false },
+    "options": { "type": "component", "repeatable": true, "component": "ui.option", "required": true },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true },
+    "validation": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

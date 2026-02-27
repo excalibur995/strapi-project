@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_ui_item_lists",
+  "info": {
+    "displayName": "Item List",
+    "description": "Generic tappable list with optional tab filtering. type: ui.item-list"
+  },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "filterBy": { "type": "component", "component": "sdui.binding" },
+    "items": { "type": "component", "repeatable": true, "component": "ui.list-item", "required": true }
+  }
+}

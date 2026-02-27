@@ -1,0 +1,20 @@
+{
+  "collectionName": "components_sdui_sources",
+  "info": { "displayName": "Source", "description": "Read-only state path for display components" },
+  "options": {},
+  "attributes": {
+    "path": { "type": "string", "required": true },
+    "scope": {
+      "type": "enumeration",
+      "enum": ["journeyState", "localState", "serverState"],
+      "default": "journeyState"
+    },
+    "transform": {
+      "type": "enumeration",
+      "enum": ["none", "capitalize", "uppercase", "currency", "date", "mask"],
+      "default": "none"
+    },
+    "format": { "type": "enumeration", "enum": ["none", "currency", "date", "percent"], "default": "none" },
+    "currency": { "type": "string" }
+  }
+}

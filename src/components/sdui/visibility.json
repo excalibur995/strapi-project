@@ -1,0 +1,8 @@
+{
+  "collectionName": "components_sdui_visibilities",
+  "info": { "displayName": "Visibility", "description": "Rule-driven visibility for any component" },
+  "options": {},
+  "attributes": {
+    "elseHidden": { "type": "boolean", "default": true }
+  }
+}

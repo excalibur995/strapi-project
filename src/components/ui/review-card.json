@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_ui_review_cards",
+  "info": {
+    "displayName": "Review Card",
+    "description": "Summary section with rows and optional edit. type: ui.review-card"
+  },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "rows": { "type": "component", "repeatable": true, "component": "ui.kv-row", "required": true },
+    "badges": { "type": "component", "repeatable": true, "component": "ui.badge" },
+    "allowChange": { "type": "boolean", "default": false },
+    "onEdit": { "type": "component", "component": "sdui.action" },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

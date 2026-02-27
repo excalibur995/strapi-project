@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_sdui_bindings",
+  "info": { "displayName": "Binding", "description": "State path binding for a component" },
+  "options": {},
+  "attributes": {
+    "path": { "type": "string", "required": true },
+    "scope": {
+      "type": "enumeration",
+      "enum": ["journeyState", "localState", "serverState"],
+      "default": "journeyState"
+    },
+    "defaultValue": { "type": "json" },
+    "syncOnChange": { "type": "boolean", "default": false },
+    "syncDebounceMs": { "type": "integer", "default": 1000 },
+    "onClear": { "type": "json" }
+  }
+}

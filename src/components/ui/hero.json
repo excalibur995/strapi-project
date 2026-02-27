@@ -1,0 +1,50 @@
+{
+  "collectionName": "components_ui_heros",
+  "info": {
+    "displayName": "Hero",
+    "description": "Illustrative success/error hero block. type: ui.hero"
+  },
+  "options": {},
+  "attributes": {
+    "illustration": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    },
+    "subtitleTemplate": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "subtitleFields": {
+      "type": "json"
+    },
+    "referenceLabel": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "referenceSource": {
+      "type": "component",
+      "component": "sdui.source"
+    }
+  }
+}

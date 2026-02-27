@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_ui_banners",
+  "info": { "displayName": "Banner", "description": "Contextual banner. type: ui.banner" },
+  "options": {},
+  "attributes": {
+    "value": { "type": "text", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
+    "variant": { "type": "enumeration", "enum": ["info", "warning", "success", "error"], "default": "info" },
+    "icon": { "type": "string" },
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "onTap": { "type": "component", "component": "sdui.action" },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

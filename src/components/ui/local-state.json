@@ -1,0 +1,10 @@
+{
+  "collectionName": "components_ui_local_states",
+  "info": { "displayName": "Local State" },
+  "options": {},
+  "attributes": {
+    "key": { "type": "string", "required": true },
+    "initial": { "type": "string", "required": true },
+    "allowedStates": { "type": "json", "required": true }
+  }
+}

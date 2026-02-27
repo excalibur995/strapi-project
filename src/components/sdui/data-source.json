@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_sdui_data_sources",
+  "info": { "displayName": "Data Source", "description": "Live API data source for async selectable components" },
+  "options": {},
+  "attributes": {
+    "endpoint": { "type": "string", "required": true },
+    "method": { "type": "enumeration", "enum": ["GET", "POST"], "default": "GET" },
+    "params": { "type": "json" },
+    "mapping": { "type": "json", "required": true },
+    "cache": { "type": "boolean", "default": true },
+    "cacheTtlMs": { "type": "integer", "default": 300000 }
+  }
+}

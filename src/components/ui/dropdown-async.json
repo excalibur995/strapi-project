@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_ui_dropdown_asyncs",
+  "info": {
+    "displayName": "Dropdown (Async)",
+    "description": "Searchable single-select from live API. type: ui.dropdown-async"
+  },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "placeholder": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "searchable": { "type": "boolean", "default": true },
+    "dataSource": { "type": "component", "component": "sdui.data-source", "required": true },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true },
+    "validation": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

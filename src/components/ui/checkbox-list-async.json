@@ -1,0 +1,15 @@
+{
+  "collectionName": "components_ui_checkbox_list_asyncs",
+  "info": {
+    "displayName": "Checkbox List (Async)",
+    "description": "Multi-select from live API. type: ui.checkbox-list-async"
+  },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "dataSource": { "type": "component", "component": "sdui.data-source", "required": true },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true },
+    "validation": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

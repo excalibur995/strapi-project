@@ -1,0 +1,8 @@
+{
+  "collectionName": "components_ui_section_labels",
+  "info": { "displayName": "Section Label", "description": "Visual section divider. type: ui.section-label" },
+  "options": {},
+  "attributes": {
+    "value": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_ui_cascading_select_tiers",
+  "info": { "displayName": "Cascading Select Tier", "description": "Single tier inside ui.cascading-select" },
+  "options": {},
+  "attributes": {
+    "key": { "type": "string", "required": true },
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "placeholder": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "dependsOn": { "type": "string" },
+    "dataSource": { "type": "component", "component": "sdui.data-source", "required": true },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true }
+  }
+}

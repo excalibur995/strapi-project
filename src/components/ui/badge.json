@@ -1,0 +1,11 @@
+{
+  "collectionName": "components_ui_badges",
+  "info": { "displayName": "Badge", "description": "Conditional label badge inside review-card" },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
+    "variant": { "type": "enumeration", "enum": ["success", "warning", "info", "error"], "default": "info" },
+    "source": { "type": "component", "component": "sdui.source" },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

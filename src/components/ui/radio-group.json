@@ -1,0 +1,12 @@
+{
+  "collectionName": "components_ui_radio_groups",
+  "info": { "displayName": "Radio Group", "description": "Single-select option group. type: ui.radio-group" },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "options": { "type": "component", "repeatable": true, "component": "ui.option", "required": true },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true },
+    "validation": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

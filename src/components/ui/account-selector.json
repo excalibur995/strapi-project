@@ -1,0 +1,16 @@
+{
+  "collectionName": "components_ui_account_selectors",
+  "info": {
+    "displayName": "Account Selector",
+    "description": "Live account picker from API. type: ui.account-selector"
+  },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "endpoint": { "type": "string", "required": true },
+    "params": { "type": "json" },
+    "display": { "type": "json" },
+    "allowChange": { "type": "boolean", "default": true },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true }
+  }
+}

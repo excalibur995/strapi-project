@@ -1,0 +1,17 @@
+{
+  "collectionName": "components_sdui_validations",
+  "info": {
+    "displayName": "Validation Rule",
+    "description": "Single discrete validation rule. Used as repeatable — one entry per constraint."
+  },
+  "options": {},
+  "attributes": {
+    "rule": {
+      "type": "enumeration",
+      "enum": ["required", "minLength", "maxLength", "pattern", "match", "ruleSet"],
+      "required": true
+    },
+    "value": { "type": "string" },
+    "message": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } }
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "collectionName": "components_ui_cascading_selects",
+  "info": {
+    "displayName": "Cascading Select",
+    "description": "Linked dropdowns e.g. country > city > district. type: ui.cascading-select"
+  },
+  "options": {},
+  "attributes": {
+    "tiers": { "type": "component", "repeatable": true, "component": "ui.cascading-select-tier", "required": true },
+    "validation": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}

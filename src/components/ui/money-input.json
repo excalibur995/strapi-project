@@ -1,0 +1,14 @@
+{
+  "collectionName": "components_ui_money_inputs",
+  "info": { "displayName": "Money Input" },
+  "options": {},
+  "attributes": {
+    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "currency": { "type": "string" },
+    "min": { "type": "decimal" },
+    "max": { "type": "decimal" },
+    "binding": { "type": "component", "component": "sdui.binding", "required": true },
+    "validation": { "type": "component", "component": "sdui.validation" },
+    "visibility": { "type": "component", "component": "sdui.visibility" }
+  }
+}
