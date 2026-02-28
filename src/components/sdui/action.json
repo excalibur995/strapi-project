@@ -4,7 +4,6 @@
   "options": {},
   "attributes": {
     "key": { "type": "string", "required": true },
-    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "type": {
       "type": "enumeration",
       "enum": [

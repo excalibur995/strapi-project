@@ -430,6 +430,56 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
+  collectionName: 'journeys';
+  info: {
+    description: 'A named multi-screen flow. Defines the ordered screen list and shared initial state.';
+    displayName: 'Journey';
+    pluralName: 'journeys';
+    singularName: 'journey';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    analytics: Schema.Attribute.JSON;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    description: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    initialState: Schema.Attribute.JSON;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::journey.journey'
+    >;
+    name: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    onExit: Schema.Attribute.Component<'sdui.action', false>;
+    publishedAt: Schema.Attribute.DateTime;
+    screens: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
+    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiRuleSetRuleSet extends Struct.CollectionTypeSchema {
   collectionName: 'rule_sets';
   info: {
@@ -476,6 +526,74 @@ export interface ApiRuleSetRuleSet extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
+  collectionName: 'screens';
+  info: {
+    description: 'A single SDUI screen config. Composed of three dynamic-zone slots: header, body, footer.';
+    displayName: 'Screen';
+    pluralName: 'screens';
+    singularName: 'screen';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    body: Schema.Attribute.DynamicZone<
+      [
+        'ui.section-label',
+        'ui.text',
+        'ui.banner',
+        'ui.hero',
+        'ui.radio-group',
+        'ui.radio-group-async',
+        'ui.checkbox-list',
+        'ui.checkbox-list-async',
+        'ui.text-input',
+        'ui.dropdown',
+        'ui.dropdown-async',
+        'ui.cascading-select',
+        'ui.account-selector',
+        'ui.money-input',
+        'ui.camera-capture',
+        'ui.image-preview',
+        'ui.item-list',
+        'ui.review-card',
+        'ui.kv-row',
+        'ui.money-display',
+        'ui.badge',
+        'ui.tab-group',
+        'ui.passcode-input',
+        'ui.local-state',
+      ]
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    footer: Schema.Attribute.DynamicZone<
+      ['ui.slide-to-confirm', 'ui.button', 'ui.banner']
+    >;
+    header: Schema.Attribute.DynamicZone<
+      ['ui.hero', 'ui.banner', 'ui.image-preview']
+    >;
+    journey: Schema.Attribute.Relation<'manyToOne', 'api::journey.journey'>;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
+    meta: Schema.Attribute.Component<'sdui.screen-meta', false> &
+      Schema.Attribute.Required;
+    order: Schema.Attribute.Integer;
+    publishedAt: Schema.Attribute.DateTime;
+    screenKey: Schema.Attribute.UID & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -993,7 +1111,9 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::journey.journey': ApiJourneyJourney;
       'api::rule-set.rule-set': ApiRuleSetRuleSet;
+      'api::screen.screen': ApiScreenScreen;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

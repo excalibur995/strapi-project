@@ -10,12 +10,6 @@ export interface SduiAction extends Struct.ComponentSchema {
     analytics: Schema.Attribute.JSON;
     guards: Schema.Attribute.Relation<'manyToMany', 'api::rule-set.rule-set'>;
     key: Schema.Attribute.String & Schema.Attribute.Required;
-    label: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     payload: Schema.Attribute.JSON;
     type: Schema.Attribute.Enumeration<
       [
@@ -83,6 +77,33 @@ export interface SduiOnComplete extends Struct.ComponentSchema {
       ['navigate', 'api_call', 'open_sheet', 'open_modal']
     > &
       Schema.Attribute.Required;
+  };
+}
+
+export interface SduiScreenMeta extends Struct.ComponentSchema {
+  collectionName: 'components_sdui_screen_metas';
+  info: {
+    description: 'Screen-level title, subtitle, and navigation behaviour';
+    displayName: 'Screen Meta';
+  };
+  attributes: {
+    analytics: Schema.Attribute.JSON;
+    onBack: Schema.Attribute.Component<'sdui.action', false>;
+    showBack: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    showClose: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    subtitle: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    title: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
   };
 }
 
@@ -197,7 +218,7 @@ export interface UiBanner extends Struct.ComponentSchema {
     displayName: 'Banner';
   };
   attributes: {
-    icon: Schema.Attribute.String;
+    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -216,6 +237,33 @@ export interface UiBanner extends Struct.ComponentSchema {
       ['info', 'warning', 'success', 'error']
     > &
       Schema.Attribute.DefaultTo<'info'>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+  };
+}
+
+export interface UiButton extends Struct.ComponentSchema {
+  collectionName: 'components_ui_buttons';
+  info: {
+    displayName: 'Button';
+  };
+  attributes: {
+    action: Schema.Attribute.Component<'sdui.action', false> &
+      Schema.Attribute.Required;
+    guardRules: Schema.Attribute.Relation<
+      'manyToMany',
+      'api::rule-set.rule-set'
+    >;
+    label: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    variant: Schema.Attribute.Enumeration<
+      ['primary', 'secondary', 'ghost', 'danger']
+    > &
+      Schema.Attribute.DefaultTo<'primary'>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
@@ -496,7 +544,7 @@ export interface UiListItem extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    icon: Schema.Attribute.String;
+    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     key: Schema.Attribute.String & Schema.Attribute.Required;
     label: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -578,7 +626,7 @@ export interface UiOption extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    icon: Schema.Attribute.String;
+    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     key: Schema.Attribute.String & Schema.Attribute.Required;
     label: Schema.Attribute.String &
       Schema.Attribute.Required &
@@ -793,12 +841,14 @@ declare module '@strapi/strapi' {
       'sdui.binding': SduiBinding;
       'sdui.data-source': SduiDataSource;
       'sdui.on-complete': SduiOnComplete;
+      'sdui.screen-meta': SduiScreenMeta;
       'sdui.source': SduiSource;
       'sdui.validation': SduiValidation;
       'sdui.visibility': SduiVisibility;
       'ui.account-selector': UiAccountSelector;
       'ui.badge': UiBadge;
       'ui.banner': UiBanner;
+      'ui.button': UiButton;
       'ui.camera-capture': UiCameraCapture;
       'ui.cascading-select': UiCascadingSelect;
       'ui.cascading-select-tier': UiCascadingSelectTier;

@@ -1,0 +1,59 @@
+{
+  "kind": "collectionType",
+  "collectionName": "journeys",
+  "info": {
+    "singularName": "journey",
+    "pluralName": "journeys",
+    "displayName": "Journey",
+    "description": "A named multi-screen flow. Defines the ordered screen list and shared initial state."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "slug": {
+      "type": "uid",
+      "required": true,
+      "targetField": "name"
+    },
+    "name": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "description": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "screens": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::screen.screen",
+      "mappedBy": "journey"
+    },
+    "initialState": {
+      "type": "json",
+      "required": false
+    },
+    "onExit": {
+      "type": "component",
+      "component": "sdui.action"
+    },
+    "analytics": {
+      "type": "json"
+    }
+  }
+}

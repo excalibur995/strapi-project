@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sdui_screen_metas",
+  "info": {
+    "displayName": "Screen Meta",
+    "description": "Screen-level title, subtitle, and navigation behaviour"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "subtitle": {
+      "type": "string",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "showBack": { "type": "boolean", "default": true },
+    "showClose": { "type": "boolean", "default": false },
+    "onBack": { "type": "component", "component": "sdui.action" },
+    "analytics": { "type": "json" }
+  }
+}

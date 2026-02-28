@@ -5,7 +5,12 @@
   "attributes": {
     "value": { "type": "text", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
     "variant": { "type": "enumeration", "enum": ["info", "warning", "success", "error"], "default": "info" },
-    "icon": { "type": "string" },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images", "files", "videos", "audios"]
+    },
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "onTap": { "type": "component", "component": "sdui.action" },
     "visibility": { "type": "component", "component": "sdui.visibility" }

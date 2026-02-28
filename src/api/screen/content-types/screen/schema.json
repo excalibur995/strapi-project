@@ -1,0 +1,84 @@
+{
+  "kind": "collectionType",
+  "collectionName": "screens",
+  "info": {
+    "singularName": "screen",
+    "pluralName": "screens",
+    "displayName": "Screen",
+    "description": "A single SDUI screen config. Composed of three dynamic-zone slots: header, body, footer."
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "screenKey": {
+      "type": "uid",
+      "required": true
+    },
+    "order": {
+      "type": "integer",
+      "required": false
+    },
+    "journey": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::journey.journey",
+      "inversedBy": "screens"
+    },
+    "meta": {
+      "type": "component",
+      "component": "sdui.screen-meta",
+      "required": true
+    },
+    "header": {
+      "type": "dynamiczone",
+      "components": [
+        "ui.hero",
+        "ui.banner",
+        "ui.image-preview"
+      ]
+    },
+    "body": {
+      "type": "dynamiczone",
+      "components": [
+        "ui.section-label",
+        "ui.text",
+        "ui.banner",
+        "ui.hero",
+        "ui.radio-group",
+        "ui.radio-group-async",
+        "ui.checkbox-list",
+        "ui.checkbox-list-async",
+        "ui.text-input",
+        "ui.dropdown",
+        "ui.dropdown-async",
+        "ui.cascading-select",
+        "ui.account-selector",
+        "ui.money-input",
+        "ui.camera-capture",
+        "ui.image-preview",
+        "ui.item-list",
+        "ui.review-card",
+        "ui.kv-row",
+        "ui.money-display",
+        "ui.badge",
+        "ui.tab-group",
+        "ui.passcode-input",
+        "ui.local-state"
+      ]
+    },
+    "footer": {
+      "type": "dynamiczone",
+      "components": [
+        "ui.slide-to-confirm",
+        "ui.button",
+        "ui.banner"
+      ]
+    }
+  }
+}
