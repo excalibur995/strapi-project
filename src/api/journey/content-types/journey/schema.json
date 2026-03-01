@@ -5,7 +5,7 @@
     "singularName": "journey",
     "pluralName": "journeys",
     "displayName": "Journey",
-    "description": "A named multi-screen flow. Defines the ordered screen list and shared initial state."
+    "description": "A named multi-step flow. Supports USER screens and SYSTEM operations with success/failure branching."
   },
   "options": {
     "draftAndPublish": true
@@ -24,29 +24,61 @@
     "name": {
       "type": "string",
       "required": true,
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+      "pluginOptions": { "i18n": { "localized": true } }
     },
     "description": {
       "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+      "pluginOptions": { "i18n": { "localized": true } }
     },
-    "screens": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::screen.screen",
-      "mappedBy": "journey"
+
+    "schemaVersion": {
+      "type": "string",
+      "required": true,
+      "default": "1.0"
     },
-    "initialState": {
-      "type": "json",
+    "bundleVersion": {
+      "type": "string",
       "required": false
+    },
+
+    "productType": {
+      "type": "enumeration",
+      "enum": ["CARDS", "LOANS", "DEPOSITS", "ACCOUNTS", "TRANSFERS", "INVESTMENTS", "INSURANCE", "OTHER"]
+    },
+    "segment": {
+      "type": "enumeration",
+      "enum": ["ETB", "NTB", "ALL"],
+      "default": "ALL"
+    },
+    "owner": {
+      "type": "string"
+    },
+
+    "idempotencyRequired": {
+      "type": "boolean",
+      "default": false
+    },
+    "checkpointEnabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "maxRetry": {
+      "type": "integer",
+      "default": 3
+    },
+    "async": {
+      "type": "boolean",
+      "default": false
+    },
+
+    "steps": {
+      "type": "dynamiczone",
+      "components": ["sdui.step-user", "sdui.step-system"],
+      "required": true
+    },
+
+    "initialState": {
+      "type": "json"
     },
     "onExit": {
       "type": "component",

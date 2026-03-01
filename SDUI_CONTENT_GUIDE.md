@@ -1,6 +1,6 @@
 # SDUI Content Guide — How to Fill Journey & Screen Records
 
-> Step-by-step instructions for content editors to create the **Apply Current Account** journey in the Strapi Admin Panel.
+> Step-by-step for content editors filling the **Apply Current Account** journey in Strapi Admin.
 
 ---
 
@@ -12,19 +12,141 @@
 
 ---
 
-## Step 1 — Create the Journey
+## Step 1 — Create the Screens First
 
-1. In Content Manager, click **Journey** → **Create new entry**
-2. Fill in:
+Screens must exist before you can link them inside Journey steps.
 
-| Field             | Value                                               |
-| ----------------- | --------------------------------------------------- |
-| **Name**          | `Apply Current Account`                             |
-| **Slug**          | `apply-ca` _(auto-generated from name, confirm it)_ |
-| **Initial State** | Paste the JSON below                                |
-| **Description**   | `Multi-step journey to open a Current Account`      |
+Create a **Screen** entry for each screen below. For each:
 
-**Initial State JSON:**
+- Go to **Content Manager → Screen → Create new entry**
+- Fill in `screenKey`, `meta`, `body`, `footer` as shown
+- **Save → Publish**
+
+### Screen 1: `apply-ca.intro`
+
+| Field      | Value            |
+| ---------- | ---------------- |
+| Screen Key | `apply-ca.intro` |
+
+**Meta:**
+| Field | Value |
+|-------|-------|
+| Title | `Apply Current Account` |
+| Subtitle | `Open an account tailored to your needs` |
+| Show Back | `false` |
+| Show Close | `true` |
+
+**Header → Add component → Hero:**
+| Field | Value |
+|-------|-------|
+| Illustration | Upload hero image from Media Library |
+| Title | `Start your application` |
+
+**Body → Add component → Banner:**
+| Field | Value |
+|-------|-------|
+| Value | `You'll need your NPWP and a source account ready` |
+| Variant | `info` |
+
+---
+
+### Screen 2: `apply-ca.account-purpose`
+
+| Field      | Value                      |
+| ---------- | -------------------------- |
+| Screen Key | `apply-ca.account-purpose` |
+
+**Meta:** Title: `How will you use this account?` · Subtitle: `This helps us personalise your experience` · Show Back: `true`
+
+**Body → Section Label:**
+| Label | `Select account purpose` |
+
+**Body → Radio Group:**
+
+- Binding: `path: accountPurpose` · `scope: journeyState`
+- Options:
+  - `key: business` · `label: Business` · `description: For running business operations, paying suppliers, and collections`
+  - `key: personal` · `label: Personal` · `description: For your everyday personal banking needs`
+
+**Footer → Slide To Confirm:**
+
+- Label: `Continue`
+- Action: `key: next` · `type: navigate` · `payload: { "nextStep": "ACCOUNT_PURPOSE_DONE" }`
+
+---
+
+### Screen 3: `apply-ca.npwp-capture`
+
+| Field      | Value                   |
+| ---------- | ----------------------- |
+| Screen Key | `apply-ca.npwp-capture` |
+
+**Meta:** Title: `Scan the front of your NPWP` · Subtitle: `Position your NPWP inside the frame and hold still` · Show Back: `true`
+
+**Body → Section Label:** `Place your NPWP within the frame`
+
+**Body → Camera Capture:**
+| Field | Value |
+|-------|-------|
+| Mode | `document` |
+| Overlay Shape | `rectangle` |
+| Overlay Aspect | `1.586` |
+| Overlay Hint | `Fit all 4 corners inside the frame` |
+| Binding path | `npwpImage` · `scope: journeyState` |
+| On Complete → Key | `npwp-captured` |
+| On Complete → Type | `navigate` |
+| On Complete → Payload | `{ "nextStep": "NPWP_CAPTURED" }` |
+
+---
+
+### Remaining Screens (same pattern)
+
+| Screen Key               | Meta Title                  | Key Body Component                                                               | Footer CTA                                   |
+| ------------------------ | --------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------- |
+| `apply-ca.npwp-review`   | Scan the front of your NPWP | Image Preview (`npwpImage`) + Text Input (`npwpNumber`)                          | Slide: `Next`                                |
+| `apply-ca.deposit-setup` | Add your initial deposit    | Account Selector (`sourceAccountId`) + Money Input (`initialDepositAmount`, IDR) | Slide: `Next`                                |
+| `apply-ca.terms`         | Terms & Conditions          | Checkbox List (`termsAccepted`)                                                  | Slide: `Confirm`                             |
+| `apply-ca.confirmation`  | Review your application     | Review Card ×3                                                                   | Slide: `Slide to confirm`                    |
+| `apply-ca.success`       | Application successful      | Hero (success illustration)                                                      | —                                            |
+| `apply-ca.ineligible`    | We're sorry                 | Hero (error illustration) + Banner                                               | Button: `Back to home`                       |
+| `apply-ca.submit-failed` | Something went wrong        | Hero (error illustration) + Banner                                               | Button: `Try again` · Button: `Back to home` |
+
+> Note `apply-ca.ineligible` and `apply-ca.submit-failed` are new fallback screens needed for SYSTEM step failure branching.
+
+---
+
+## Step 2 — Create the Journey
+
+Go to **Content Manager → Journey → Create new entry**
+
+### Identity
+
+| Field              | Value                                          |
+| ------------------ | ---------------------------------------------- |
+| **Name**           | `Apply Current Account`                        |
+| **Slug**           | `apply-ca` _(auto-generated)_                  |
+| **Schema Version** | `1.0`                                          |
+| **Bundle Version** | `2026.03.01-001`                               |
+| **Description**    | `Multi-step journey to open a Current Account` |
+
+### Metadata
+
+| Field            | Value                    |
+| ---------------- | ------------------------ |
+| **Product Type** | `ACCOUNTS`               |
+| **Segment**      | `ETB`                    |
+| **Owner**        | `Accounts Business Team` |
+
+### Policies
+
+| Field                    | Value   |
+| ------------------------ | ------- |
+| **Idempotency Required** | `true`  |
+| **Checkpoint Enabled**   | `true`  |
+| **Max Retry**            | `3`     |
+| **Async**                | `false` |
+
+### Initial State
 
 ```json
 {
@@ -37,208 +159,104 @@
 }
 ```
 
-3. Click **Save** then **Publish**
+### Steps
 
-> ⚠️ **Do not create Screen records yet.** You'll link them to this journey in the next steps.
+Add steps in order using the **+ Add a component** button. Pick `Step - System` or `Step - User`.
 
----
+#### Step 1 — ELIGIBILITY_CHECK (System)
 
-## Step 2 — Create Screen: `apply-ca.intro`
+- Component: **Step - System**
 
-1. Click **Screen** → **Create new entry**
-2. Fill in the top fields:
+| Field      | Value                                 |
+| ---------- | ------------------------------------- |
+| Step Code  | `ELIGIBILITY_CHECK`                   |
+| Service    | `product-capabilities`                |
+| Operation  | `checkEligibility`                    |
+| On Success | `{ "nextStep": "INTRO" }`             |
+| On Failure | `{ "nextStep": "INELIGIBLE_SCREEN" }` |
+| Max Retry  | `3`                                   |
 
-| Field          | Value                          |
-| -------------- | ------------------------------ |
-| **Screen Key** | `apply-ca.intro`               |
-| **Order**      | `1`                            |
-| **Journey**    | Select `Apply Current Account` |
+#### Step 2 — INTRO (User)
 
-3. **Meta** section:
+- Component: **Step - User**
 
-| Field      | Value                                    |
-| ---------- | ---------------------------------------- |
-| Title      | `Apply Current Account`                  |
-| Subtitle   | `Open an account tailored to your needs` |
-| Show Back  | `false`                                  |
-| Show Close | `true`                                   |
+| Field     | Value                               |
+| --------- | ----------------------------------- |
+| Step Code | `INTRO`                             |
+| Screen    | Select `apply-ca.intro`             |
+| On Submit | `{ "nextStep": "ACCOUNT_PURPOSE" }` |
 
-4. **Header** slot → Add component → pick **Hero**:
+#### Step 3 — ACCOUNT_PURPOSE (User)
 
-| Field             | Value                                    |
-| ----------------- | ---------------------------------------- |
-| Illustration      | Upload the hero image from Media Library |
-| Title             | `Start your application`                 |
-| Subtitle Template | _(leave empty)_                          |
+| Field     | Value                             |
+| --------- | --------------------------------- |
+| Step Code | `ACCOUNT_PURPOSE`                 |
+| Screen    | Select `apply-ca.account-purpose` |
+| On Submit | `{ "nextStep": "NPWP_CAPTURE" }`  |
 
-5. **Body** slot → Add component → pick **Banner**:
+#### Step 4 — NPWP_CAPTURE (User)
 
-| Field   | Value                                              |
-| ------- | -------------------------------------------------- |
-| Value   | `You'll need your NPWP and a source account ready` |
-| Variant | `info`                                             |
+| Field     | Value                           |
+| --------- | ------------------------------- |
+| Step Code | `NPWP_CAPTURE`                  |
+| Screen    | Select `apply-ca.npwp-capture`  |
+| On Submit | `{ "nextStep": "NPWP_REVIEW" }` |
 
-6. **Footer** slot → _(leave empty — this screen uses a primary button in the header/hero)_
+#### Step 5—8 (User) — follow the same pattern
 
-7. Click **Save** → **Publish**
+| Step Code       | Screen                   | On Submit nextStep |
+| --------------- | ------------------------ | ------------------ |
+| `NPWP_REVIEW`   | `apply-ca.npwp-review`   | `DEPOSIT_SETUP`    |
+| `DEPOSIT_SETUP` | `apply-ca.deposit-setup` | `TERMS`            |
+| `TERMS`         | `apply-ca.terms`         | `CONFIRMATION`     |
+| `CONFIRMATION`  | `apply-ca.confirmation`  | `FINAL_SUBMISSION` |
 
----
+#### Step 9 — FINAL_SUBMISSION (System)
 
-## Step 3 — Create Screen: `apply-ca.account-purpose`
+| Field      | Value                              |
+| ---------- | ---------------------------------- |
+| Step Code  | `FINAL_SUBMISSION`                 |
+| Service    | `stp-core`                         |
+| Operation  | `submitJourney`                    |
+| On Success | `{ "nextStep": "SUCCESS_SCREEN" }` |
+| On Failure | `{ "nextStep": "SUBMIT_FAILED" }`  |
 
-1. Click **Screen** → **Create new entry**
-2. Top fields:
+#### Step 10 — SUCCESS_SCREEN (User)
 
-| Field          | Value                          |
-| -------------- | ------------------------------ |
-| **Screen Key** | `apply-ca.account-purpose`     |
-| **Order**      | `2`                            |
-| **Journey**    | Select `Apply Current Account` |
+| Field     | Value                     |
+| --------- | ------------------------- |
+| Step Code | `SUCCESS_SCREEN`          |
+| Screen    | Select `apply-ca.success` |
 
-3. **Meta** section:
+#### Step 11 — INELIGIBLE_SCREEN (User)
 
-| Field      | Value                                       |
-| ---------- | ------------------------------------------- |
-| Title      | `How will you use this account?`            |
-| Subtitle   | `This helps us personalise your experience` |
-| Show Back  | `true`                                      |
-| Show Close | `false`                                     |
+| Field     | Value                        |
+| --------- | ---------------------------- |
+| Step Code | `INELIGIBLE_SCREEN`          |
+| Screen    | Select `apply-ca.ineligible` |
 
-4. **Header** slot → _(leave empty)_
+#### Step 12 — SUBMIT_FAILED (User)
 
-5. **Body** slot → Add component → pick **Section Label**:
-
-| Field | Value                    |
-| ----- | ------------------------ |
-| Label | `Select account purpose` |
-
-6. **Body** slot → Add another component → pick **Radio Group**:
-
-| Field | Value           |
-| ----- | --------------- |
-| Label | _(leave empty)_ |
-
-- **Options** → Add 2 items:
-
-  **Option 1:**
-  | Field | Value |
-  |-------|-------|
-  | Key | `business` |
-  | Label | `Business` |
-  | Description | `For running business operations, paying suppliers, and collections` |
-
-  **Option 2:**
-  | Field | Value |
-  |-------|-------|
-  | Key | `personal` |
-  | Label | `Personal` |
-  | Description | `For your everyday personal banking needs` |
-
-- **Binding**:
-
-  | Field         | Value            |
-  | ------------- | ---------------- |
-  | Path          | `accountPurpose` |
-  | Scope         | `journeyState`   |
-  | Default Value | `null`           |
-
-- **Validation** → Add item:
-
-  | Field                 | Value      |
-  | --------------------- | ---------- |
-  | _(set required rule)_ | `required` |
-
-7. **Footer** slot → Add component → pick **Slide To Confirm**:
-
-| Field            | Value                                      |
-| ---------------- | ------------------------------------------ |
-| Label            | `Continue`                                 |
-| Action → Key     | `next`                                     |
-| Action → Type    | `navigate`                                 |
-| Action → Payload | `{ "screenKey": "apply-ca.npwp-capture" }` |
-
-8. Click **Save** → **Publish**
+| Field     | Value                           |
+| --------- | ------------------------------- |
+| Step Code | `SUBMIT_FAILED`                 |
+| Screen    | Select `apply-ca.submit-failed` |
 
 ---
 
-## Step 4 — Create Screen: `apply-ca.npwp-capture`
-
-1. Click **Screen** → **Create new entry**
-2. Top fields:
-
-| Field          | Value                          |
-| -------------- | ------------------------------ |
-| **Screen Key** | `apply-ca.npwp-capture`        |
-| **Order**      | `3`                            |
-| **Journey**    | Select `Apply Current Account` |
-
-3. **Meta** section:
-
-| Field      | Value                                                |
-| ---------- | ---------------------------------------------------- |
-| Title      | `Scan the front of your NPWP`                        |
-| Subtitle   | `Position your NPWP inside the frame and hold still` |
-| Show Back  | `true`                                               |
-| Show Close | `false`                                              |
-
-4. **Header** slot → _(leave empty)_
-
-5. **Body** slot → Add component → pick **Section Label**:
-
-| Field | Value                              |
-| ----- | ---------------------------------- |
-| Label | `Place your NPWP within the frame` |
-
-6. **Body** slot → Add another component → pick **Camera Capture**:
-
-| Field          | Value                                |
-| -------------- | ------------------------------------ |
-| Mode           | `document`                           |
-| Overlay Shape  | `rectangle`                          |
-| Overlay Aspect | `1.586` _(standard card ratio)_      |
-| Overlay Hint   | `Fit all 4 corners inside the frame` |
-
-- **Binding**:
-
-  | Field | Value          |
-  | ----- | -------------- |
-  | Path  | `npwpImage`    |
-  | Scope | `journeyState` |
-
-- **On Complete**:
-
-  | Field   | Value                                     |
-  | ------- | ----------------------------------------- |
-  | Key     | `npwp-captured`                           |
-  | Type    | `navigate`                                |
-  | Payload | `{ "screenKey": "apply-ca.npwp-review" }` |
-
-7. **Footer** slot → _(leave empty — Camera Capture auto-navigates on complete)_
-
-8. Click **Save** → **Publish**
+**Save → Publish**
 
 ---
 
-## Remaining Screens (follow same pattern)
+## Governance Quick Reference
 
-| Order | Screen Key               | Key Body Components                                                              | Footer CTA                                    |
-| ----- | ------------------------ | -------------------------------------------------------------------------------- | --------------------------------------------- |
-| 4     | `apply-ca.npwp-review`   | Image Preview (`npwpImage`) + Text Input (`npwpNumber`)                          | Slide: `Next` → `apply-ca.deposit-setup`      |
-| 5     | `apply-ca.deposit-setup` | Account Selector (`sourceAccountId`) + Money Input (`initialDepositAmount`, IDR) | Slide: `Next` → `apply-ca.terms`              |
-| 6     | `apply-ca.terms`         | Checkbox List (`termsAccepted`)                                                  | Slide: `Confirm` → `apply-ca.confirmation`    |
-| 7     | `apply-ca.confirmation`  | Review Card ×3 (account, NPWP, deposit)                                          | Slide: `Slide to confirm` → `api_call` submit |
-| 8     | `apply-ca.passcode`      | Passcode Input (length: 6, binding: `passcode`)                                  | _(auto-submits on complete)_                  |
-| 9     | `apply-ca.success`       | Hero (success illustration)                                                      | _(none — has Done button in hero)_            |
-
----
-
-## Governance Rules (Quick Reference)
-
-| Rule              | Value                                                             |
-| ----------------- | ----------------------------------------------------------------- |
-| Screen key format | `[journey-slug].[screen-slug]`                                    |
-| All copy          | Set in `meta.title`, `meta.subtitle`, or component `label` fields |
-| Styling           | None — frontend owns all styling                                  |
-| Navigation        | Use `sdui.action` type `navigate` with `payload.screenKey`        |
-| Form fields       | Always set `binding.path` + `binding.scope: journeyState`         |
-| Publishing        | Always **Publish** after Save — drafts are not served by the API  |
+| Rule              | Value                                                                                           |
+| ----------------- | ----------------------------------------------------------------------------------------------- |
+| Screen key format | `[journey-slug].[screen-slug]`                                                                  |
+| Step code format  | `SCREAMING_SNAKE_CASE`                                                                          |
+| All copy          | Set in `meta.title`, `meta.subtitle`, component `label`                                         |
+| Styling           | None — frontend owns all styling                                                                |
+| Navigation        | Use `nextStep` in `onSubmit` / `onSuccess` / `onFailure`                                        |
+| Form fields       | Always set `binding.path` + `binding.scope: journeyState`                                       |
+| Publishing        | Always **Publish** after Save                                                                   |
+| CTB UI            | Never edit `sdui.action`, `ui.slide-to-confirm`, `ui.button` via admin CTB — edit JSON directly |

@@ -1,0 +1,37 @@
+{
+  "collectionName": "components_sdui_step_systems",
+  "info": {
+    "displayName": "Step - System",
+    "description": "A SYSTEM step — executes a backend service operation with success/failure branching. Not shown to user."
+  },
+  "options": {},
+  "attributes": {
+    "stepCode": {
+      "type": "string",
+      "required": true
+    },
+    "service": {
+      "type": "string",
+      "required": true
+    },
+    "operation": {
+      "type": "string",
+      "required": true
+    },
+    "params": {
+      "type": "json"
+    },
+    "onSuccess": {
+      "type": "json",
+      "required": true
+    },
+    "onFailure": {
+      "type": "json",
+      "required": true
+    },
+    "maxRetry": {
+      "type": "integer",
+      "default": 3
+    }
+  }
+}

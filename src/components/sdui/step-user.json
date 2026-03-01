@@ -1,0 +1,27 @@
+{
+  "collectionName": "components_sdui_step_users",
+  "info": {
+    "displayName": "Step - User",
+    "description": "A USER step — maps to a Screen record. Frontend blocks until user submits."
+  },
+  "options": {},
+  "attributes": {
+    "stepCode": {
+      "type": "string",
+      "required": true
+    },
+    "screen": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::screen.screen"
+    },
+    "onSubmit": {
+      "type": "json",
+      "required": false
+    },
+    "skip": {
+      "type": "component",
+      "component": "sdui.visibility"
+    }
+  }
+}

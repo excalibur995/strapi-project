@@ -131,6 +131,20 @@ export interface SduiSource extends Struct.ComponentSchema {
   };
 }
 
+export interface SduiStepUser extends Struct.ComponentSchema {
+  collectionName: 'components_sdui_step_users';
+  info: {
+    description: 'A USER step \u2014 maps to a Screen record. Frontend blocks until user submits.';
+    displayName: 'Step - User';
+  };
+  attributes: {
+    onSubmit: Schema.Attribute.JSON;
+    screen: Schema.Attribute.Relation<'oneToOne', 'api::screen.screen'>;
+    skip: Schema.Attribute.Component<'sdui.visibility', false>;
+    stepCode: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SduiValidation extends Struct.ComponentSchema {
   collectionName: 'components_sdui_validations';
   info: {
@@ -843,6 +857,7 @@ declare module '@strapi/strapi' {
       'sdui.on-complete': SduiOnComplete;
       'sdui.screen-meta': SduiScreenMeta;
       'sdui.source': SduiSource;
+      'sdui.step-user': SduiStepUser;
       'sdui.validation': SduiValidation;
       'sdui.visibility': SduiVisibility;
       'ui.account-selector': UiAccountSelector;
