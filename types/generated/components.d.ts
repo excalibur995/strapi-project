@@ -131,6 +131,23 @@ export interface SduiSource extends Struct.ComponentSchema {
   };
 }
 
+export interface SduiStepSystem extends Struct.ComponentSchema {
+  collectionName: 'components_sdui_step_systems';
+  info: {
+    description: 'A SYSTEM step \u2014 executes a backend service operation with success/failure branching. Not shown to user.';
+    displayName: 'Step - System';
+  };
+  attributes: {
+    maxRetry: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<3>;
+    onFailure: Schema.Attribute.JSON & Schema.Attribute.Required;
+    onSuccess: Schema.Attribute.JSON & Schema.Attribute.Required;
+    operation: Schema.Attribute.String & Schema.Attribute.Required;
+    params: Schema.Attribute.JSON;
+    service: Schema.Attribute.String & Schema.Attribute.Required;
+    stepCode: Schema.Attribute.String & Schema.Attribute.Required;
+  };
+}
+
 export interface SduiStepUser extends Struct.ComponentSchema {
   collectionName: 'components_sdui_step_users';
   info: {
@@ -857,6 +874,7 @@ declare module '@strapi/strapi' {
       'sdui.on-complete': SduiOnComplete;
       'sdui.screen-meta': SduiScreenMeta;
       'sdui.source': SduiSource;
+      'sdui.step-system': SduiStepSystem;
       'sdui.step-user': SduiStepUser;
       'sdui.validation': SduiValidation;
       'sdui.visibility': SduiVisibility;

@@ -8,9 +8,11 @@ export default factories.createCoreController("api::screen.screen" as any, ({ st
   async findOne(ctx) {
     const { id } = ctx.params;
 
+    const sanitizedQuery = await this.sanitizeQuery(ctx);
+
     const entity = await (strapi as any).documents("api::screen.screen").findOne({
       documentId: id,
-      status: "published",
+      ...sanitizedQuery,
       populate: {
         meta: { populate: "*" },
         header: { populate: "*" },
@@ -23,6 +25,7 @@ export default factories.createCoreController("api::screen.screen" as any, ({ st
       return ctx.notFound(`Screen not found`);
     }
 
-    return this.transformResponse(entity);
+    const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
+    return this.transformResponse(sanitizedEntity);
   },
 }));

@@ -5,7 +5,7 @@
     "singularName": "screen",
     "pluralName": "screens",
     "displayName": "Screen",
-    "description": "A single SDUI screen config composed of three dynamic-zone slots. Referenced by sdui.step-user inside a Journey."
+    "description": "A single SDUI screen config composed of three dynamic-zone slots: header, body, footer."
   },
   "options": {
     "draftAndPublish": true
@@ -20,7 +20,16 @@
       "type": "uid",
       "required": true
     },
-
+    "order": {
+      "type": "integer",
+      "required": false
+    },
+    "journey": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::journey.journey",
+      "inversedBy": "screens"
+    },
     "meta": {
       "type": "component",
       "component": "sdui.screen-meta",

@@ -433,7 +433,7 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
 export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
   collectionName: 'journeys';
   info: {
-    description: 'A named multi-screen flow. Defines the ordered screen list and shared initial state.';
+    description: 'A named multi-screen flow. Defines ordered screens, versioning, metadata, and policies.';
     displayName: 'Journey';
     pluralName: 'journeys';
     singularName: 'journey';
@@ -448,6 +448,10 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
   };
   attributes: {
     analytics: Schema.Attribute.JSON;
+    async: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    bundleVersion: Schema.Attribute.String;
+    checkpointEnabled: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -457,12 +461,15 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    idempotencyRequired: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
     initialState: Schema.Attribute.JSON;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::journey.journey'
     >;
+    maxRetry: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<3>;
     name: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -471,8 +478,26 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
         };
       }>;
     onExit: Schema.Attribute.Component<'sdui.action', false>;
+    owner: Schema.Attribute.String;
+    productType: Schema.Attribute.Enumeration<
+      [
+        'CARDS',
+        'LOANS',
+        'DEPOSITS',
+        'ACCOUNTS',
+        'TRANSFERS',
+        'INVESTMENTS',
+        'INSURANCE',
+        'OTHER',
+      ]
+    >;
     publishedAt: Schema.Attribute.DateTime;
+    schemaVersion: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'1.0'>;
     screens: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
+    segment: Schema.Attribute.Enumeration<['ETB', 'NTB', 'ALL']> &
+      Schema.Attribute.DefaultTo<'ALL'>;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
@@ -535,7 +560,7 @@ export interface ApiRuleSetRuleSet extends Struct.CollectionTypeSchema {
 export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
   collectionName: 'screens';
   info: {
-    description: 'A single SDUI screen config. Composed of three dynamic-zone slots: header, body, footer.';
+    description: 'A single SDUI screen config composed of three dynamic-zone slots: header, body, footer.';
     displayName: 'Screen';
     pluralName: 'screens';
     singularName: 'screen';

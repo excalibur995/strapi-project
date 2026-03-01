@@ -5,7 +5,7 @@
     "singularName": "journey",
     "pluralName": "journeys",
     "displayName": "Journey",
-    "description": "A named multi-step flow. Supports USER screens and SYSTEM operations with success/failure branching."
+    "description": "A named multi-screen flow. Defines ordered screens, versioning, metadata, and policies."
   },
   "options": {
     "draftAndPublish": true
@@ -18,42 +18,47 @@
   "attributes": {
     "slug": {
       "type": "uid",
-      "required": true,
-      "targetField": "name"
+      "targetField": "name",
+      "required": true
     },
     "name": {
       "type": "string",
-      "required": true,
-      "pluginOptions": { "i18n": { "localized": true } }
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
     },
     "description": {
       "type": "string",
-      "pluginOptions": { "i18n": { "localized": true } }
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
-
     "schemaVersion": {
       "type": "string",
-      "required": true,
-      "default": "1.0"
+      "default": "1.0",
+      "required": true
     },
     "bundleVersion": {
       "type": "string",
       "required": false
     },
-
     "productType": {
       "type": "enumeration",
       "enum": ["CARDS", "LOANS", "DEPOSITS", "ACCOUNTS", "TRANSFERS", "INVESTMENTS", "INSURANCE", "OTHER"]
     },
     "segment": {
       "type": "enumeration",
-      "enum": ["ETB", "NTB", "ALL"],
-      "default": "ALL"
+      "default": "ALL",
+      "enum": ["ETB", "NTB", "ALL"]
     },
     "owner": {
       "type": "string"
     },
-
     "idempotencyRequired": {
       "type": "boolean",
       "default": false
@@ -70,13 +75,12 @@
       "type": "boolean",
       "default": false
     },
-
-    "steps": {
-      "type": "dynamiczone",
-      "components": ["sdui.step-user", "sdui.step-system"],
-      "required": true
+    "screens": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::screen.screen",
+      "mappedBy": "journey"
     },
-
     "initialState": {
       "type": "json"
     },
