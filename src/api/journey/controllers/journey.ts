@@ -12,7 +12,6 @@ const SCREENS_POPULATE = {
       body: { populate: "*" },
       footer: { populate: "*" },
     },
-    sort: ["order:asc"],
   },
   onExit: true,
 };
@@ -70,7 +69,7 @@ export default factories.createCoreController("api::journey.journey" as any, ({ 
         slug: { $eq: slug },
       }),
       status: "published",
-      populate: "*",
+      populate: SCREENS_POPULATE,
     });
 
     if (!results || results.length === 0) {

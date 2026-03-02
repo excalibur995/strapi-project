@@ -78,8 +78,7 @@
     "screens": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::screen.screen",
-      "mappedBy": "journey"
+      "target": "api::screen.screen"
     },
     "initialState": {
       "type": "json"

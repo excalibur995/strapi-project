@@ -611,12 +611,10 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
     header: Schema.Attribute.DynamicZone<
       ['ui.hero', 'ui.banner', 'ui.image-preview']
     >;
-    journey: Schema.Attribute.Relation<'manyToOne', 'api::journey.journey'>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
     meta: Schema.Attribute.Component<'sdui.screen-meta', false> &
       Schema.Attribute.Required;
-    order: Schema.Attribute.Integer;
     publishedAt: Schema.Attribute.DateTime;
     screenKey: Schema.Attribute.UID & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
