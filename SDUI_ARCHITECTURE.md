@@ -22,7 +22,8 @@ Frontend App
 
 | Field                 | Type               | Notes                                                                                      |
 | --------------------- | ------------------ | ------------------------------------------------------------------------------------------ |
-| `slug`                | UID                | e.g. `apply-ca`                                                                            |
+| `journeyId`           | UID                | e.g. `ACCT_CA_APPLY` — public lookup key                                                   |
+| `slug`                | UID                | Auto-generated from `name`, e.g. `apply-ca`                                                |
 | `name`                | String (i18n)      | Display name                                                                               |
 | `description`         | String (i18n)      | Internal description                                                                       |
 | `schemaVersion`       | String             | e.g. `1.0` — for client cache invalidation                                                 |
@@ -34,26 +35,27 @@ Frontend App
 | `checkpointEnabled`   | Boolean            | Resume from last screen after crash/background                                             |
 | `maxRetry`            | Integer            | Max retries for backend operations (default 3)                                             |
 | `async`               | Boolean            | Is final submission asynchronous                                                           |
-| `screens`             | oneToMany → Screen | Ordered by `screen.order`                                                                  |
+| `presentation`        | Enum               | `card \| modal \| fullScreenModal \| formSheet \| ...`                                     |
+| `screens`             | oneToMany → Screen | Ordered screens linked to this journey                                                     |
 | `initialState`        | JSON               | Default journey state shape                                                                |
 | `onExit`              | `sdui.action`      | Action on journey dismissal                                                                |
 | `analytics`           | JSON               | Journey-level tracking metadata                                                            |
 
-**API:** `GET /api/journeys/:documentId` → `data: {}` (Strapi default — no custom controller)
+**API:** `GET /api/journeys/id/:journeyId` → `data: {}` (custom `findBySlug` controller, published only)
 
 ---
 
 ### `Screen` — Collection Type
 
-| Field       | Type                | Notes                                                           |
-| ----------- | ------------------- | --------------------------------------------------------------- |
-| `screenKey` | UID                 | e.g. `apply-ca.intro` — globally unique, never rename once live |
-| `order`     | Integer             | Sort order within journey                                       |
-| `journey`   | manyToOne → Journey | Parent journey                                                  |
-| `meta`      | `sdui.screen-meta`  | Title, subtitle, back/close nav                                 |
-| `header`    | DynamicZone         | Top area: hero, banner, image-preview                           |
-| `body`      | DynamicZone         | Main content — 24 composable UI components                      |
-| `footer`    | DynamicZone         | CTAs: slide-to-confirm, button, banner                          |
+| Field      | Type               | Notes                                                          |
+| ---------- | ------------------ | -------------------------------------------------------------- |
+| `screenId` | UID                | e.g. `ACCT_CA_ACCOUNT_PURPOSE` — globally unique, never rename |
+| `meta`     | `sdui.screen-meta` | Title, subtitle, back/close nav                                |
+| `header`   | DynamicZone        | Top area: hero, banner, image-preview                          |
+| `body`     | DynamicZone        | Main content — composable UI components                        |
+| `footer`   | DynamicZone        | CTAs: slide-to-confirm, button, banner                         |
+
+> Screens are linked to their Journey via the Journey's `screens` (oneToMany) relation. There is no back-reference on the Screen side.
 
 **API:** `GET /api/screens/:documentId` → `data: {}` (overridden `findOne` — deep populated)
 
@@ -62,20 +64,21 @@ Frontend App
 ## Relations
 
 ```
-Journey (1) ──oneToMany──▶ Screen (N)  [ordered by order]
+Journey (1) ──oneToMany──▶ Screen (N)
                                 │
                     ┌───────────┼───────────┐
                   meta        body        footer
                     │           │            │
              sdui.screen-meta  ui.*       ui.slide-to-confirm
                     │        components     ui.button
-                 onBack ─▶ sdui.action      ui.banner
+                 onBack ─▶ sdui.action      ui.banner { text }
                                 │
                     ┌───────────┼───────────┐
-                 binding    visibility   onTap/onComplete
+                 binding    visibility   onComplete
                     │           │            │
-             sdui.binding  sdui.visibility  sdui.action
-                        rule ─▶ rule-set  guards ─▶ rule-set[]
+             sdui.binding  sdui.visibility  sdui.on-complete
+                        rule ─▶ rule-set       └─▶ sdui.action
+                                           guards ─▶ rule-set[]
 ```
 
 ---
@@ -84,16 +87,16 @@ Journey (1) ──oneToMany──▶ Screen (N)  [ordered by order]
 
 ### `sdui.*` — Behaviour (never rendered directly)
 
-| Component          | Purpose                                         |
-| ------------------ | ----------------------------------------------- |
-| `sdui.screen-meta` | Screen title, subtitle, back/close nav          |
-| `sdui.action`      | navigate, api_call, open_modal, set_state, etc. |
-| `sdui.binding`     | Two-way state binding for inputs                |
-| `sdui.source`      | Read-only state path for display components     |
-| `sdui.visibility`  | Conditional show/hide via rule-set              |
-| `sdui.validation`  | Input validation rules                          |
-| `sdui.on-complete` | Action fired when component self-completes      |
-| `sdui.data-source` | API endpoint config for async components        |
+| Component          | Purpose                                                                       |
+| ------------------ | ----------------------------------------------------------------------------- |
+| `sdui.screen-meta` | Screen title, subtitle, back/close nav                                        |
+| `sdui.action`      | navigate, api_call, open_modal, set_state, etc.                               |
+| `sdui.binding`     | Two-way state binding for inputs                                              |
+| `sdui.source`      | Read-only state path for display components                                   |
+| `sdui.visibility`  | Conditional show/hide via rule-set                                            |
+| `sdui.validation`  | Input validation rules                                                        |
+| `sdui.on-complete` | Wrapper fired when component self-completes — contains a nested `sdui.action` |
+| `sdui.data-source` | API endpoint config for async components                                      |
 
 ### `ui.*` — Renderable Blocks
 
@@ -138,18 +141,20 @@ Journey (1) ──oneToMany──▶ Screen (N)  [ordered by order]
 ## API
 
 ```bash
-# Journey — screens list + policies + initialState (Strapi default)
-GET /api/journeys/:documentId
-→ data: { slug, schemaVersion, bundleVersion, productType, segment,
-          idempotencyRequired, checkpointEnabled, screens[], initialState, ... }
+# Journey — by journeyId (custom findBySlug controller, published only)
+GET /api/journeys/id/:journeyId
+→ data: { journeyId, slug, schemaVersion, bundleVersion, productType, segment,
+          idempotencyRequired, checkpointEnabled, presentation, screens[], initialState, ... }
+
+# Journey — list all (Strapi default find, published + draft)
+GET /api/journeys
 
 # Screen — deep populated slots (overridden findOne)
 GET /api/screens/:documentId
-→ data: { screenKey, meta, header[], body[], footer[] }
+→ data: { screenId, meta, header[], body[], footer[] }
 
-# Filter by slug / screenKey (for tooling)
-GET /api/journeys?filters[slug][$eq]=apply-ca
-GET /api/screens?filters[screenKey][$eq]=apply-ca.intro
+# Filter by screenId (for tooling)
+GET /api/screens?filters[screenId][$eq]=ACCT_CA_ACCOUNT_PURPOSE
 ```
 
 Both return `data: {}` and only serve **published** records.
@@ -201,11 +206,12 @@ Both return `data: {}` and only serve **published** records.
 
 ### Naming Conventions
 
-| Item         | Format                         | Example          |
-| ------------ | ------------------------------ | ---------------- |
-| Journey slug | `kebab-case`                   | `apply-ca`       |
-| Screen key   | `[journey-slug].[screen-slug]` | `apply-ca.intro` |
-| Binding path | `camelCase`                    | `accountPurpose` |
+| Item         | Format                 | Example                     |
+| ------------ | ---------------------- | --------------------------- |
+| Journey ID   | `SCREAMING_SNAKE_CASE` | `ACCT_CA_APPLY`             |
+| Journey slug | `kebab-case`           | `apply-ca` (auto-generated) |
+| Screen ID    | `SCREAMING_SNAKE_CASE` | `ACCT_CA_ACCOUNT_PURPOSE`   |
+| Binding path | `camelCase`            | `accountPurpose`            |
 
 ### Immutable Rules
 

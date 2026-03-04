@@ -10,7 +10,7 @@ The frontend has a strict responsibility: **Render what the backend sends, and s
 
 ### The Rendering Pipeline
 
-1. **Fetch Journey Definition**: `GET /api/journeys/:documentId` gives you the configuration (which screens to show, validations, async steps).
+1. **Fetch Journey Definition**: `GET /api/journeys/id/:journeyId` gives you the configuration (which screens to show, validations, async steps).
 2. **Fetch Screen Definition**: `GET /api/screens/:documentId` gives you a tree of `__component` objects inside slots (`meta`, `header`, `body`, `footer`).
 3. **Parse & Render**: The `DynamicRenderer` takes the JSON tree, looks up the `__component` string in the **Component Registry**, and renders the corresponding React Native component.
 4. **State Management**: Form inputs interact with a global `JourneyState` store via `sdui.binding`.
@@ -78,7 +78,27 @@ export interface SDUIVisibility {
   rule: any; // Rule engine definition
 }
 
+export interface SDUIOnComplete {
+  id: number;
+  action: SDUIAction; // nested sdui.action — not flat key/type/payload
+}
+
 // === UI Components (ui.*) ===
+
+export interface UIBanner extends SDUIBaseComponent {
+  __component: "ui.banner";
+  text: string; // was `value` — renamed in schema
+  variant: "info" | "warning" | "success" | "error";
+  onTap?: SDUIAction;
+  visibility?: SDUIVisibility;
+}
+
+export interface UIText extends SDUIBaseComponent {
+  __component: "ui.text";
+  text: string; // was `value` — renamed in schema
+  variant?: "title" | "body" | "caption" | "label";
+  visibility?: SDUIVisibility;
+}
 
 export interface UIButton extends SDUIBaseComponent {
   __component: "ui.button";

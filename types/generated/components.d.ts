@@ -71,11 +71,7 @@ export interface SduiOnComplete extends Struct.ComponentSchema {
     displayName: 'On Complete';
   };
   attributes: {
-    key: Schema.Attribute.String & Schema.Attribute.Required;
-    payload: Schema.Attribute.JSON;
-    type: Schema.Attribute.Enumeration<
-      ['navigate', 'api_call', 'open_sheet', 'open_modal']
-    > &
+    action: Schema.Attribute.Component<'sdui.action', false> &
       Schema.Attribute.Required;
   };
 }
@@ -257,7 +253,7 @@ export interface UiBanner extends Struct.ComponentSchema {
         };
       }>;
     onTap: Schema.Attribute.Component<'sdui.action', false>;
-    value: Schema.Attribute.Text &
+    text: Schema.Attribute.Text &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -818,7 +814,7 @@ export interface UiText extends Struct.ComponentSchema {
     displayName: 'Text';
   };
   attributes: {
-    value: Schema.Attribute.Text &
+    text: Schema.Attribute.Text &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {

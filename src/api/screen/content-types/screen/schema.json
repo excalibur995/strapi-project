@@ -16,7 +16,7 @@
     }
   },
   "attributes": {
-    "screenKey": {
+    "screenId": {
       "type": "uid",
       "required": true
     },

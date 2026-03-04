@@ -45,7 +45,7 @@ Create a **Screen** entry for each screen below. For each:
 **Body → Add component → Banner:**
 | Field | Value |
 |-------|-------|
-| Value | `You'll need your NPWP and a source account ready` |
+| text | `You'll need your NPWP and a source account ready` |
 | Variant | `info` |
 
 ---
@@ -67,6 +67,8 @@ Create a **Screen** entry for each screen below. For each:
 - Options:
   - `key: business` · `label: Business` · `description: For running business operations, paying suppliers, and collections`
   - `key: personal` · `label: Personal` · `description: For your everyday personal banking needs`
+- **Validation (sdui.validation — add 1 item):**
+  - `rule: required` · `message: Please select an account purpose`
 
 **Footer → Slide To Confirm:**
 
@@ -93,23 +95,59 @@ Create a **Screen** entry for each screen below. For each:
 | Overlay Aspect | `1.586` |
 | Overlay Hint | `Fit all 4 corners inside the frame` |
 | Binding path | `npwpImage` · `scope: journeyState` |
-| On Complete → Key | `npwp-captured` |
-| On Complete → Type | `navigate` |
-| On Complete → Payload | `{ "nextStep": "NPWP_CAPTURED" }` |
+
+- **On Complete (sdui.on-complete):**
+  - **Action (sdui.action):**
+    - `key: npwp-captured`
+    - `type: navigate`
+    - `payload: { "nextStep": "NPWP_CAPTURED" }`
+
+---
+
+### Screen 4: `apply-ca.npwp-review`
+
+| Field      | Value                  |
+| ---------- | ---------------------- |
+| Screen Key | `apply-ca.npwp-review` |
+
+**Meta:** Title: `Review your NPWP` · Subtitle: `Check that all details are clearly visible` · Show Back: `true`
+
+**Body → Image Preview:**
+
+- **Source (sdui.source):**
+  - `path: npwpImage`
+  - `scope: journeyState`
+
+**Body → Text Input:**
+
+| Field         | Value                                |
+| ------------- | ------------------------------------ |
+| Label         | `NPWP Number`                        |
+| Placeholder   | `Enter your 15-digit NPWP number`    |
+| Keyboard Type | `numeric`                            |
+| Binding path  | `npwpNumber` · `scope: journeyState` |
+
+- **Validation (sdui.validation — add 2 items):**
+  1. `rule: required` · `message: NPWP number is required`
+  2. `rule: pattern` · `value: ^[0-9]{15}$` · `message: Must be exactly 15 digits`
+
+**Footer → Slide To Confirm:**
+
+- Label: `Next`
+- Action: `key: next` · `type: navigate` · `payload: { "nextStep": "DEPOSIT_SETUP" }`
 
 ---
 
 ### Remaining Screens (same pattern)
 
-| Screen Key               | Meta Title                  | Key Body Component                                                               | Footer CTA                                   |
-| ------------------------ | --------------------------- | -------------------------------------------------------------------------------- | -------------------------------------------- |
-| `apply-ca.npwp-review`   | Scan the front of your NPWP | Image Preview (`npwpImage`) + Text Input (`npwpNumber`)                          | Slide: `Next`                                |
-| `apply-ca.deposit-setup` | Add your initial deposit    | Account Selector (`sourceAccountId`) + Money Input (`initialDepositAmount`, IDR) | Slide: `Next`                                |
-| `apply-ca.terms`         | Terms & Conditions          | Checkbox List (`termsAccepted`)                                                  | Slide: `Confirm`                             |
-| `apply-ca.confirmation`  | Review your application     | Review Card ×3                                                                   | Slide: `Slide to confirm`                    |
-| `apply-ca.success`       | Application successful      | Hero (success illustration)                                                      | —                                            |
-| `apply-ca.ineligible`    | We're sorry                 | Hero (error illustration) + Banner                                               | Button: `Back to home`                       |
-| `apply-ca.submit-failed` | Something went wrong        | Hero (error illustration) + Banner                                               | Button: `Try again` · Button: `Back to home` |
+| Screen Key               | Meta Title               | Key Body Component                                                               | Footer CTA                                   |
+| ------------------------ | ------------------------ | -------------------------------------------------------------------------------- | -------------------------------------------- |
+| `apply-ca.deposit-setup` | Add your initial deposit | Account Selector (`sourceAccountId`) + Money Input (`initialDepositAmount`, IDR) | Slide: `Next`                                |
+| `apply-ca.terms`         | Terms & Conditions       | Checkbox List (`termsAccepted`)                                                  | Slide: `Confirm`                             |
+| `apply-ca.confirmation`  | Review your application  | Review Card ×3                                                                   | Slide: `Slide to confirm`                    |
+| `apply-ca.success`       | Application successful   | Hero (success illustration)                                                      | —                                            |
+| `apply-ca.ineligible`    | We're sorry              | Hero (error illustration) + Banner (`text`, `variant: error`)                    | Button: `Back to home`                       |
+| `apply-ca.submit-failed` | Something went wrong     | Hero (error illustration) + Banner (`text`, `variant: warning`)                  | Button: `Try again` · Button: `Back to home` |
 
 > Note `apply-ca.ineligible` and `apply-ca.submit-failed` are new fallback screens needed for SYSTEM step failure branching.
 

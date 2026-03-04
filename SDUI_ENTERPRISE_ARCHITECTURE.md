@@ -193,7 +193,14 @@ _A C4 Context perspective:_
 
 ### 3.1 CMS API Structure
 
-The CMS exposes RESTful APIs conforming strictly to the Strapi v5 Document API specification. All responses are JSON formatted and wrapped in a standard `data`/`meta` envelope. Deep population of relation fields is mandated at the controller level to prevent N+1 querying from consuming domains.
+The CMS exposes RESTful APIs built on the **Strapi v5 Documents Service** (`strapi.documents()`). All responses are JSON-formatted and wrapped in a standard `data`/`meta` envelope via the `transformResponse` helper.
+
+Key structural characteristics:
+
+- **Controller-enforced deep population:** Population depth is declared as a static `SCREENS_POPULATE` constant inside each custom controller. Downstream consumers may **not** override population depth via query parameters — this prevents N+1 chains and enforces a consistent response contract.
+- **Custom `findBySlug` extension:** In addition to the standard `find` / `findOne` by `documentId`, a custom `findBySlug` action is registered on the Journey controller, resolving entries by their human-readable `slug` field. This is the primary entrypoint for STP consumers.
+- **Published-only enforcement:** All externally invoked read operations apply a `status: "published"` filter at the service call level, ensuring draft content is never leaked to downstream consumers regardless of query parameters.
+- **Sanitize → Transform pipeline:** Every controller action runs the full Strapi security pipeline — `sanitizeQuery` on input, `sanitizeOutput` on the entity, and `transformResponse` for envelope wrapping — before returning to the client.
 
 ### 3.2 CMS API Methods
 
@@ -243,7 +250,7 @@ The Strapi v5 base response structure provides a standardized envelope mapping:
 
 #### 2. STP Journey Configuration Response Example
 
-_Endpoint:_ `GET /api/journeys/:slug`
+_Endpoint:_ `GET /api/journeys/slug/:slug`
 _Consumer:_ STP Engine
 _Purpose:_ Informs the STP of the journey steps, structural metadata, and execution policies.
 
@@ -253,18 +260,46 @@ _Purpose:_ Informs the STP of the journey steps, structural metadata, and execut
     "documentId": "ua19l6sbe7r...",
     "slug": "apply-ca",
     "name": "Apply Current Account",
+    "description": "End-to-end current account application journey",
+    "schemaVersion": "1.0",
+    "bundleVersion": "2025-Q1",
     "productType": "ACCOUNTS",
+    "segment": "NTB",
+    "owner": "onboarding-squad",
     "idempotencyRequired": true,
+    "checkpointEnabled": true,
     "maxRetry": 3,
-    "initialState": { "accountPurpose": null },
+    "async": false,
+    "initialState": {
+      "accountPurpose": null,
+      "selectedCurrency": null
+    },
+    "onExit": {
+      "__component": "sdui.action",
+      "key": "exit-journey",
+      "type": "navigate",
+      "payload": { "screen": "home" }
+    },
+    "analytics": {
+      "journeyTag": "account-opening",
+      "segmentEvent": "journey_started"
+    },
     "screens": [
       {
-        "documentId": "xyz...",
+        "documentId": "scr-abc123...",
         "screenKey": "apply-ca.intro",
-        "order": 1
+        "meta": {
+          "__component": "sdui.screen-meta",
+          "title": "Open an Account",
+          "showBack": false
+        },
+        "header": [],
+        "body": [],
+        "footer": []
       }
     ]
-  }
+  },
+  "meta": {}
 }
 ```
 

@@ -21,6 +21,15 @@
       "targetField": "name",
       "required": true
     },
+    "journeyId": {
+      "type": "uid",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    },
     "name": {
       "type": "string",
       "pluginOptions": {
@@ -49,12 +58,25 @@
     },
     "productType": {
       "type": "enumeration",
-      "enum": ["CARDS", "LOANS", "DEPOSITS", "ACCOUNTS", "TRANSFERS", "INVESTMENTS", "INSURANCE", "OTHER"]
+      "enum": [
+        "CARDS",
+        "LOANS",
+        "DEPOSITS",
+        "ACCOUNTS",
+        "TRANSFERS",
+        "INVESTMENTS",
+        "INSURANCE",
+        "OTHER"
+      ]
     },
     "segment": {
       "type": "enumeration",
       "default": "ALL",
-      "enum": ["ETB", "NTB", "ALL"]
+      "enum": [
+        "ETB",
+        "NTB",
+        "ALL"
+      ]
     },
     "owner": {
       "type": "string"
@@ -89,6 +111,24 @@
     },
     "analytics": {
       "type": "json"
+    },
+    "presentation": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": "card",
+      "enum": [
+        "card",
+        "modal",
+        "transparentModal",
+        "containedModal",
+        "containedTransparentModal",
+        "fullScreenModal",
+        "formSheet"
+      ]
     }
   }
 }

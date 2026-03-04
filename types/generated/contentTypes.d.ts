@@ -464,6 +464,13 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
     idempotencyRequired: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     initialState: Schema.Attribute.JSON;
+    journeyId: Schema.Attribute.UID &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
@@ -479,6 +486,23 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
       }>;
     onExit: Schema.Attribute.Component<'sdui.action', false>;
     owner: Schema.Attribute.String;
+    presentation: Schema.Attribute.Enumeration<
+      [
+        'card',
+        'modal',
+        'transparentModal',
+        'containedModal',
+        'containedTransparentModal',
+        'fullScreenModal',
+        'formSheet',
+      ]
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<'card'>;
     productType: Schema.Attribute.Enumeration<
       [
         'CARDS',
@@ -616,7 +640,7 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
     meta: Schema.Attribute.Component<'sdui.screen-meta', false> &
       Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
-    screenKey: Schema.Attribute.UID & Schema.Attribute.Required;
+    screenId: Schema.Attribute.UID & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

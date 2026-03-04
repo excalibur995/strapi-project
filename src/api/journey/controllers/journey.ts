@@ -22,7 +22,7 @@ export default factories.createCoreController("api::journey.journey" as any, ({ 
     const docs = (strapi as any).documents("api::journey.journey");
 
     const [results, total] = await Promise.all([
-      docs.findMany({ ...sanitizedQuery, populate: SCREENS_POPULATE }),
+      docs.findMany({ ...sanitizedQuery, populate: "*" }),
       docs.count({ ...sanitizedQuery }),
     ]);
 
@@ -48,7 +48,7 @@ export default factories.createCoreController("api::journey.journey" as any, ({ 
     const entity = await (strapi as any).documents("api::journey.journey").findOne({
       documentId: id,
       ...sanitizedQuery,
-      populate: SCREENS_POPULATE,
+      populate: "*",
     });
 
     if (!entity) {
@@ -60,18 +60,19 @@ export default factories.createCoreController("api::journey.journey" as any, ({ 
   },
 
   async findBySlug(ctx) {
-    const { slug } = ctx.params;
+    const { journeyId } = ctx.params;
     const sanitizedQuery = await this.sanitizeQuery(ctx);
 
     const results = await (strapi as any).documents("api::journey.journey").findMany({
       ...sanitizedQuery,
       filters: Object.assign({}, sanitizedQuery.filters, {
-        slug: { $eq: slug },
+        journeyId: { $eq: journeyId },
       }),
       status: "published",
-      populate: SCREENS_POPULATE,
+      populate: "*",
     });
 
+    console.log({ results, journeyId });
     if (!results || results.length === 0) {
       return ctx.notFound(`Journey not found`);
     }

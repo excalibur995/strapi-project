@@ -2,7 +2,7 @@ export default {
   routes: [
     {
       method: "GET",
-      path: "/journeys/:slug([a-zA-Z0-9-]+)", // only match string slugs, e.g. apply-ca
+      path: "/journeys/:journeyId([a-zA-Z0-9_-]+)",
       handler: "api::journey.journey.findBySlug",
     },
   ],
