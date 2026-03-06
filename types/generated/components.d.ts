@@ -498,6 +498,26 @@ export interface UiHero extends Struct.ComponentSchema {
   };
 }
 
+export interface UiIconText extends Struct.ComponentSchema {
+  collectionName: 'components_ui_icon_texts';
+  info: {
+    description: 'A row displaying an icon alongside text. type: ui.icon-text';
+    displayName: 'Icon Text';
+  };
+  attributes: {
+    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
+      Schema.Attribute.Required;
+    text: Schema.Attribute.Text &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+  };
+}
+
 export interface UiImagePreview extends Struct.ComponentSchema {
   collectionName: 'components_ui_image_previews';
   info: {
@@ -760,7 +780,8 @@ export interface UiSectionLabel extends Struct.ComponentSchema {
     displayName: 'Section Label';
   };
   attributes: {
-    value: Schema.Attribute.String &
+    subtitle: Schema.Attribute.String;
+    title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -886,6 +907,7 @@ declare module '@strapi/strapi' {
       'ui.dropdown': UiDropdown;
       'ui.dropdown-async': UiDropdownAsync;
       'ui.hero': UiHero;
+      'ui.icon-text': UiIconText;
       'ui.image-preview': UiImagePreview;
       'ui.item-list': UiItemList;
       'ui.kv-row': UiKvRow;

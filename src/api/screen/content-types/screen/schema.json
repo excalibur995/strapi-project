@@ -27,13 +27,19 @@
     },
     "header": {
       "type": "dynamiczone",
-      "components": ["ui.hero", "ui.banner", "ui.image-preview"]
+      "components": [
+        "ui.hero",
+        "ui.banner",
+        "ui.image-preview",
+        "ui.section-label"
+      ]
     },
     "body": {
       "type": "dynamiczone",
       "components": [
         "ui.section-label",
         "ui.text",
+        "ui.icon-text",
         "ui.banner",
         "ui.hero",
         "ui.radio-group",
@@ -60,7 +66,20 @@
     },
     "footer": {
       "type": "dynamiczone",
-      "components": ["ui.slide-to-confirm", "ui.button", "ui.banner"]
+      "components": [
+        "ui.slide-to-confirm",
+        "ui.button",
+        "ui.banner"
+      ]
+    },
+    "hideProgressBar": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": false
     }
   }
 }

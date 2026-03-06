@@ -1,0 +1,29 @@
+{
+  "collectionName": "components_ui_icon_texts",
+  "info": {
+    "displayName": "Icon Text",
+    "description": "A row displaying an icon alongside text. type: ui.icon-text"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "text",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "icon": {
+      "type": "media",
+      "multiple": false,
+      "required": true,
+      "allowedTypes": ["images", "files", "videos", "audios"]
+    },
+    "visibility": {
+      "type": "component",
+      "component": "sdui.visibility"
+    }
+  }
+}

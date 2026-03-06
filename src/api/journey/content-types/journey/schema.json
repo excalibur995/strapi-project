@@ -129,6 +129,27 @@
         "fullScreenModal",
         "formSheet"
       ]
+    },
+    "steps": {
+      "type": "component",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "component": "sdui.step-system",
+      "repeatable": true
+    },
+    "navigator": {
+      "type": "enumeration",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "enum": [
+        "CurrentAccountJourneyNavigator"
+      ]
     }
   }
 }

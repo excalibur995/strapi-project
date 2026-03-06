@@ -484,6 +484,14 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
+    navigator: Schema.Attribute.Enumeration<
+      ['CurrentAccountJourneyNavigator']
+    > &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     onExit: Schema.Attribute.Component<'sdui.action', false>;
     owner: Schema.Attribute.String;
     presentation: Schema.Attribute.Enumeration<
@@ -523,6 +531,12 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
     segment: Schema.Attribute.Enumeration<['ETB', 'NTB', 'ALL']> &
       Schema.Attribute.DefaultTo<'ALL'>;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
+    steps: Schema.Attribute.Component<'sdui.step-system', true> &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -602,6 +616,7 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
       [
         'ui.section-label',
         'ui.text',
+        'ui.icon-text',
         'ui.banner',
         'ui.hero',
         'ui.radio-group',
@@ -633,8 +648,15 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
       ['ui.slide-to-confirm', 'ui.button', 'ui.banner']
     >;
     header: Schema.Attribute.DynamicZone<
-      ['ui.hero', 'ui.banner', 'ui.image-preview']
+      ['ui.hero', 'ui.banner', 'ui.image-preview', 'ui.section-label']
     >;
+    hideProgressBar: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
     meta: Schema.Attribute.Component<'sdui.screen-meta', false> &
