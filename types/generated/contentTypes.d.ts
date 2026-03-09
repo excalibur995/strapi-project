@@ -648,7 +648,13 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
       ['ui.slide-to-confirm', 'ui.button', 'ui.banner']
     >;
     header: Schema.Attribute.DynamicZone<
-      ['ui.hero', 'ui.banner', 'ui.image-preview', 'ui.section-label']
+      [
+        'ui.hero',
+        'ui.banner',
+        'ui.image-preview',
+        'ui.section-label',
+        'ui.tab-group',
+      ]
     >;
     hideProgressBar: Schema.Attribute.Boolean &
       Schema.Attribute.SetPluginOptions<{
