@@ -94,7 +94,6 @@ export interface SduiScreenMeta extends Struct.ComponentSchema {
         };
       }>;
     title: Schema.Attribute.String &
-      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -127,34 +126,27 @@ export interface SduiSource extends Struct.ComponentSchema {
   };
 }
 
-export interface SduiStepSystem extends Struct.ComponentSchema {
-  collectionName: 'components_sdui_step_systems';
+export interface SduiSteps extends Struct.ComponentSchema {
+  collectionName: 'components_sdui_steps';
   info: {
-    description: 'A SYSTEM step \u2014 executes a backend service operation with success/failure branching. Not shown to user.';
-    displayName: 'Step - System';
+    description: 'A combined step (SYSTEM or USER)';
+    displayName: 'Steps';
   };
   attributes: {
     maxRetry: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<3>;
-    onFailure: Schema.Attribute.JSON & Schema.Attribute.Required;
-    onSuccess: Schema.Attribute.JSON & Schema.Attribute.Required;
-    operation: Schema.Attribute.String & Schema.Attribute.Required;
-    params: Schema.Attribute.JSON;
-    service: Schema.Attribute.String & Schema.Attribute.Required;
-    stepCode: Schema.Attribute.String & Schema.Attribute.Required;
-  };
-}
-
-export interface SduiStepUser extends Struct.ComponentSchema {
-  collectionName: 'components_sdui_step_users';
-  info: {
-    description: 'A USER step \u2014 maps to a Screen record. Frontend blocks until user submits.';
-    displayName: 'Step - User';
-  };
-  attributes: {
+    onFailure: Schema.Attribute.JSON;
     onSubmit: Schema.Attribute.JSON;
+    onSuccess: Schema.Attribute.JSON;
+    operation: Schema.Attribute.String;
+    params: Schema.Attribute.JSON;
     screen: Schema.Attribute.Relation<'oneToOne', 'api::screen.screen'>;
+    service: Schema.Attribute.String;
     skip: Schema.Attribute.Component<'sdui.visibility', false>;
-    stepCode: Schema.Attribute.String & Schema.Attribute.Required;
+    stepCode: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    type: Schema.Attribute.Enumeration<['system', 'user']> &
+      Schema.Attribute.Required;
   };
 }
 
@@ -373,8 +365,7 @@ export interface UiCheckboxList extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
-    items: Schema.Attribute.Component<'ui.option', true> &
-      Schema.Attribute.Required;
+    items: Schema.Attribute.Component<'ui.option', true>;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -578,6 +569,18 @@ export interface UiKvRow extends Struct.ComponentSchema {
   };
 }
 
+export interface UiLink extends Struct.ComponentSchema {
+  collectionName: 'components_ui_links';
+  info: {
+    displayName: 'Link';
+  };
+  attributes: {
+    action: Schema.Attribute.Component<'sdui.action', false>;
+    text: Schema.Attribute.String & Schema.Attribute.Required;
+    validation: Schema.Attribute.Component<'sdui.validation', false>;
+  };
+}
+
 export interface UiListItem extends Struct.ComponentSchema {
   collectionName: 'components_ui_list_items';
   info: {
@@ -773,6 +776,17 @@ export interface UiReviewCard extends Struct.ComponentSchema {
   };
 }
 
+export interface UiRichText extends Struct.ComponentSchema {
+  collectionName: 'components_ui_rich_texts';
+  info: {
+    displayName: 'Rich Text';
+  };
+  attributes: {
+    text: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+  };
+}
+
 export interface UiSectionLabel extends Struct.ComponentSchema {
   collectionName: 'components_ui_section_labels';
   info: {
@@ -891,8 +905,7 @@ declare module '@strapi/strapi' {
       'sdui.on-complete': SduiOnComplete;
       'sdui.screen-meta': SduiScreenMeta;
       'sdui.source': SduiSource;
-      'sdui.step-system': SduiStepSystem;
-      'sdui.step-user': SduiStepUser;
+      'sdui.steps': SduiSteps;
       'sdui.validation': SduiValidation;
       'sdui.visibility': SduiVisibility;
       'ui.account-selector': UiAccountSelector;
@@ -911,6 +924,7 @@ declare module '@strapi/strapi' {
       'ui.image-preview': UiImagePreview;
       'ui.item-list': UiItemList;
       'ui.kv-row': UiKvRow;
+      'ui.link': UiLink;
       'ui.list-item': UiListItem;
       'ui.local-state': UiLocalState;
       'ui.money-display': UiMoneyDisplay;
@@ -920,6 +934,7 @@ declare module '@strapi/strapi' {
       'ui.radio-group': UiRadioGroup;
       'ui.radio-group-async': UiRadioGroupAsync;
       'ui.review-card': UiReviewCard;
+      'ui.rich-text': UiRichText;
       'ui.section-label': UiSectionLabel;
       'ui.slide-to-confirm': UiSlideToConfirm;
       'ui.tab-group': UiTabGroup;

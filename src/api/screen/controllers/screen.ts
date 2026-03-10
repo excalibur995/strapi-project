@@ -20,8 +20,20 @@ const HEADER_POPULATE = {
 const FOOTER_POPULATE = {
   populate: "*",
   on: {
-    "ui.slide-to-confirm": { populate: { action: { populate: "*" }, visibility: { populate: "*" } } },
-    "ui.button": { populate: { action: { populate: "*" }, visibility: { populate: "*" } } },
+    "ui.slide-to-confirm": {
+      populate: {
+        action: { populate: "*" },
+        guardRules: { populate: "*" }, // relation — must be explicit
+        visibility: { populate: "*" },
+      },
+    },
+    "ui.button": {
+      populate: {
+        action: { populate: "*" },
+        guardRules: { populate: "*" }, // relation — must be explicit
+        visibility: { populate: "*" },
+      },
+    },
     "ui.banner": { populate: { onTap: { populate: "*" }, visibility: { populate: "*" } } },
   },
 };
@@ -68,6 +80,37 @@ const BODY_POPULATE = {
         validation: { populate: "*" },
         options: { populate: "*" },
         visibility: { populate: "*" },
+      },
+    },
+    "ui.rich-text": {
+      populate: {
+        visibility: { populate: "*" },
+      },
+    },
+    "ui.button": {
+      populate: {
+        action: { populate: "*" },
+        guardRules: { populate: "*" }, // relation — must be explicit
+        visibility: { populate: "*" },
+      },
+    },
+    "ui.list-item": {
+      populate: {
+        icon: { populate: "*" },
+        onTap: { populate: "*" },
+        visibility: { populate: "*" },
+      },
+    },
+    "ui.item-list": {
+      populate: {
+        items: {
+          populate: {
+            icon: { populate: "*" },
+            onTap: { populate: "*" },
+            visibility: { populate: "*" },
+          },
+        },
+        filterBy: { populate: "*" },
       },
     },
   },

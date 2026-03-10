@@ -16,6 +16,21 @@ const SCREENS_POPULATE = {
   onExit: true,
 };
 
+const STEPS_POPULATE = {
+  screens: {
+    populate: {
+      fields: ["screenId"],
+    },
+  },
+  steps: {
+    populate: {
+      screen: {
+        fields: ["screenId"],
+      },
+    },
+  },
+};
+
 export default factories.createCoreController("api::journey.journey" as any, ({ strapi }) => ({
   async find(ctx) {
     const sanitizedQuery = await this.sanitizeQuery(ctx);
@@ -69,7 +84,7 @@ export default factories.createCoreController("api::journey.journey" as any, ({ 
         journeyId: { $eq: journeyId },
       }),
       status: "published",
-      populate: "*",
+      populate: STEPS_POPULATE,
     });
 
     console.log({ results, journeyId });

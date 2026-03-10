@@ -62,7 +62,9 @@
         "ui.badge",
         "ui.tab-group",
         "ui.passcode-input",
-        "ui.local-state"
+        "ui.local-state",
+        "ui.rich-text",
+        "ui.link"
       ]
     },
     "footer": {

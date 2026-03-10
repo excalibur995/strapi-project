@@ -485,7 +485,7 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
         };
       }>;
     navigator: Schema.Attribute.Enumeration<
-      ['CurrentAccountJourneyNavigator']
+      ['CurrentAccountJourneyNavigator', 'ETBOnboardCCRegisterJourney']
     > &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -494,6 +494,13 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
       }>;
     onExit: Schema.Attribute.Component<'sdui.action', false>;
     owner: Schema.Attribute.String;
+    preInitiateScreen: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     presentation: Schema.Attribute.Enumeration<
       [
         'card',
@@ -531,7 +538,7 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
     segment: Schema.Attribute.Enumeration<['ETB', 'NTB', 'ALL']> &
       Schema.Attribute.DefaultTo<'ALL'>;
     slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
-    steps: Schema.Attribute.Component<'sdui.step-system', true> &
+    steps: Schema.Attribute.Component<'sdui.steps', true> &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -639,6 +646,8 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
         'ui.tab-group',
         'ui.passcode-input',
         'ui.local-state',
+        'ui.rich-text',
+        'ui.link',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;

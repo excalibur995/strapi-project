@@ -1,0 +1,52 @@
+{
+  "collectionName": "components_sdui_steps",
+  "info": {
+    "displayName": "Steps",
+    "description": "A combined step (SYSTEM or USER)"
+  },
+  "options": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "required": true,
+      "enum": ["system", "user"]
+    },
+    "stepCode": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "service": {
+      "type": "string"
+    },
+    "operation": {
+      "type": "string"
+    },
+    "params": {
+      "type": "json"
+    },
+    "onSuccess": {
+      "type": "json"
+    },
+    "onFailure": {
+      "type": "json"
+    },
+    "maxRetry": {
+      "type": "integer",
+      "default": 3
+    },
+    "screen": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::screen.screen"
+    },
+    "onSubmit": {
+      "type": "json"
+    },
+    "skip": {
+      "type": "component",
+      "component": "sdui.visibility"
+    }
+  },
+  "config": {}
+}

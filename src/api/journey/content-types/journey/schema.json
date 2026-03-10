@@ -137,7 +137,7 @@
           "localized": true
         }
       },
-      "component": "sdui.step-system",
+      "component": "sdui.steps",
       "repeatable": true
     },
     "navigator": {
@@ -148,8 +148,18 @@
         }
       },
       "enum": [
-        "CurrentAccountJourneyNavigator"
+        "CurrentAccountJourneyNavigator",
+        "ETBOnboardCCRegisterJourney"
       ]
+    },
+    "preInitiateScreen": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
     }
   }
 }

@@ -1,0 +1,19 @@
+{
+  "collectionName": "components_ui_rich_texts",
+  "info": {
+    "displayName": "Rich Text"
+  },
+  "options": {},
+  "attributes": {
+    "text": {
+      "type": "blocks",
+      "required": true
+    },
+    "visibility": {
+      "type": "component",
+      "component": "sdui.visibility",
+      "repeatable": false
+    }
+  },
+  "config": {}
+}
