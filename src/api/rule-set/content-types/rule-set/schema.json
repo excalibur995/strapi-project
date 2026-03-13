@@ -41,6 +41,16 @@
         }
       },
       "required": true
+    },
+    "api_version": {
+      "type": "string",
+      "required": true,
+      "default": "v1"
+    },
+    "content_version": {
+      "type": "integer",
+      "required": true,
+      "default": 1
     }
   }
 }

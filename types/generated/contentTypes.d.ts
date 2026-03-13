@@ -448,10 +448,16 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
   };
   attributes: {
     analytics: Schema.Attribute.JSON;
+    api_version: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'v1'>;
     async: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     bundleVersion: Schema.Attribute.String;
     checkpointEnabled: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
+    content_version: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<1>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -566,6 +572,12 @@ export interface ApiRuleSetRuleSet extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
+    api_version: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'v1'>;
+    content_version: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<1>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -619,6 +631,9 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
+    api_version: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<'v1'>;
     body: Schema.Attribute.DynamicZone<
       [
         'ui.section-label',
@@ -650,6 +665,9 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
         'ui.link',
       ]
     >;
+    content_version: Schema.Attribute.Integer &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<1>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
