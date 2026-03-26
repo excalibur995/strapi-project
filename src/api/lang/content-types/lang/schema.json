@@ -1,0 +1,28 @@
+{
+  "kind": "singleType",
+  "collectionName": "langs",
+  "info": {
+    "singularName": "lang",
+    "pluralName": "langs",
+    "displayName": "lang"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {
+    "i18n": {
+      "localized": true
+    }
+  },
+  "attributes": {
+    "contents": {
+      "type": "json",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    }
+  }
+}

@@ -556,6 +556,41 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiLangLang extends Struct.SingleTypeSchema {
+  collectionName: 'langs';
+  info: {
+    displayName: 'lang';
+    pluralName: 'langs';
+    singularName: 'lang';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  pluginOptions: {
+    i18n: {
+      localized: true;
+    };
+  };
+  attributes: {
+    contents: Schema.Attribute.JSON &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String;
+    localizations: Schema.Attribute.Relation<'oneToMany', 'api::lang.lang'>;
+    publishedAt: Schema.Attribute.DateTime;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiRuleSetRuleSet extends Struct.CollectionTypeSchema {
   collectionName: 'rule_sets';
   info: {
@@ -1214,6 +1249,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
       'api::journey.journey': ApiJourneyJourney;
+      'api::lang.lang': ApiLangLang;
       'api::rule-set.rule-set': ApiRuleSetRuleSet;
       'api::screen.screen': ApiScreenScreen;
       'plugin::content-releases.release': PluginContentReleasesRelease;

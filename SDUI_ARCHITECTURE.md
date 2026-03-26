@@ -31,6 +31,8 @@ Frontend App
 | `productType`         | Enum               | `CARDS \| LOANS \| DEPOSITS \| ACCOUNTS \| TRANSFERS \| INVESTMENTS \| INSURANCE \| OTHER` |
 | `segment`             | Enum               | `ETB \| NTB \| ALL`                                                                        |
 | `owner`               | String             | e.g. `Accounts Business Team`                                                              |
+| `api_version`         | String             | e.g. `1.0.0` — Schema/structural version                                                   |
+| `content_version`     | String             | e.g. `1.0.0` — Copy/media version                                                          |
 | `idempotencyRequired` | Boolean            | Submit once, deduplicate on backend                                                        |
 | `checkpointEnabled`   | Boolean            | Resume from last screen after crash/background                                             |
 | `maxRetry`            | Integer            | Max retries for backend operations (default 3)                                             |
@@ -47,13 +49,15 @@ Frontend App
 
 ### `Screen` — Collection Type
 
-| Field      | Type               | Notes                                                          |
-| ---------- | ------------------ | -------------------------------------------------------------- |
-| `screenId` | UID                | e.g. `ACCT_CA_ACCOUNT_PURPOSE` — globally unique, never rename |
-| `meta`     | `sdui.screen-meta` | Title, subtitle, back/close nav                                |
-| `header`   | DynamicZone        | Top area: hero, banner, image-preview                          |
-| `body`     | DynamicZone        | Main content — composable UI components                        |
-| `footer`   | DynamicZone        | CTAs: slide-to-confirm, button, banner                         |
+| Field             | Type               | Notes                                                          |
+| ----------------- | ------------------ | -------------------------------------------------------------- |
+| `screenId`        | UID                | e.g. `ACCT_CA_ACCOUNT_PURPOSE` — globally unique, never rename |
+| `api_version`     | String             | e.g. `1.0.0` — Schema/structural version                       |
+| `content_version` | String             | e.g. `1.0.0` — Copy/media version                              |
+| `meta`            | `sdui.screen-meta` | Title, subtitle, back/close nav                                |
+| `header`          | DynamicZone        | Top area: hero, banner, image-preview                          |
+| `body`            | DynamicZone        | Main content — composable UI components                        |
+| `footer`          | DynamicZone        | CTAs: slide-to-confirm, button, banner                         |
 
 > Screens are linked to their Journey via the Journey's `screens` (oneToMany) relation. There is no back-reference on the Screen side.
 
@@ -220,6 +224,7 @@ Both return `data: {}` and only serve **published** records.
 3. **`screenKey` is permanent** — never rename after going live
 4. **Always Publish** — draft records not served by API
 5. **State contract is binding** — `binding.path` must exist in journey `initialState`
+6. **Required Version Bump on Publish** — `api_version` or `content_version` must be incremented before publishing a draft update for `screen`, `journey`, or `rule-set`.
 
 ### ⚠️ Never Edit via Content-Type Builder UI
 

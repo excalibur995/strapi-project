@@ -263,6 +263,8 @@ _Purpose:_ Informs the STP of the journey steps, structural metadata, and execut
     "description": "End-to-end current account application journey",
     "schemaVersion": "1.0",
     "bundleVersion": "2025-Q1",
+    "api_version": "1.0.0",
+    "content_version": "1.0.0",
     "productType": "ACCOUNTS",
     "segment": "NTB",
     "owner": "onboarding-squad",
@@ -288,6 +290,8 @@ _Purpose:_ Informs the STP of the journey steps, structural metadata, and execut
       {
         "documentId": "scr-abc123...",
         "screenKey": "apply-ca.intro",
+        "api_version": "1.0.0",
+        "content_version": "1.0.0",
         "meta": {
           "__component": "sdui.screen-meta",
           "title": "Open an Account",
@@ -314,6 +318,8 @@ _Purpose:_ Dictates the exact components to paint on the glass.
   "data": {
     "documentId": "xyz...",
     "screenKey": "apply-ca.intro",
+    "api_version": "1.0.0",
+    "content_version": "1.0.0",
     "meta": {
       "__component": "sdui.screen-meta",
       "title": "Welcome",
@@ -361,6 +367,7 @@ _Purpose:_ Dictates the exact components to paint on the glass.
 
 ### 3.7 Versioning Strategy
 
+- **Content & API Versioning:** All core SDUI collections (`journey`, `screen`, `rule-set`) include `api_version` and `content_version` fields. A global middleware enforces that one of these versions must be incremented before a draft can be published. This ensures clear version history and prevents accidental overwrites when deploying configuration changes.
 - **Journey Bundles:** The Journey schema explicitly includes a `bundleVersion` field. This allows content authors to snapshot specific groupings of screens without disrupting the `v1` configuration currently executing in production.
 - **API Versioning:** Maintained at the application routing infrastructure level. Should the base JSON shape fundamentally change, a `/api/v2/screens` routing prefix will be introduced.
 

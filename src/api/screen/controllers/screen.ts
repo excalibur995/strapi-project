@@ -140,4 +140,32 @@ export default factories.createCoreController("api::screen.screen" as any, ({ st
     const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
     return this.transformResponse(sanitizedEntity);
   },
+
+  async findById(ctx) {
+    const { screenId } = ctx.params;
+    const sanitizedQuery = await this.sanitizeQuery(ctx);
+
+    const results = await (strapi as any).documents("api::screen.screen").findMany({
+      ...sanitizedQuery,
+      filters: Object.assign({}, sanitizedQuery.filters, {
+        screenId: { $eq: screenId },
+      }),
+      status: "published",
+      populate: {
+        meta: { populate: "*" },
+        header: HEADER_POPULATE,
+        body: BODY_POPULATE,
+        footer: FOOTER_POPULATE,
+      },
+    });
+
+    console.log({ results, screenId });
+    if (!results || results.length === 0) {
+      return ctx.notFound(`Screen not found`);
+    }
+
+    // Return the first match (should be exactly one based on unique slug)
+    const sanitizedEntity = await this.sanitizeOutput(results[0], ctx);
+    return this.transformResponse(sanitizedEntity);
+  },
 }));

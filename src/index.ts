@@ -12,6 +12,7 @@ export default {
   register({ strapi }: { strapi: Core.Strapi }) {
     strapi.documents.use(async (context, next) => {
       const targetUids = ["api::screen.screen", "api::journey.journey", "api::rule-set.rule-set"];
+
       if (context.action === "publish" && targetUids.includes(context.uid)) {
         const uid = context.uid as any;
         const documentId = context.params.documentId;
