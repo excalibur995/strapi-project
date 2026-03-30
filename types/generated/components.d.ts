@@ -590,6 +590,7 @@ export interface UiLink extends Struct.ComponentSchema {
   };
   attributes: {
     action: Schema.Attribute.Component<'sdui.action', false>;
+    rowGroup: Schema.Attribute.String;
     text: Schema.Attribute.String & Schema.Attribute.Required;
     validation: Schema.Attribute.Component<'sdui.validation', false>;
   };
@@ -803,6 +804,7 @@ export interface UiRichText extends Struct.ComponentSchema {
     displayName: 'Rich Text';
   };
   attributes: {
+    rowGroup: Schema.Attribute.String;
     text: Schema.Attribute.Blocks & Schema.Attribute.Required;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -858,6 +860,7 @@ export interface UiSectionLabel extends Struct.ComponentSchema {
     displayName: 'Section Label';
   };
   attributes: {
+    rowGroup: Schema.Attribute.String;
     subtitle: Schema.Attribute.String;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
