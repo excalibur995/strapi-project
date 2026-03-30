@@ -8,6 +8,7 @@
     "overlayAspect": { "type": "string" },
     "overlayHint": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "binding": { "type": "component", "component": "sdui.binding", "required": true },
-    "onComplete": { "type": "component", "component": "sdui.on-complete", "required": true }
+    "onComplete": { "type": "component", "component": "sdui.on-complete", "required": true },
+    "rowGroup": { "type": "string", "required": false }
   }
 }

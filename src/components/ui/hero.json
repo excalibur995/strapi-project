@@ -45,6 +45,10 @@
     "referenceSource": {
       "type": "component",
       "component": "sdui.source"
+    },
+    "rowGroup": {
+      "type": "string",
+      "required": false
     }
   }
 }

@@ -11,6 +11,7 @@
     "badges": { "type": "component", "repeatable": true, "component": "ui.badge" },
     "allowChange": { "type": "boolean", "default": false },
     "onEdit": { "type": "component", "component": "sdui.action" },
-    "visibility": { "type": "component", "component": "sdui.visibility" }
+    "visibility": { "type": "component", "component": "sdui.visibility" },
+    "rowGroup": { "type": "string", "required": false }
   }
 }

@@ -5,6 +5,7 @@
   "attributes": {
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "currency": { "type": "string", "default": "IDR" },
-    "source": { "type": "component", "component": "sdui.source", "required": true }
+    "source": { "type": "component", "component": "sdui.source", "required": true },
+    "rowGroup": { "type": "string", "required": false }
   }
 }

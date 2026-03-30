@@ -9,6 +9,7 @@
     "secured": { "type": "boolean", "default": false },
     "binding": { "type": "component", "component": "sdui.binding", "required": true },
     "validation": { "type": "component", "component": "sdui.validation", "repeatable": true },
-    "visibility": { "type": "component", "component": "sdui.visibility" }
+    "visibility": { "type": "component", "component": "sdui.visibility" },
+    "rowGroup": { "type": "string", "required": false }
   }
 }

@@ -4,6 +4,7 @@
   "options": {},
   "attributes": {
     "options": { "type": "component", "repeatable": true, "component": "ui.option", "required": true },
-    "binding": { "type": "component", "component": "sdui.binding", "required": true }
+    "binding": { "type": "component", "component": "sdui.binding", "required": true },
+    "rowGroup": { "type": "string", "required": false }
   }
 }

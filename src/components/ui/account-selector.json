@@ -11,6 +11,7 @@
     "params": { "type": "json" },
     "display": { "type": "json" },
     "allowChange": { "type": "boolean", "default": true },
-    "binding": { "type": "component", "component": "sdui.binding", "required": true }
+    "binding": { "type": "component", "component": "sdui.binding", "required": true },
+    "rowGroup": { "type": "string", "required": false }
   }
 }

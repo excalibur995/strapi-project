@@ -8,6 +8,7 @@
   "attributes": {
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "filterBy": { "type": "component", "component": "sdui.binding" },
-    "items": { "type": "component", "repeatable": true, "component": "ui.list-item", "required": true }
+    "items": { "type": "component", "repeatable": true, "component": "ui.list-item", "required": true },
+    "rowGroup": { "type": "string", "required": false }
   }
 }

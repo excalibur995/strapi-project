@@ -18,6 +18,10 @@
       "type": "component",
       "component": "sdui.validation",
       "repeatable": false
+    },
+    "rowGroup": {
+      "type": "string",
+      "required": false
     }
   },
   "config": {}

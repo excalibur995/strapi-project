@@ -6,6 +6,7 @@
     "label": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
     "variant": { "type": "enumeration", "enum": ["success", "warning", "info", "error"], "default": "info" },
     "source": { "type": "component", "component": "sdui.source" },
-    "visibility": { "type": "component", "component": "sdui.visibility" }
+    "visibility": { "type": "component", "component": "sdui.visibility" },
+    "rowGroup": { "type": "string", "required": false }
   }
 }

@@ -5,6 +5,7 @@
   "attributes": {
     "text": { "type": "text", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
     "variant": { "type": "enumeration", "enum": ["title", "body", "caption", "label"], "default": "body" },
-    "visibility": { "type": "component", "component": "sdui.visibility" }
+    "visibility": { "type": "component", "component": "sdui.visibility" },
+    "rowGroup": { "type": "string", "required": false }
   }
 }

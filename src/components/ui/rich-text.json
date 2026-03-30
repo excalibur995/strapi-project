@@ -13,6 +13,10 @@
       "type": "component",
       "component": "sdui.visibility",
       "repeatable": false
+    },
+    "rowGroup": {
+      "type": "string",
+      "required": false
     }
   },
   "config": {}

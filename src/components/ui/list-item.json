@@ -14,6 +14,7 @@
     },
     "tab": { "type": "string" },
     "onTap": { "type": "component", "component": "sdui.action", "required": true },
-    "visibility": { "type": "component", "component": "sdui.visibility" }
+    "visibility": { "type": "component", "component": "sdui.visibility" },
+    "rowGroup": { "type": "string", "required": false }
   }
 }

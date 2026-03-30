@@ -33,6 +33,10 @@
     "visibility": {
       "type": "component",
       "component": "sdui.visibility"
+    },
+    "rowGroup": {
+      "type": "string",
+      "required": false
     }
   }
 }

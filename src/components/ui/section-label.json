@@ -17,6 +17,10 @@
     },
     "subtitle": {
       "type": "string"
+    },
+    "rowGroup": {
+      "type": "string",
+      "required": false
     }
   }
 }

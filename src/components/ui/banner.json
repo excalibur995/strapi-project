@@ -13,6 +13,7 @@
     },
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "onTap": { "type": "component", "component": "sdui.action" },
-    "visibility": { "type": "component", "component": "sdui.visibility" }
+    "visibility": { "type": "component", "component": "sdui.visibility" },
+    "rowGroup": { "type": "string", "required": false }
   }
 }
