@@ -787,6 +787,49 @@ export interface UiRichText extends Struct.ComponentSchema {
   };
 }
 
+export interface UiRow extends Struct.ComponentSchema {
+  collectionName: 'components_ui_rows';
+  info: {
+    displayName: 'Row';
+    icon: 'layout';
+  };
+  attributes: {
+    columns: Schema.Attribute.DynamicZone<
+      [
+        'ui.account-selector',
+        'ui.badge',
+        'ui.banner',
+        'ui.button',
+        'ui.camera-capture',
+        'ui.cascading-select',
+        'ui.checkbox-list',
+        'ui.checkbox-list-async',
+        'ui.dropdown',
+        'ui.dropdown-async',
+        'ui.hero',
+        'ui.icon-text',
+        'ui.image-preview',
+        'ui.item-list',
+        'ui.link',
+        'ui.list-item',
+        'ui.money-display',
+        'ui.money-input',
+        'ui.passcode-input',
+        'ui.radio-group',
+        'ui.radio-group-async',
+        'ui.review-card',
+        'ui.rich-text',
+        'ui.section-label',
+        'ui.slide-to-confirm',
+        'ui.tab-group',
+        'ui.text',
+        'ui.text-input',
+      ]
+    >;
+    gap: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<8>;
+  };
+}
+
 export interface UiSectionLabel extends Struct.ComponentSchema {
   collectionName: 'components_ui_section_labels';
   info: {
@@ -935,6 +978,7 @@ declare module '@strapi/strapi' {
       'ui.radio-group-async': UiRadioGroupAsync;
       'ui.review-card': UiReviewCard;
       'ui.rich-text': UiRichText;
+      'ui.row': UiRow;
       'ui.section-label': UiSectionLabel;
       'ui.slide-to-confirm': UiSlideToConfirm;
       'ui.tab-group': UiTabGroup;

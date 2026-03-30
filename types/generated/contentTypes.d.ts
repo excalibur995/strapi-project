@@ -672,6 +672,7 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
     body: Schema.Attribute.DynamicZone<
       [
         'ui.section-label',
+        'ui.row',
         'ui.text',
         'ui.icon-text',
         'ui.banner',

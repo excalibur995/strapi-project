@@ -14,6 +14,7 @@ const HEADER_POPULATE = {
     "ui.banner": { populate: { onTap: { populate: "*" }, visibility: { populate: "*" } } },
     "ui.image-preview": { populate: { source: { populate: "*" } } }, // no visibility field!
     "ui.section-label": { populate: "*" }, // needs to be explicitly listed to not be omitted
+    "ui.row": { populate: "*" },
   },
 };
 
@@ -38,81 +39,81 @@ const FOOTER_POPULATE = {
   },
 };
 
-const BODY_POPULATE = {
-  populate: "*", // populate 1st level (the ui. components)
-  on: {
-    "ui.camera-capture": {
-      populate: {
-        binding: { populate: "*" },
-        onComplete: { populate: { action: { populate: "*" } } },
-      },
-      // camera-capture does not have visibility
+const COMPONENT_POPULATE: Record<string, any> = {
+  "ui.camera-capture": {
+    populate: {
+      binding: { populate: "*" },
+      onComplete: { populate: { action: { populate: "*" } } },
     },
-    "ui.banner": { populate: { onTap: { populate: "*" }, visibility: { populate: "*" } } },
-    "ui.section-label": { populate: "*" }, // explicitly listed to avoid omission
-    "ui.text-input": {
-      populate: { binding: { populate: "*" }, validation: { populate: "*" }, visibility: { populate: "*" } },
+  },
+  "ui.banner": { populate: { onTap: { populate: "*" }, visibility: { populate: "*" } } },
+  "ui.section-label": { populate: "*" },
+  "ui.text-input": {
+    populate: { binding: { populate: "*" }, validation: { populate: "*" }, visibility: { populate: "*" } },
+  },
+  "ui.icon-text": { populate: { icon: { populate: "*" }, visibility: { populate: "*" } } },
+  "ui.radio-group": {
+    populate: {
+      binding: { populate: "*" },
+      validation: { populate: "*" },
+      options: { populate: "*" },
+      visibility: { populate: "*" },
     },
-    "ui.icon-text": { populate: { icon: { populate: "*" }, visibility: { populate: "*" } } },
-    "ui.radio-group": {
-      populate: {
-        binding: { populate: "*" },
-        validation: { populate: "*" },
-        options: { populate: "*" },
-        visibility: { populate: "*" },
-      },
+  },
+  "ui.money-input": {
+    populate: { binding: { populate: "*" }, validation: { populate: "*" }, visibility: { populate: "*" } },
+  },
+  "ui.image-preview": { populate: { source: { populate: "*" } } },
+  "ui.checkbox-list": {
+    populate: {
+      binding: { populate: "*" },
+      validation: { populate: "*" },
+      items: { populate: "*" },
+      visibility: { populate: "*" },
     },
-    "ui.money-input": {
-      populate: { binding: { populate: "*" }, validation: { populate: "*" }, visibility: { populate: "*" } },
+  },
+  "ui.dropdown": {
+    populate: {
+      binding: { populate: "*" },
+      validation: { populate: "*" },
+      options: { populate: "*" },
+      visibility: { populate: "*" },
     },
-    "ui.image-preview": { populate: { source: { populate: "*" } } }, // no visibility field!
-    "ui.checkbox-list": {
-      populate: {
-        binding: { populate: "*" },
-        validation: { populate: "*" },
-        items: { populate: "*" },
-        visibility: { populate: "*" },
-      },
+  },
+  "ui.rich-text": { populate: { visibility: { populate: "*" } } },
+  "ui.button": {
+    populate: {
+      action: { populate: "*" },
+      guardRules: { populate: "*" },
+      visibility: { populate: "*" },
     },
-    "ui.dropdown": {
-      populate: {
-        binding: { populate: "*" },
-        validation: { populate: "*" },
-        options: { populate: "*" },
-        visibility: { populate: "*" },
-      },
+  },
+  "ui.list-item": {
+    populate: {
+      icon: { populate: "*" },
+      onTap: { populate: "*" },
+      visibility: { populate: "*" },
     },
-    "ui.rich-text": {
-      populate: {
-        visibility: { populate: "*" },
-      },
-    },
-    "ui.button": {
-      populate: {
-        action: { populate: "*" },
-        guardRules: { populate: "*" }, // relation — must be explicit
-        visibility: { populate: "*" },
-      },
-    },
-    "ui.list-item": {
-      populate: {
-        icon: { populate: "*" },
-        onTap: { populate: "*" },
-        visibility: { populate: "*" },
-      },
-    },
-    "ui.item-list": {
-      populate: {
-        items: {
-          populate: {
-            icon: { populate: "*" },
-            onTap: { populate: "*" },
-            visibility: { populate: "*" },
-          },
+  },
+  "ui.item-list": {
+    populate: {
+      items: {
+        populate: {
+          icon: { populate: "*" },
+          onTap: { populate: "*" },
+          visibility: { populate: "*" },
         },
-        filterBy: { populate: "*" },
       },
+      filterBy: { populate: "*" },
     },
+  },
+};
+
+const BODY_POPULATE = {
+  populate: "*",
+  on: {
+    ...COMPONENT_POPULATE,
+    "ui.row": true,
   },
 };
 
@@ -164,8 +165,10 @@ export default factories.createCoreController("api::screen.screen" as any, ({ st
       return ctx.notFound(`Screen not found`);
     }
 
-    // Return the first match (should be exactly one based on unique slug)
     const sanitizedEntity = await this.sanitizeOutput(results[0], ctx);
-    return this.transformResponse(sanitizedEntity);
+    const mapped = sanitizedEntity;
+    // const mapped = mapScreenResponse(sanitizedEntity as RawScreenEntity);
+
+    return this.transformResponse(mapped);
   },
 }));

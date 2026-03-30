@@ -3,6 +3,7 @@
  */
 
 import { factories } from "@strapi/strapi";
+import { RawScreenEntity } from "../../screen/mappers/mappers";
 
 const SCREENS_POPULATE = {
   screens: {
@@ -17,11 +18,7 @@ const SCREENS_POPULATE = {
 };
 
 const STEPS_POPULATE = {
-  screens: {
-    populate: {
-      fields: ["screenId"],
-    },
-  },
+  screens: SCREENS_POPULATE.screens,
   steps: {
     populate: {
       screen: {
@@ -93,7 +90,11 @@ export default factories.createCoreController("api::journey.journey" as any, ({ 
     }
 
     // Return the first match (should be exactly one based on unique slug)
-    const sanitizedEntity = await this.sanitizeOutput(results[0], ctx);
+    const sanitizedEntity = (await this.sanitizeOutput(results[0], ctx)) as { screens: RawScreenEntity[] };
+    // const { screens = [] } = sanitizedEntity as { screens: RawScreenEntity[] };
+    // const mapped = screens.map(mapScreenResponse);
+    // (sanitizedEntity as { screens: RawScreenEntity[] }).screens = mapped as unknown as RawScreenEntity[];
+
     return this.transformResponse(sanitizedEntity);
   },
 }));
