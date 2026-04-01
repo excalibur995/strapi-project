@@ -27,7 +27,14 @@
     },
     "header": {
       "type": "dynamiczone",
-      "components": ["ui.hero", "ui.banner", "ui.image-preview", "ui.section-label", "ui.tab-group"]
+      "components": [
+        "ui.hero",
+        "ui.banner",
+        "ui.image-preview",
+        "ui.section-label",
+        "ui.tab-group",
+        "ui.subtitle-label-section"
+      ]
     },
     "body": {
       "type": "dynamiczone",
@@ -64,7 +71,11 @@
     },
     "footer": {
       "type": "dynamiczone",
-      "components": ["ui.slide-to-confirm", "ui.button", "ui.banner"]
+      "components": [
+        "ui.slide-to-confirm",
+        "ui.button",
+        "ui.banner"
+      ]
     },
     "hideProgressBar": {
       "type": "boolean",
@@ -77,8 +88,8 @@
     },
     "api_version": {
       "type": "string",
-      "required": true,
-      "default": "v1"
+      "default": "v1",
+      "required": true
     },
     "content_version": {
       "type": "integer",

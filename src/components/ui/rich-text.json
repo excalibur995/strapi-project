@@ -5,7 +5,13 @@
   },
   "options": {},
   "attributes": {
-    "text": {
+    "componentId": {
+      "type": "string"
+    },
+    "testId": {
+      "type": "string"
+    },
+    "content": {
       "type": "blocks",
       "required": true
     },
@@ -14,9 +20,8 @@
       "component": "sdui.visibility",
       "repeatable": false
     },
-    "rowGroup": {
-      "type": "string",
-      "required": false
+    "span": {
+      "type": "integer"
     }
   },
   "config": {}

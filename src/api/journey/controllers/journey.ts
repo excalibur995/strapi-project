@@ -90,10 +90,22 @@ export default factories.createCoreController("api::journey.journey" as any, ({ 
     }
 
     // Return the first match (should be exactly one based on unique slug)
-    const sanitizedEntity = (await this.sanitizeOutput(results[0], ctx)) as { screens: RawScreenEntity[] };
-    // const { screens = [] } = sanitizedEntity as { screens: RawScreenEntity[] };
-    // const mapped = screens.map(mapScreenResponse);
-    // (sanitizedEntity as { screens: RawScreenEntity[] }).screens = mapped as unknown as RawScreenEntity[];
+    const sanitizedEntity = (await this.sanitizeOutput(results[0], ctx)) as {
+      screens: RawScreenEntity[];
+      steps?: Array<Record<string, unknown>>;
+    };
+
+    // Re-index steps as a map keyed by actionId so the FE can look up
+    // the correct step for any button tap via: steps[componentId]
+    // const rawSteps: Array<Record<string, unknown>> = sanitizedEntity.steps ?? [];
+    // const stepsMap: Record<string, unknown> = {};
+    // for (const step of rawSteps) {
+    //   const actionId = step.actionId as string | undefined;
+    //   if (actionId) {
+    //     stepsMap[actionId] = step;
+    //   }
+    // }
+    // sanitizedEntity.steps = stepsMap as any;
 
     return this.transformResponse(sanitizedEntity);
   },

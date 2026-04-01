@@ -1,0 +1,24 @@
+{
+  "collectionName": "components_ui_subtitle_label_sections",
+  "info": {
+    "displayName": "SubtitleLabelSection"
+  },
+  "options": {},
+  "attributes": {
+    "title": {
+      "type": "string"
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "componentId": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "testId": {
+      "type": "string"
+    }
+  },
+  "config": {}
+}

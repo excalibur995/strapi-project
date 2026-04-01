@@ -1,5 +1,6 @@
 import type { Core } from "@strapi/strapi";
 import { errors } from "@strapi/utils";
+import { seedApplyCa, updateApplyCaJourney } from "./seeds/apply-ca";
 const { ValidationError } = errors;
 
 export default {
@@ -53,8 +54,23 @@ export default {
    * An asynchronous bootstrap function that runs before
    * your application gets started.
    *
-   * This gives you an opportunity to set up your data model,
-   * run jobs, or perform some special logic.
+   * Seeding (creates screens + journey if not present):
+   *   SEED_DATA=apply-ca npm run develop
+   *   SEED_DATA=true npm run develop
+   *
+   * Updating (patches existing journey steps + screen relations):
+   *   UPDATE_JOURNEY=apply-ca npm run develop
+   *   UPDATE_JOURNEY=true npm run develop
    */
-  bootstrap(/* { strapi }: { strapi: Core.Strapi } */) {},
+  async bootstrap({ strapi }: { strapi: Core.Strapi }) {
+    const seedFlag = process.env.SEED_DATA;
+    if (seedFlag === "true" || seedFlag === "apply-ca") {
+      await seedApplyCa(strapi);
+    }
+
+    const updateFlag = process.env.UPDATE_JOURNEY;
+    if (updateFlag === "true" || updateFlag === "apply-ca") {
+      await updateApplyCaJourney(strapi);
+    }
+  },
 };

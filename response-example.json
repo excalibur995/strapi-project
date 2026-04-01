@@ -1,0 +1,57 @@
+{
+  "data": {
+    "id": 2,
+    "documentId": "avaxfx8olf5sc4floo6vhl1u",
+    "screenId": "apply-ca-listing",
+    "createdAt": "2026-04-01T02:23:36.277Z",
+    "updatedAt": "2026-04-01T02:26:32.431Z",
+    "publishedAt": "2026-04-01T02:26:32.537Z",
+    "api_version": null,
+    "content_version": null,
+    "contents": [
+      { "__component": "ui.section-label", "id": 79, "subtitle": null, "title": "New Application", "rowGroup": null },
+      {
+        "__component": "ui.item-list",
+        "id": 6,
+        "label": null,
+        "rowGroup": null,
+        "filterBy": null,
+        "items": [
+          {
+            "id": 21,
+            "key": "saving-accounts",
+            "label": "Savings Account",
+            "description": "A starter-friendly option for everyday use and long-term goals.",
+            "tab": null,
+            "rowGroup": null
+          },
+          {
+            "id": 22,
+            "key": "term-savings",
+            "label": "Term Savings",
+            "description": "A fixed-term option to help you plan and grow your finances for the future.",
+            "tab": null,
+            "rowGroup": null
+          },
+          {
+            "id": 23,
+            "key": "maybank-gift",
+            "label": "Maybank Gift",
+            "description": "Redeem an instant reward for your regular monthly savings",
+            "tab": null,
+            "rowGroup": null
+          },
+          {
+            "id": 24,
+            "key": "current-account",
+            "label": "Current Account",
+            "description": " convenient checking facility for your personal and business needs.",
+            "tab": null,
+            "rowGroup": null
+          }
+        ]
+      }
+    ]
+  },
+  "meta": {}
+}

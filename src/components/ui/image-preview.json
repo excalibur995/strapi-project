@@ -6,8 +6,10 @@
   },
   "options": {},
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "source": { "type": "component", "component": "sdui.source", "required": true },
-    "rowGroup": { "type": "string", "required": false }
+    "span": { "type": "integer" }
   }
 }

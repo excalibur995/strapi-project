@@ -1,15 +1,64 @@
 {
   "collectionName": "components_ui_text_inputs",
-  "info": { "displayName": "Text Input", "description": "Single-line text input. type: ui.text-input" },
+  "info": {
+    "displayName": "Text Input",
+    "description": "Single-line text input. type: ui.text-input"
+  },
   "options": {},
   "attributes": {
-    "label": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
-    "placeholder": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
-    "keyboard": { "type": "enumeration", "enum": ["default", "number-pad", "email", "phone"], "default": "default" },
-    "secured": { "type": "boolean", "default": false },
-    "binding": { "type": "component", "component": "sdui.binding", "required": true },
-    "validation": { "type": "component", "component": "sdui.validation", "repeatable": true },
-    "visibility": { "type": "component", "component": "sdui.visibility" },
-    "rowGroup": { "type": "string", "required": false }
+    "componentId": {
+      "type": "string"
+    },
+    "testId": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    },
+    "placeholder": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "keyboard": {
+      "type": "enumeration",
+      "default": "default",
+      "enum": [
+        "default",
+        "number-pad",
+        "email",
+        "phone-pad"
+      ]
+    },
+    "secured": {
+      "type": "boolean",
+      "default": false
+    },
+    "binding": {
+      "type": "component",
+      "component": "sdui.binding",
+      "required": true
+    },
+    "validation": {
+      "type": "component",
+      "component": "sdui.validation",
+      "repeatable": true
+    },
+    "visibility": {
+      "type": "component",
+      "component": "sdui.visibility"
+    },
+    "span": {
+      "type": "integer"
+    }
   }
 }

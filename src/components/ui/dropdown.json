@@ -3,6 +3,8 @@
   "info": { "displayName": "Dropdown", "description": "Single-select from static options. type: ui.dropdown" },
   "options": {},
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "placeholder": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "searchable": { "type": "boolean", "default": false },
@@ -10,6 +12,6 @@
     "binding": { "type": "component", "component": "sdui.binding", "required": true },
     "validation": { "type": "component", "component": "sdui.validation", "repeatable": true },
     "visibility": { "type": "component", "component": "sdui.visibility" },
-    "rowGroup": { "type": "string", "required": false }
+    "span": { "type": "integer" }
   }
 }

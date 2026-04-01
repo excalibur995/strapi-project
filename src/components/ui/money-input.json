@@ -3,6 +3,8 @@
   "info": { "displayName": "Money Input" },
   "options": {},
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "currency": { "type": "string" },
     "min": { "type": "decimal" },
@@ -10,6 +12,6 @@
     "binding": { "type": "component", "component": "sdui.binding", "required": true },
     "validation": { "type": "component", "component": "sdui.validation" },
     "visibility": { "type": "component", "component": "sdui.visibility" },
-    "rowGroup": { "type": "string", "required": false }
+    "span": { "type": "integer" }
   }
 }

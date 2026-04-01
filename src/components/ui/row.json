@@ -5,6 +5,8 @@
     "icon": "layout"
   },
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "gap": {
       "type": "integer",
       "default": 8

@@ -3,11 +3,12 @@
   "info": { "displayName": "Button" },
   "options": {},
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "label": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
     "variant": { "type": "enumeration", "enum": ["primary", "secondary", "ghost", "danger"], "default": "primary" },
-    "action": { "type": "component", "component": "sdui.action", "required": true },
     "guardRules": { "type": "relation", "relation": "manyToMany", "target": "api::rule-set.rule-set" },
     "visibility": { "type": "component", "component": "sdui.visibility" },
-    "rowGroup": { "type": "string", "required": false }
+    "span": { "type": "integer" }
   }
 }

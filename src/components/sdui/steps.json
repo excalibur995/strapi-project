@@ -9,12 +9,15 @@
     "type": {
       "type": "enumeration",
       "required": true,
-      "enum": ["system", "user"]
+      "enum": [
+        "system",
+        "user"
+      ]
     },
     "stepCode": {
       "type": "string",
       "required": true,
-      "unique": true
+      "unique": false
     },
     "service": {
       "type": "string"
@@ -46,6 +49,13 @@
     "skip": {
       "type": "component",
       "component": "sdui.visibility"
+    },
+    "actionId": {
+      "type": "string"
+    },
+    "skipValidation": {
+      "type": "boolean",
+      "default": false
     }
   },
   "config": {}

@@ -5,7 +5,9 @@
   },
   "options": {},
   "attributes": {
-    "text": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
+    "label": {
       "type": "string",
       "required": true
     },
@@ -19,9 +21,8 @@
       "component": "sdui.validation",
       "repeatable": false
     },
-    "rowGroup": {
-      "type": "string",
-      "required": false
+    "span": {
+      "type": "integer"
     }
   },
   "config": {}

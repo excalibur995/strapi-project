@@ -1,0 +1,65 @@
+{
+  "kind": "collectionType",
+  "collectionName": "static_screens",
+  "info": {
+    "singularName": "static-screen",
+    "pluralName": "static-screens",
+    "displayName": "Static Screen"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "screenId": {
+      "type": "uid",
+      "required": true
+    },
+    "contents": {
+      "type": "dynamiczone",
+      "components": [
+        "ui.text",
+        "ui.text-input",
+        "ui.tab-group",
+        "ui.slide-to-confirm",
+        "ui.section-label",
+        "ui.row",
+        "ui.rich-text",
+        "ui.review-card",
+        "ui.radio-group",
+        "ui.radio-group-async",
+        "ui.passcode-input",
+        "ui.option",
+        "ui.money-input",
+        "ui.money-display",
+        "ui.local-state",
+        "ui.list-item",
+        "ui.link",
+        "ui.kv-row",
+        "ui.item-list",
+        "ui.image-preview",
+        "ui.icon-text",
+        "ui.hero",
+        "ui.dropdown",
+        "ui.dropdown-async",
+        "ui.checkbox-list",
+        "ui.checkbox-list-async",
+        "ui.cascading-select",
+        "ui.cascading-select-tier",
+        "ui.camera-capture",
+        "ui.button",
+        "ui.banner",
+        "ui.badge",
+        "ui.account-selector"
+      ]
+    },
+    "api_version": {
+      "type": "string",
+      "required": true
+    },
+    "content_version": {
+      "type": "integer",
+      "required": true
+    }
+  }
+}

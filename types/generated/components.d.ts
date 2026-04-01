@@ -42,8 +42,6 @@ export interface SduiBinding extends Struct.ComponentSchema {
       ['journeyState', 'localState', 'serverState']
     > &
       Schema.Attribute.DefaultTo<'journeyState'>;
-    syncDebounceMs: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<1000>;
-    syncOnChange: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
   };
 }
 
@@ -133,6 +131,7 @@ export interface SduiSteps extends Struct.ComponentSchema {
     displayName: 'Steps';
   };
   attributes: {
+    actionId: Schema.Attribute.String;
     maxRetry: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<3>;
     onFailure: Schema.Attribute.JSON;
     onSubmit: Schema.Attribute.JSON;
@@ -142,9 +141,9 @@ export interface SduiSteps extends Struct.ComponentSchema {
     screen: Schema.Attribute.Relation<'oneToOne', 'api::screen.screen'>;
     service: Schema.Attribute.String;
     skip: Schema.Attribute.Component<'sdui.visibility', false>;
-    stepCode: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
+    skipValidation: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    stepCode: Schema.Attribute.String & Schema.Attribute.Required;
     type: Schema.Attribute.Enumeration<['system', 'user']> &
       Schema.Attribute.Required;
   };
@@ -195,6 +194,7 @@ export interface UiAccountSelector extends Struct.ComponentSchema {
     allowChange: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     display: Schema.Attribute.JSON;
     endpoint: Schema.Attribute.String & Schema.Attribute.Required;
     label: Schema.Attribute.String &
@@ -204,7 +204,8 @@ export interface UiAccountSelector extends Struct.ComponentSchema {
         };
       }>;
     params: Schema.Attribute.JSON;
-    rowGroup: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
   };
 }
 
@@ -215,6 +216,7 @@ export interface UiBadge extends Struct.ComponentSchema {
     displayName: 'Badge';
   };
   attributes: {
+    componentId: Schema.Attribute.String;
     label: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -222,8 +224,9 @@ export interface UiBadge extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
     source: Schema.Attribute.Component<'sdui.source', false>;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     variant: Schema.Attribute.Enumeration<
       ['success', 'warning', 'info', 'error']
     > &
@@ -239,22 +242,18 @@ export interface UiBanner extends Struct.ComponentSchema {
     displayName: 'Banner';
   };
   attributes: {
+    componentId: Schema.Attribute.String;
     icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    label: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    onTap: Schema.Attribute.Component<'sdui.action', false>;
-    rowGroup: Schema.Attribute.String;
-    text: Schema.Attribute.Text &
+    label: Schema.Attribute.Text &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    onTap: Schema.Attribute.Component<'sdui.action', false>;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     variant: Schema.Attribute.Enumeration<
       ['info', 'warning', 'success', 'error']
     > &
@@ -269,8 +268,7 @@ export interface UiButton extends Struct.ComponentSchema {
     displayName: 'Button';
   };
   attributes: {
-    action: Schema.Attribute.Component<'sdui.action', false> &
-      Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     guardRules: Schema.Attribute.Relation<
       'manyToMany',
       'api::rule-set.rule-set'
@@ -282,7 +280,8 @@ export interface UiButton extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     variant: Schema.Attribute.Enumeration<
       ['primary', 'secondary', 'ghost', 'danger']
     > &
@@ -300,6 +299,7 @@ export interface UiCameraCapture extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     mode: Schema.Attribute.Enumeration<['document', 'selfie', 'barcode']> &
       Schema.Attribute.DefaultTo<'document'>;
     onComplete: Schema.Attribute.Component<'sdui.on-complete', false> &
@@ -315,7 +315,8 @@ export interface UiCameraCapture extends Struct.ComponentSchema {
       ['rectangle', 'circle', 'none']
     > &
       Schema.Attribute.DefaultTo<'rectangle'>;
-    rowGroup: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
   };
 }
 
@@ -326,7 +327,9 @@ export interface UiCascadingSelect extends Struct.ComponentSchema {
     displayName: 'Cascading Select';
   };
   attributes: {
-    rowGroup: Schema.Attribute.String;
+    componentId: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     tiers: Schema.Attribute.Component<'ui.cascading-select-tier', true> &
       Schema.Attribute.Required;
     validation: Schema.Attribute.Component<'sdui.validation', true>;
@@ -359,6 +362,7 @@ export interface UiCascadingSelectTier extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    testId: Schema.Attribute.String;
   };
 }
 
@@ -371,14 +375,16 @@ export interface UiCheckboxList extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
-    items: Schema.Attribute.Component<'ui.option', true>;
+    componentId: Schema.Attribute.String;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
+    options: Schema.Attribute.Component<'ui.option', true>;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     validation: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -393,6 +399,7 @@ export interface UiCheckboxListAsync extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     dataSource: Schema.Attribute.Component<'sdui.data-source', false> &
       Schema.Attribute.Required;
     label: Schema.Attribute.String &
@@ -401,7 +408,8 @@ export interface UiCheckboxListAsync extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     validation: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -416,6 +424,7 @@ export interface UiDropdown extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -430,8 +439,9 @@ export interface UiDropdown extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
     searchable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     validation: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -446,6 +456,7 @@ export interface UiDropdownAsync extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     dataSource: Schema.Attribute.Component<'sdui.data-source', false> &
       Schema.Attribute.Required;
     label: Schema.Attribute.String &
@@ -460,8 +471,9 @@ export interface UiDropdownAsync extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
     searchable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     validation: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -474,6 +486,7 @@ export interface UiHero extends Struct.ComponentSchema {
     displayName: 'Hero';
   };
   attributes: {
+    componentId: Schema.Attribute.String;
     illustration: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
     referenceLabel: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -482,7 +495,7 @@ export interface UiHero extends Struct.ComponentSchema {
         };
       }>;
     referenceSource: Schema.Attribute.Component<'sdui.source', false>;
-    rowGroup: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
     subtitleFields: Schema.Attribute.JSON;
     subtitleTemplate: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -490,6 +503,7 @@ export interface UiHero extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    testId: Schema.Attribute.String;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -507,16 +521,18 @@ export interface UiIconText extends Struct.ComponentSchema {
     displayName: 'Icon Text';
   };
   attributes: {
+    componentId: Schema.Attribute.String;
     icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
       Schema.Attribute.Required;
-    rowGroup: Schema.Attribute.String;
-    text: Schema.Attribute.Text &
+    label: Schema.Attribute.Text &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
@@ -528,15 +544,17 @@ export interface UiImagePreview extends Struct.ComponentSchema {
     displayName: 'Image Preview';
   };
   attributes: {
+    componentId: Schema.Attribute.String;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
     source: Schema.Attribute.Component<'sdui.source', false> &
       Schema.Attribute.Required;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
   };
 }
 
@@ -548,15 +566,19 @@ export interface UiItemList extends Struct.ComponentSchema {
   };
   attributes: {
     filterBy: Schema.Attribute.Component<'sdui.binding', false>;
-    items: Schema.Attribute.Component<'ui.list-item', true> &
-      Schema.Attribute.Required;
+    key: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
+    options: Schema.Attribute.Component<'ui.list-item', true> &
+      Schema.Attribute.Required;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
   };
 }
 
@@ -567,6 +589,7 @@ export interface UiKvRow extends Struct.ComponentSchema {
     displayName: 'KV Row';
   };
   attributes: {
+    componentId: Schema.Attribute.String;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -574,6 +597,7 @@ export interface UiKvRow extends Struct.ComponentSchema {
         };
       }>;
     source: Schema.Attribute.Component<'sdui.source', false>;
+    testId: Schema.Attribute.String;
     value: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -590,8 +614,10 @@ export interface UiLink extends Struct.ComponentSchema {
   };
   attributes: {
     action: Schema.Attribute.Component<'sdui.action', false>;
-    rowGroup: Schema.Attribute.String;
-    text: Schema.Attribute.String & Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
+    label: Schema.Attribute.String & Schema.Attribute.Required;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     validation: Schema.Attribute.Component<'sdui.validation', false>;
   };
 }
@@ -618,10 +644,10 @@ export interface UiListItem extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    onTap: Schema.Attribute.Component<'sdui.action', false> &
-      Schema.Attribute.Required;
-    rowGroup: Schema.Attribute.String;
+    onTap: Schema.Attribute.Component<'sdui.action', false>;
+    span: Schema.Attribute.Integer;
     tab: Schema.Attribute.String;
+    testId: Schema.Attribute.String;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
@@ -645,6 +671,7 @@ export interface UiMoneyDisplay extends Struct.ComponentSchema {
     displayName: 'Money Display';
   };
   attributes: {
+    componentId: Schema.Attribute.String;
     currency: Schema.Attribute.String & Schema.Attribute.DefaultTo<'IDR'>;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -652,9 +679,10 @@ export interface UiMoneyDisplay extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
     source: Schema.Attribute.Component<'sdui.source', false> &
       Schema.Attribute.Required;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
   };
 }
 
@@ -666,6 +694,7 @@ export interface UiMoneyInput extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     currency: Schema.Attribute.String;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -675,7 +704,8 @@ export interface UiMoneyInput extends Struct.ComponentSchema {
       }>;
     max: Schema.Attribute.Decimal;
     min: Schema.Attribute.Decimal;
-    rowGroup: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     validation: Schema.Attribute.Component<'sdui.validation', false>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -704,6 +734,7 @@ export interface UiOption extends Struct.ComponentSchema {
         };
       }>;
     onTap: Schema.Attribute.Component<'sdui.action', false>;
+    testId: Schema.Attribute.String;
   };
 }
 
@@ -716,6 +747,7 @@ export interface UiPasscodeInput extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     keyboard: Schema.Attribute.Enumeration<['numpad', 'default']> &
       Schema.Attribute.DefaultTo<'numpad'>;
     length: Schema.Attribute.Integer &
@@ -725,7 +757,8 @@ export interface UiPasscodeInput extends Struct.ComponentSchema {
     onComplete: Schema.Attribute.Component<'sdui.on-complete', false> &
       Schema.Attribute.Required;
     onForgot: Schema.Attribute.Component<'sdui.action', false>;
-    rowGroup: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
   };
 }
 
@@ -738,6 +771,7 @@ export interface UiRadioGroup extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -746,7 +780,8 @@ export interface UiRadioGroup extends Struct.ComponentSchema {
       }>;
     options: Schema.Attribute.Component<'ui.option', true> &
       Schema.Attribute.Required;
-    rowGroup: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     validation: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -761,6 +796,7 @@ export interface UiRadioGroupAsync extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     dataSource: Schema.Attribute.Component<'sdui.data-source', false> &
       Schema.Attribute.Required;
     label: Schema.Attribute.String &
@@ -769,7 +805,8 @@ export interface UiRadioGroupAsync extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     validation: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -784,6 +821,7 @@ export interface UiReviewCard extends Struct.ComponentSchema {
   attributes: {
     allowChange: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     badges: Schema.Attribute.Component<'ui.badge', true>;
+    componentId: Schema.Attribute.String;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -791,9 +829,10 @@ export interface UiReviewCard extends Struct.ComponentSchema {
         };
       }>;
     onEdit: Schema.Attribute.Component<'sdui.action', false>;
-    rowGroup: Schema.Attribute.String;
     rows: Schema.Attribute.Component<'ui.kv-row', true> &
       Schema.Attribute.Required;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
@@ -804,8 +843,10 @@ export interface UiRichText extends Struct.ComponentSchema {
     displayName: 'Rich Text';
   };
   attributes: {
-    rowGroup: Schema.Attribute.String;
-    text: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
+    content: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
@@ -849,7 +890,9 @@ export interface UiRow extends Struct.ComponentSchema {
         'ui.text-input',
       ]
     >;
+    componentId: Schema.Attribute.String;
     gap: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<8>;
+    testId: Schema.Attribute.String;
   };
 }
 
@@ -860,8 +903,12 @@ export interface UiSectionLabel extends Struct.ComponentSchema {
     displayName: 'Section Label';
   };
   attributes: {
-    rowGroup: Schema.Attribute.String;
+    key: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    span: Schema.Attribute.Integer;
     subtitle: Schema.Attribute.String;
+    testId: Schema.Attribute.String;
     title: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -880,6 +927,7 @@ export interface UiSlideToConfirm extends Struct.ComponentSchema {
   attributes: {
     action: Schema.Attribute.Component<'sdui.action', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     guardRules: Schema.Attribute.Relation<
       'manyToMany',
       'api::rule-set.rule-set'
@@ -891,8 +939,24 @@ export interface UiSlideToConfirm extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+  };
+}
+
+export interface UiSubtitleLabelSection extends Struct.ComponentSchema {
+  collectionName: 'components_ui_subtitle_label_sections';
+  info: {
+    displayName: 'SubtitleLabelSection';
+  };
+  attributes: {
+    componentId: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.Unique;
+    subtitle: Schema.Attribute.String;
+    testId: Schema.Attribute.String;
+    title: Schema.Attribute.String;
   };
 }
 
@@ -905,9 +969,11 @@ export interface UiTabGroup extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     options: Schema.Attribute.Component<'ui.option', true> &
       Schema.Attribute.Required;
-    rowGroup: Schema.Attribute.String;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
   };
 }
 
@@ -918,14 +984,16 @@ export interface UiText extends Struct.ComponentSchema {
     displayName: 'Text';
   };
   attributes: {
-    rowGroup: Schema.Attribute.String;
-    text: Schema.Attribute.Text &
+    componentId: Schema.Attribute.String;
+    label: Schema.Attribute.Text &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     variant: Schema.Attribute.Enumeration<
       ['title', 'body', 'caption', 'label']
     > &
@@ -943,8 +1011,9 @@ export interface UiTextInput extends Struct.ComponentSchema {
   attributes: {
     binding: Schema.Attribute.Component<'sdui.binding', false> &
       Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
     keyboard: Schema.Attribute.Enumeration<
-      ['default', 'number-pad', 'email', 'phone']
+      ['default', 'number-pad', 'email', 'phone-pad']
     > &
       Schema.Attribute.DefaultTo<'default'>;
     label: Schema.Attribute.String &
@@ -960,8 +1029,9 @@ export interface UiTextInput extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    rowGroup: Schema.Attribute.String;
     secured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    span: Schema.Attribute.Integer;
+    testId: Schema.Attribute.String;
     validation: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -1009,6 +1079,7 @@ declare module '@strapi/strapi' {
       'ui.row': UiRow;
       'ui.section-label': UiSectionLabel;
       'ui.slide-to-confirm': UiSlideToConfirm;
+      'ui.subtitle-label-section': UiSubtitleLabelSection;
       'ui.tab-group': UiTabGroup;
       'ui.text': UiText;
       'ui.text-input': UiTextInput;

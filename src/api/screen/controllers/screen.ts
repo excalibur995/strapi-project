@@ -14,6 +14,7 @@ const HEADER_POPULATE = {
     "ui.banner": { populate: { onTap: { populate: "*" }, visibility: { populate: "*" } } },
     "ui.image-preview": { populate: { source: { populate: "*" } } }, // no visibility field!
     "ui.section-label": { populate: "*" }, // needs to be explicitly listed to not be omitted
+    "ui.subtitle-label-section": { populate: "*" },
     "ui.row": { populate: "*" },
   },
 };
@@ -23,17 +24,12 @@ const FOOTER_POPULATE = {
   on: {
     "ui.slide-to-confirm": {
       populate: {
-        action: { populate: "*" },
         guardRules: { populate: "*" }, // relation — must be explicit
         visibility: { populate: "*" },
       },
     },
     "ui.button": {
-      populate: {
-        action: { populate: "*" },
-        guardRules: { populate: "*" }, // relation — must be explicit
-        visibility: { populate: "*" },
-      },
+      populate: "*",
     },
     "ui.banner": { populate: { onTap: { populate: "*" }, visibility: { populate: "*" } } },
   },
@@ -68,7 +64,7 @@ const COMPONENT_POPULATE: Record<string, any> = {
     populate: {
       binding: { populate: "*" },
       validation: { populate: "*" },
-      items: { populate: "*" },
+      options: { populate: "*" },
       visibility: { populate: "*" },
     },
   },
@@ -82,11 +78,7 @@ const COMPONENT_POPULATE: Record<string, any> = {
   },
   "ui.rich-text": { populate: { visibility: { populate: "*" } } },
   "ui.button": {
-    populate: {
-      action: { populate: "*" },
-      guardRules: { populate: "*" },
-      visibility: { populate: "*" },
-    },
+    populate: "*",
   },
   "ui.list-item": {
     populate: {
@@ -97,7 +89,7 @@ const COMPONENT_POPULATE: Record<string, any> = {
   },
   "ui.item-list": {
     populate: {
-      items: {
+      options: {
         populate: {
           icon: { populate: "*" },
           onTap: { populate: "*" },

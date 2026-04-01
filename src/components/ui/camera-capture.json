@@ -3,12 +3,14 @@
   "info": { "displayName": "Camera Capture", "description": "Document camera with overlay. type: ui.camera-capture" },
   "options": {},
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "mode": { "type": "enumeration", "enum": ["document", "selfie", "barcode"], "default": "document" },
     "overlayShape": { "type": "enumeration", "enum": ["rectangle", "circle", "none"], "default": "rectangle" },
     "overlayAspect": { "type": "string" },
     "overlayHint": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "binding": { "type": "component", "component": "sdui.binding", "required": true },
     "onComplete": { "type": "component", "component": "sdui.on-complete", "required": true },
-    "rowGroup": { "type": "string", "required": false }
+    "span": { "type": "integer" }
   }
 }

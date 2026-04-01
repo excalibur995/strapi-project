@@ -6,12 +6,14 @@
   },
   "options": {},
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "rows": { "type": "component", "repeatable": true, "component": "ui.kv-row", "required": true },
     "badges": { "type": "component", "repeatable": true, "component": "ui.badge" },
     "allowChange": { "type": "boolean", "default": false },
     "onEdit": { "type": "component", "component": "sdui.action" },
     "visibility": { "type": "component", "component": "sdui.visibility" },
-    "rowGroup": { "type": "string", "required": false }
+    "span": { "type": "integer" }
   }
 }

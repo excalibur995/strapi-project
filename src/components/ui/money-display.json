@@ -3,9 +3,11 @@
   "info": { "displayName": "Money Display", "description": "Read-only currency amount. type: ui.money-display" },
   "options": {},
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "currency": { "type": "string", "default": "IDR" },
     "source": { "type": "component", "component": "sdui.source", "required": true },
-    "rowGroup": { "type": "string", "required": false }
+    "span": { "type": "integer" }
   }
 }

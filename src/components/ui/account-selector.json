@@ -6,12 +6,14 @@
   },
   "options": {},
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "endpoint": { "type": "string", "required": true },
     "params": { "type": "json" },
     "display": { "type": "json" },
     "allowChange": { "type": "boolean", "default": true },
     "binding": { "type": "component", "component": "sdui.binding", "required": true },
-    "rowGroup": { "type": "string", "required": false }
+    "span": { "type": "integer" }
   }
 }

@@ -6,7 +6,9 @@
   },
   "options": {},
   "attributes": {
-    "text": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
+    "label": {
       "type": "text",
       "required": true,
       "pluginOptions": {
@@ -25,9 +27,8 @@
       "type": "component",
       "component": "sdui.visibility"
     },
-    "rowGroup": {
-      "type": "string",
-      "required": false
+    "span": {
+      "type": "integer"
     }
   }
 }

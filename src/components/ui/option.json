@@ -4,6 +4,7 @@
   "options": {},
   "attributes": {
     "key": { "type": "string", "required": true },
+    "testId": { "type": "string" },
     "label": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
     "description": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "icon": {

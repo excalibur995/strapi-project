@@ -1,20 +1,59 @@
 {
   "collectionName": "components_ui_list_items",
-  "info": { "displayName": "List Item", "description": "Single row inside ui.item-list" },
+  "info": {
+    "displayName": "List Item",
+    "description": "Single row inside ui.item-list"
+  },
   "options": {},
   "attributes": {
-    "key": { "type": "string", "required": true },
-    "label": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
-    "description": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "key": {
+      "type": "string",
+      "required": true
+    },
+    "testId": { "type": "string" },
+    "label": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "required": true
+    },
+    "description": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
     "icon": {
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images", "files", "videos", "audios"]
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
     },
-    "tab": { "type": "string" },
-    "onTap": { "type": "component", "component": "sdui.action", "required": true },
-    "visibility": { "type": "component", "component": "sdui.visibility" },
-    "rowGroup": { "type": "string", "required": false }
+    "tab": {
+      "type": "string"
+    },
+    "onTap": {
+      "type": "component",
+      "component": "sdui.action",
+      "repeatable": false,
+      "required": false
+    },
+    "visibility": {
+      "type": "component",
+      "component": "sdui.visibility"
+    },
+    "span": {
+      "type": "integer"
+    }
   }
 }

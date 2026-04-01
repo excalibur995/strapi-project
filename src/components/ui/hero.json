@@ -6,6 +6,8 @@
   },
   "options": {},
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "illustration": {
       "type": "media",
       "multiple": false,
@@ -46,9 +48,8 @@
       "type": "component",
       "component": "sdui.source"
     },
-    "rowGroup": {
-      "type": "string",
-      "required": false
+    "span": {
+      "type": "integer"
     }
   }
 }

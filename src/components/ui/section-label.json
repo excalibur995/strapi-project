@@ -6,6 +6,14 @@
   },
   "options": {},
   "attributes": {
+    "key": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "testId": {
+      "type": "string"
+    },
     "title": {
       "type": "string",
       "pluginOptions": {
@@ -18,9 +26,8 @@
     "subtitle": {
       "type": "string"
     },
-    "rowGroup": {
-      "type": "string",
-      "required": false
+    "span": {
+      "type": "integer"
     }
   }
 }

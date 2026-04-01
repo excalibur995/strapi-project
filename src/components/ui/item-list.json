@@ -6,9 +6,32 @@
   },
   "options": {},
   "attributes": {
-    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
-    "filterBy": { "type": "component", "component": "sdui.binding" },
-    "items": { "type": "component", "repeatable": true, "component": "ui.list-item", "required": true },
-    "rowGroup": { "type": "string", "required": false }
+    "key": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "testId": { "type": "string" },
+    "label": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "filterBy": {
+      "type": "component",
+      "component": "sdui.binding"
+    },
+    "options": {
+      "type": "component",
+      "component": "ui.list-item",
+      "repeatable": true,
+      "required": true
+    },
+    "span": {
+      "type": "integer"
+    }
   }
 }

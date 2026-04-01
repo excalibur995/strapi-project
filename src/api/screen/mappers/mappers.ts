@@ -23,6 +23,7 @@ export type RawScreenEntity = {
   header: StrapiComponent[];
   body: StrapiComponent[];
   footer: StrapiComponent[];
+  contents: StrapiComponent[];
 };
 
 export type MappedScreen = {
@@ -90,13 +91,14 @@ const mergeGroupedComponents = (...groupedSets: Record<string, unknown[]>[]): Re
 };
 
 export const mapScreenResponse = (entity: RawScreenEntity): MappedScreen => {
-  const { screenId, hideProgressBar, content_version, meta, header, body, footer } = entity;
+  const { screenId, hideProgressBar, content_version, meta, header, body, footer, contents } = entity;
 
   const groupedHeader = groupComponents(header ?? []);
   const groupedBody = groupComponents(body ?? []);
   const groupedFooter = groupComponents(footer ?? []);
+  const groupedContents = groupComponents(contents ?? []);
 
-  const mergedComponents = mergeGroupedComponents(groupedHeader, groupedBody, groupedFooter);
+  const mergedComponents = mergeGroupedComponents(groupedHeader, groupedBody, groupedFooter, groupedContents);
 
   const metaFields: Record<string, unknown> = {
     ...(meta?.title !== undefined && { title: meta.title }),

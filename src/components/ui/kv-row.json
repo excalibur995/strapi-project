@@ -3,6 +3,8 @@
   "info": { "displayName": "KV Row", "description": "Key-value display row used inside review-card" },
   "options": {},
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "value": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "source": { "type": "component", "component": "sdui.source" }

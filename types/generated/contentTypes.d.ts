@@ -451,8 +451,6 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
     api_version: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<'v1'>;
-    async: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    bundleVersion: Schema.Attribute.String;
     checkpointEnabled: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     content_version: Schema.Attribute.Integer &
@@ -467,8 +465,6 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    idempotencyRequired: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
     initialState: Schema.Attribute.JSON;
     journeyId: Schema.Attribute.UID &
       Schema.Attribute.Required &
@@ -482,7 +478,6 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
       'oneToMany',
       'api::journey.journey'
     >;
-    maxRetry: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<3>;
     name: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -498,8 +493,6 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
           localized: true;
         };
       }>;
-    onExit: Schema.Attribute.Component<'sdui.action', false>;
-    owner: Schema.Attribute.String;
     preInitiateScreen: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -524,22 +517,7 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
         };
       }> &
       Schema.Attribute.DefaultTo<'card'>;
-    productType: Schema.Attribute.Enumeration<
-      [
-        'CARDS',
-        'LOANS',
-        'DEPOSITS',
-        'ACCOUNTS',
-        'TRANSFERS',
-        'INVESTMENTS',
-        'INSURANCE',
-        'OTHER',
-      ]
-    >;
     publishedAt: Schema.Attribute.DateTime;
-    schemaVersion: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'1.0'>;
     screens: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
     segment: Schema.Attribute.Enumeration<['ETB', 'NTB', 'ALL']> &
       Schema.Attribute.DefaultTo<'ALL'>;
@@ -717,6 +695,7 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
         'ui.image-preview',
         'ui.section-label',
         'ui.tab-group',
+        'ui.subtitle-label-section',
       ]
     >;
     hideProgressBar: Schema.Attribute.Boolean &
@@ -730,6 +709,74 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
     meta: Schema.Attribute.Component<'sdui.screen-meta', false> &
       Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    screenId: Schema.Attribute.UID & Schema.Attribute.Required;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
+export interface ApiStaticScreenStaticScreen
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'static_screens';
+  info: {
+    displayName: 'Static Screen';
+    pluralName: 'static-screens';
+    singularName: 'static-screen';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    api_version: Schema.Attribute.String & Schema.Attribute.Required;
+    content_version: Schema.Attribute.Integer & Schema.Attribute.Required;
+    contents: Schema.Attribute.DynamicZone<
+      [
+        'ui.text',
+        'ui.text-input',
+        'ui.tab-group',
+        'ui.slide-to-confirm',
+        'ui.section-label',
+        'ui.row',
+        'ui.rich-text',
+        'ui.review-card',
+        'ui.radio-group',
+        'ui.radio-group-async',
+        'ui.passcode-input',
+        'ui.option',
+        'ui.money-input',
+        'ui.money-display',
+        'ui.local-state',
+        'ui.list-item',
+        'ui.link',
+        'ui.kv-row',
+        'ui.item-list',
+        'ui.image-preview',
+        'ui.icon-text',
+        'ui.hero',
+        'ui.dropdown',
+        'ui.dropdown-async',
+        'ui.checkbox-list',
+        'ui.checkbox-list-async',
+        'ui.cascading-select',
+        'ui.cascading-select-tier',
+        'ui.camera-capture',
+        'ui.button',
+        'ui.banner',
+        'ui.badge',
+        'ui.account-selector',
+      ]
+    >;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::static-screen.static-screen'
+    > &
+      Schema.Attribute.Private;
     publishedAt: Schema.Attribute.DateTime;
     screenId: Schema.Attribute.UID & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
@@ -1253,6 +1300,7 @@ declare module '@strapi/strapi' {
       'api::lang.lang': ApiLangLang;
       'api::rule-set.rule-set': ApiRuleSetRuleSet;
       'api::screen.screen': ApiScreenScreen;
+      'api::static-screen.static-screen': ApiStaticScreenStaticScreen;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;

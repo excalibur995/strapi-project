@@ -6,6 +6,8 @@
   },
   "options": {},
   "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
     "label": {
       "type": "string",
       "pluginOptions": {
@@ -14,7 +16,7 @@
         }
       }
     },
-    "items": {
+    "options": {
       "type": "component",
       "component": "ui.option",
       "repeatable": true,
@@ -34,9 +36,8 @@
       "type": "component",
       "component": "sdui.visibility"
     },
-    "rowGroup": {
-      "type": "string",
-      "required": false
+    "span": {
+      "type": "integer"
     }
   }
 }
