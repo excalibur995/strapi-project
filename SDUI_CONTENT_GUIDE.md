@@ -19,14 +19,14 @@ Screens must exist before you can link them inside Journey steps.
 Create a **Screen** entry for each screen below. For each:
 
 - Go to **Content Manager → Screen → Create new entry**
-- Fill in `screenKey`, `meta`, `body`, `footer` as shown
+- Fill in `screenId`, `meta`, `body`, `footer` as shown
 - **Save → Publish**
 
-### Screen 1: `apply-ca.intro`
+### Screen 1: `ACCT_CA_INTRO`
 
-| Field      | Value            |
-| ---------- | ---------------- |
-| Screen Key | `apply-ca.intro` |
+| Field      | Value          |
+| ---------- | -------------- |
+| Screen ID  | `ACCT_CA_INTRO` |
 
 **Meta:**
 | Field | Value |
@@ -50,11 +50,11 @@ Create a **Screen** entry for each screen below. For each:
 
 ---
 
-### Screen 2: `apply-ca.account-purpose`
+### Screen 2: `ACCT_CA_ACCOUNT_PURPOSE`
 
-| Field      | Value                      |
-| ---------- | -------------------------- |
-| Screen Key | `apply-ca.account-purpose` |
+| Field     | Value                      |
+| --------- | -------------------------- |
+| Screen ID | `ACCT_CA_ACCOUNT_PURPOSE`  |
 
 **Meta:** Title: `How will you use this account?` · Subtitle: `This helps us personalise your experience` · Show Back: `true`
 
@@ -77,11 +77,11 @@ Create a **Screen** entry for each screen below. For each:
 
 ---
 
-### Screen 3: `apply-ca.npwp-capture`
+### Screen 3: `ACCT_CA_NPWP_CAPTURE`
 
-| Field      | Value                   |
-| ---------- | ----------------------- |
-| Screen Key | `apply-ca.npwp-capture` |
+| Field     | Value                  |
+| --------- | ---------------------- |
+| Screen ID | `ACCT_CA_NPWP_CAPTURE` |
 
 **Meta:** Title: `Scan the front of your NPWP` · Subtitle: `Position your NPWP inside the frame and hold still` · Show Back: `true`
 
@@ -104,11 +104,11 @@ Create a **Screen** entry for each screen below. For each:
 
 ---
 
-### Screen 4: `apply-ca.npwp-review`
+### Screen 4: `ACCT_CA_NPWP_REVIEW`
 
-| Field      | Value                  |
-| ---------- | ---------------------- |
-| Screen Key | `apply-ca.npwp-review` |
+| Field     | Value                 |
+| --------- | --------------------- |
+| Screen ID | `ACCT_CA_NPWP_REVIEW` |
 
 **Meta:** Title: `Review your NPWP` · Subtitle: `Check that all details are clearly visible` · Show Back: `true`
 
@@ -140,16 +140,16 @@ Create a **Screen** entry for each screen below. For each:
 
 ### Remaining Screens (same pattern)
 
-| Screen Key               | Meta Title               | Key Body Component                                                               | Footer CTA                                   |
-| ------------------------ | ------------------------ | -------------------------------------------------------------------------------- | -------------------------------------------- |
-| `apply-ca.deposit-setup` | Add your initial deposit | Account Selector (`sourceAccountId`) + Money Input (`initialDepositAmount`, IDR) | Slide: `Next`                                |
-| `apply-ca.terms`         | Terms & Conditions       | Checkbox List (`termsAccepted`)                                                  | Slide: `Confirm`                             |
-| `apply-ca.confirmation`  | Review your application  | Review Card ×3                                                                   | Slide: `Slide to confirm`                    |
-| `apply-ca.success`       | Application successful   | Hero (success illustration)                                                      | —                                            |
-| `apply-ca.ineligible`    | We're sorry              | Hero (error illustration) + Banner (`text`, `variant: error`)                    | Button: `Back to home`                       |
-| `apply-ca.submit-failed` | Something went wrong     | Hero (error illustration) + Banner (`text`, `variant: warning`)                  | Button: `Try again` · Button: `Back to home` |
+| Screen ID                    | Meta Title               | Key Body Component                                                               | Footer CTA                                   |
+| ---------------------------- | ------------------------ | -------------------------------------------------------------------------------- | -------------------------------------------- |
+| `ACCT_CA_DEPOSIT_SETUP`      | Add your initial deposit | Account Selector (`sourceAccountId`) + Money Input (`initialDepositAmount`, IDR) | Slide: `Next`                                |
+| `ACCT_CA_TERMS`              | Terms & Conditions       | Checkbox List (`termsAccepted`)                                                  | Slide: `Confirm`                             |
+| `ACCT_CA_CONFIRMATION`       | Review your application  | Review Card ×3                                                                   | Slide: `Slide to confirm`                    |
+| `ACCT_CA_SUCCESS`            | Application successful   | Hero (success illustration)                                                      | —                                            |
+| `ACCT_CA_INELIGIBLE`         | We're sorry              | Hero (error illustration) + Banner (`text`, `variant: error`)                    | Button: `Back to home`                       |
+| `ACCT_CA_SUBMIT_FAILED`      | Something went wrong     | Hero (error illustration) + Banner (`text`, `variant: warning`)                  | Button: `Try again` · Button: `Back to home` |
 
-> Note `apply-ca.ineligible` and `apply-ca.submit-failed` are new fallback screens needed for SYSTEM step failure branching.
+> `ACCT_CA_INELIGIBLE` and `ACCT_CA_SUBMIT_FAILED` are fallback screens needed for SYSTEM step failure branching.
 
 ---
 
@@ -199,14 +199,13 @@ Go to **Content Manager → Journey → Create new entry**
 
 ### Steps
 
-Add steps in order using the **+ Add a component** button. Pick `Step - System` or `Step - User`.
+Add steps in order using the **+ Add a component** button. All steps use the single **Steps** (`sdui.steps`) component — set the `Type` field to either `system` or `user`.
 
-#### Step 1 — ELIGIBILITY_CHECK (System)
-
-- Component: **Step - System**
+#### Step 1 — ELIGIBILITY_CHECK (system)
 
 | Field      | Value                                 |
 | ---------- | ------------------------------------- |
+| Type       | `system`                              |
 | Step Code  | `ELIGIBILITY_CHECK`                   |
 | Service    | `product-capabilities`                |
 | Operation  | `checkEligibility`                    |
@@ -214,71 +213,76 @@ Add steps in order using the **+ Add a component** button. Pick `Step - System` 
 | On Failure | `{ "nextStep": "INELIGIBLE_SCREEN" }` |
 | Max Retry  | `3`                                   |
 
-#### Step 2 — INTRO (User)
-
-- Component: **Step - User**
+#### Step 2 — INTRO (user)
 
 | Field     | Value                               |
 | --------- | ----------------------------------- |
+| Type      | `user`                              |
 | Step Code | `INTRO`                             |
-| Screen    | Select `apply-ca.intro`             |
+| Screen    | Select `ACCT_CA_INTRO`              |
 | On Submit | `{ "nextStep": "ACCOUNT_PURPOSE" }` |
 
-#### Step 3 — ACCOUNT_PURPOSE (User)
+#### Step 3 — ACCOUNT_PURPOSE (user)
 
-| Field     | Value                             |
-| --------- | --------------------------------- |
-| Step Code | `ACCOUNT_PURPOSE`                 |
-| Screen    | Select `apply-ca.account-purpose` |
-| On Submit | `{ "nextStep": "NPWP_CAPTURE" }`  |
+| Field     | Value                                |
+| --------- | ------------------------------------ |
+| Type      | `user`                               |
+| Step Code | `ACCOUNT_PURPOSE`                    |
+| Screen    | Select `ACCT_CA_ACCOUNT_PURPOSE`     |
+| On Submit | `{ "nextStep": "NPWP_CAPTURE" }`     |
 
-#### Step 4 — NPWP_CAPTURE (User)
+#### Step 4 — NPWP_CAPTURE (user)
 
 | Field     | Value                           |
 | --------- | ------------------------------- |
+| Type      | `user`                          |
 | Step Code | `NPWP_CAPTURE`                  |
-| Screen    | Select `apply-ca.npwp-capture`  |
+| Screen    | Select `ACCT_CA_NPWP_CAPTURE`   |
 | On Submit | `{ "nextStep": "NPWP_REVIEW" }` |
 
-#### Step 5—8 (User) — follow the same pattern
+#### Steps 5–8 (user) — follow the same pattern
 
-| Step Code       | Screen                   | On Submit nextStep |
-| --------------- | ------------------------ | ------------------ |
-| `NPWP_REVIEW`   | `apply-ca.npwp-review`   | `DEPOSIT_SETUP`    |
-| `DEPOSIT_SETUP` | `apply-ca.deposit-setup` | `TERMS`            |
-| `TERMS`         | `apply-ca.terms`         | `CONFIRMATION`     |
-| `CONFIRMATION`  | `apply-ca.confirmation`  | `FINAL_SUBMISSION` |
+| Step Code       | Screen                       | On Submit nextStep |
+| --------------- | ---------------------------- | ------------------ |
+| `NPWP_REVIEW`   | `ACCT_CA_NPWP_REVIEW`        | `DEPOSIT_SETUP`    |
+| `DEPOSIT_SETUP` | `ACCT_CA_DEPOSIT_SETUP`      | `TERMS`            |
+| `TERMS`         | `ACCT_CA_TERMS`              | `CONFIRMATION`     |
+| `CONFIRMATION`  | `ACCT_CA_CONFIRMATION`       | `FINAL_SUBMISSION` |
 
-#### Step 9 — FINAL_SUBMISSION (System)
+#### Step 9 — FINAL_SUBMISSION (system)
 
 | Field      | Value                              |
 | ---------- | ---------------------------------- |
+| Type       | `system`                           |
 | Step Code  | `FINAL_SUBMISSION`                 |
 | Service    | `stp-core`                         |
 | Operation  | `submitJourney`                    |
 | On Success | `{ "nextStep": "SUCCESS_SCREEN" }` |
 | On Failure | `{ "nextStep": "SUBMIT_FAILED" }`  |
 
-#### Step 10 — SUCCESS_SCREEN (User)
+#### Step 10 — SUCCESS_SCREEN (user)
 
-| Field     | Value                     |
-| --------- | ------------------------- |
-| Step Code | `SUCCESS_SCREEN`          |
-| Screen    | Select `apply-ca.success` |
+| Field     | Value                   |
+| --------- | ----------------------- |
+| Type      | `user`                  |
+| Step Code | `SUCCESS_SCREEN`        |
+| Screen    | Select `ACCT_CA_SUCCESS` |
 
-#### Step 11 — INELIGIBLE_SCREEN (User)
+#### Step 11 — INELIGIBLE_SCREEN (user)
 
-| Field     | Value                        |
-| --------- | ---------------------------- |
-| Step Code | `INELIGIBLE_SCREEN`          |
-| Screen    | Select `apply-ca.ineligible` |
+| Field     | Value                      |
+| --------- | -------------------------- |
+| Type      | `user`                     |
+| Step Code | `INELIGIBLE_SCREEN`        |
+| Screen    | Select `ACCT_CA_INELIGIBLE` |
 
-#### Step 12 — SUBMIT_FAILED (User)
+#### Step 12 — SUBMIT_FAILED (user)
 
-| Field     | Value                           |
-| --------- | ------------------------------- |
-| Step Code | `SUBMIT_FAILED`                 |
-| Screen    | Select `apply-ca.submit-failed` |
+| Field     | Value                       |
+| --------- | --------------------------- |
+| Type      | `user`                      |
+| Step Code | `SUBMIT_FAILED`             |
+| Screen    | Select `ACCT_CA_SUBMIT_FAILED` |
 
 ---
 

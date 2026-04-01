@@ -4,7 +4,7 @@ A Server-Driven UI engine for React Native. Designed to allow headless CMS backe
 
 ## Core Component Interfaces
 
-Based on the Strapi component mappings in `src/components/ui`, here are the core Typescript interfaces that the frontend expects when receiving the SDUI payload.
+Based on the Strapi component mappings in `src/components/ui`, here are the core TypeScript interfaces that the frontend expects when receiving the SDUI payload.
 
 ### Common Types
 
@@ -97,6 +97,9 @@ export interface BadgeWidget extends SduiNode<'ui.badge'> {
   variant: 'success' | 'warning' | 'info' | 'error'; // defaults to 'info'
   source?: any; // sdui.source
   visibility?: SduiVisibility;
+}
+```
+
 #### 6. Rich Text (`ui.rich-text`)
 Dynamic formatted text blocks. (Note: React Native does not support rich text natively. Recommended library: `react-native-render-html` or `react-native-markdown-display`)
 ```typescript
@@ -358,6 +361,26 @@ Horizontal tab switcher.
 export interface TabGroupWidget extends SduiNode<'ui.tab-group'> {
   options: OptionWidget[];
   binding: SduiBinding;
+}
+```
+
+#### 27. Row (`ui.row`)
+Generic horizontal layout container.
+```typescript
+export interface RowWidget extends SduiNode<'ui.row'> {
+  rowGroup?: string;
+  visibility?: SduiVisibility;
+}
+```
+
+#### 28. Subtitle Label Section (`ui.subtitle-label-section`)
+Header slot component displaying a subtitle alongside a supplementary label. (Header zone only)
+```typescript
+export interface SubtitleLabelSectionWidget extends SduiNode<'ui.subtitle-label-section'> {
+  subtitle: string;
+  label?: string;
+  rowGroup?: string;
+  visibility?: SduiVisibility;
 }
 ```
 
