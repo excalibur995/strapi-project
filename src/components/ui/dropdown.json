@@ -5,13 +5,23 @@
   "attributes": {
     "componentId": { "type": "string" },
     "testId": { "type": "string" },
-    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
-    "placeholder": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
+    "label": {
+      "type": "string",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "name": { "type": "string" },
+    "placeholder": {
+      "type": "string",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "defaultValue": { "type": "string" },
     "searchable": { "type": "boolean", "default": false },
+    "required": { "type": "boolean", "default": false },
+    "enabled": { "type": "boolean", "default": true },
+    "editable": { "type": "boolean", "default": true },
+    "visible": { "type": "boolean", "default": true },
     "options": { "type": "component", "repeatable": true, "component": "ui.option", "required": true },
-    "binding": { "type": "component", "component": "sdui.binding", "required": true },
-    "validation": { "type": "component", "component": "sdui.validation", "repeatable": true },
-    "visibility": { "type": "component", "component": "sdui.visibility" },
+    "conditions": { "type": "json" },
     "span": { "type": "integer" }
   }
 }

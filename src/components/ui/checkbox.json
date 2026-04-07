@@ -1,27 +1,28 @@
 {
-  "collectionName": "components_ui_dropdown_asyncs",
-  "info": { "displayName": "Dropdown (Async)", "description": "Single-select from API data source. type: ui.dropdown-async" },
+  "collectionName": "components_ui_checkboxes",
+  "info": {
+    "displayName": "Checkbox",
+    "description": "Single checkbox with optional section title. type: ui.checkbox"
+  },
   "options": {},
   "attributes": {
     "componentId": { "type": "string" },
     "testId": { "type": "string" },
     "label": {
       "type": "string",
+      "required": true,
       "pluginOptions": { "i18n": { "localized": true } }
     },
     "name": { "type": "string" },
-    "placeholder": {
+    "title": {
       "type": "string",
       "pluginOptions": { "i18n": { "localized": true } }
     },
-    "defaultValue": { "type": "string" },
-    "searchable": { "type": "boolean", "default": true },
+    "defaultValue": { "type": "boolean", "default": false },
     "required": { "type": "boolean", "default": false },
     "enabled": { "type": "boolean", "default": true },
     "editable": { "type": "boolean", "default": true },
     "visible": { "type": "boolean", "default": true },
-    "dataSource": { "type": "json" },
-    "conditions": { "type": "json" },
-    "span": { "type": "integer" }
+    "span": { "type": "integer", "default": 12 }
   }
 }

@@ -8,8 +8,16 @@
   "attributes": {
     "componentId": { "type": "string" },
     "testId": { "type": "string" },
-    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
-    "source": { "type": "component", "component": "sdui.source", "required": true },
+    "label": {
+      "type": "string",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "name": { "type": "string" },
+    "enabled": { "type": "boolean", "default": true },
+    "editable": { "type": "boolean", "default": false },
+    "visible": { "type": "boolean", "default": true },
+    "valueSource": { "type": "json" },
+    "placement": { "type": "json" },
     "span": { "type": "integer" }
   }
 }

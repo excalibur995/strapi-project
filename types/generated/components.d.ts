@@ -77,14 +77,22 @@ export interface SduiOnComplete extends Struct.ComponentSchema {
 export interface SduiScreenMeta extends Struct.ComponentSchema {
   collectionName: 'components_sdui_screen_metas';
   info: {
-    description: 'Screen-level title, subtitle, and navigation behaviour';
+    description: 'Screen-level title bar, subtitle, and navigation behaviour';
     displayName: 'Screen Meta';
   };
   attributes: {
     analytics: Schema.Attribute.JSON;
+    enableBackButton: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<true>;
+    enableCloseButton: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     onBack: Schema.Attribute.Component<'sdui.action', false>;
-    showBack: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    showClose: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     subtitle: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -265,14 +273,14 @@ export interface UiBanner extends Struct.ComponentSchema {
 export interface UiButton extends Struct.ComponentSchema {
   collectionName: 'components_ui_buttons';
   info: {
+    description: 'Interactive button. type: ui.button';
     displayName: 'Button';
   };
   attributes: {
+    action: Schema.Attribute.JSON;
     componentId: Schema.Attribute.String;
-    guardRules: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::rule-set.rule-set'
-    >;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    icon: Schema.Attribute.JSON;
     label: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -280,13 +288,15 @@ export interface UiButton extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    name: Schema.Attribute.String;
+    placement: Schema.Attribute.JSON;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
     variant: Schema.Attribute.Enumeration<
-      ['primary', 'secondary', 'ghost', 'danger']
+      ['primary', 'secondary', 'ghost', 'danger', 'promo']
     > &
       Schema.Attribute.DefaultTo<'primary'>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -317,6 +327,38 @@ export interface UiCameraCapture extends Struct.ComponentSchema {
       Schema.Attribute.DefaultTo<'rectangle'>;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
+  };
+}
+
+export interface UiCard extends Struct.ComponentSchema {
+  collectionName: 'components_ui_cards';
+  info: {
+    description: 'Product/info card with dynamic bindings. type: ui.card';
+    displayName: 'Card';
+  };
+  attributes: {
+    componentId: Schema.Attribute.String;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    icon: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    span: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>;
+    subtitle: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    testId: Schema.Attribute.String;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    valueSource: Schema.Attribute.JSON;
+    variant: Schema.Attribute.Enumeration<['default', 'compact']> &
+      Schema.Attribute.DefaultTo<'default'>;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -363,6 +405,38 @@ export interface UiCascadingSelectTier extends Struct.ComponentSchema {
         };
       }>;
     testId: Schema.Attribute.String;
+  };
+}
+
+export interface UiCheckbox extends Struct.ComponentSchema {
+  collectionName: 'components_ui_checkboxes';
+  info: {
+    description: 'Single checkbox with optional section title. type: ui.checkbox';
+    displayName: 'Checkbox';
+  };
+  attributes: {
+    componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    name: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    span: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>;
+    testId: Schema.Attribute.String;
+    title: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -415,15 +489,51 @@ export interface UiCheckboxListAsync extends Struct.ComponentSchema {
   };
 }
 
-export interface UiDropdown extends Struct.ComponentSchema {
-  collectionName: 'components_ui_dropdowns';
+export interface UiDateInput extends Struct.ComponentSchema {
+  collectionName: 'components_ui_date_inputs';
   info: {
-    description: 'Single-select from static options. type: ui.dropdown';
-    displayName: 'Dropdown';
+    description: 'Date picker input. type: ui.date-input';
+    displayName: 'Date Input';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
+    componentId: Schema.Attribute.String;
+    conditions: Schema.Attribute.JSON;
+    defaultValue: Schema.Attribute.String;
+    displayFormat: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'dd MMM yyyy'>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.Required &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    name: Schema.Attribute.String;
+    placeholder: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    span: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>;
+    testId: Schema.Attribute.String;
+    validations: Schema.Attribute.JSON;
+    valueFormat: Schema.Attribute.String &
+      Schema.Attribute.DefaultTo<'yyyy-MM-dd'>;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+  };
+}
+
+export interface UiDivider extends Struct.ComponentSchema {
+  collectionName: 'components_ui_dividers';
+  info: {
+    description: 'Visual divider line with optional label. type: ui.divider';
+    displayName: 'Divider';
+  };
+  attributes: {
     componentId: Schema.Attribute.String;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -431,6 +541,32 @@ export interface UiDropdown extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    name: Schema.Attribute.String;
+    span: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>;
+    testId: Schema.Attribute.String;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+  };
+}
+
+export interface UiDropdown extends Struct.ComponentSchema {
+  collectionName: 'components_ui_dropdowns';
+  info: {
+    description: 'Single-select from static options. type: ui.dropdown';
+    displayName: 'Dropdown';
+  };
+  attributes: {
+    componentId: Schema.Attribute.String;
+    conditions: Schema.Attribute.JSON;
+    defaultValue: Schema.Attribute.String;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    name: Schema.Attribute.String;
     options: Schema.Attribute.Component<'ui.option', true> &
       Schema.Attribute.Required;
     placeholder: Schema.Attribute.String &
@@ -439,43 +575,45 @@ export interface UiDropdown extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     searchable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
-    validation: Schema.Attribute.Component<'sdui.validation', true>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
 
 export interface UiDropdownAsync extends Struct.ComponentSchema {
   collectionName: 'components_ui_dropdown_asyncs';
   info: {
-    description: 'Searchable single-select from live API. type: ui.dropdown-async';
+    description: 'Single-select from API data source. type: ui.dropdown-async';
     displayName: 'Dropdown (Async)';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
     componentId: Schema.Attribute.String;
-    dataSource: Schema.Attribute.Component<'sdui.data-source', false> &
-      Schema.Attribute.Required;
+    conditions: Schema.Attribute.JSON;
+    dataSource: Schema.Attribute.JSON;
+    defaultValue: Schema.Attribute.String;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    name: Schema.Attribute.String;
     placeholder: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     searchable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
-    validation: Schema.Attribute.Component<'sdui.validation', true>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -545,16 +683,20 @@ export interface UiImagePreview extends Struct.ComponentSchema {
   };
   attributes: {
     componentId: Schema.Attribute.String;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    source: Schema.Attribute.Component<'sdui.source', false> &
-      Schema.Attribute.Required;
+    name: Schema.Attribute.String;
+    placement: Schema.Attribute.JSON;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
+    valueSource: Schema.Attribute.JSON;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -579,31 +721,6 @@ export interface UiItemList extends Struct.ComponentSchema {
       Schema.Attribute.Required;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
-  };
-}
-
-export interface UiKvRow extends Struct.ComponentSchema {
-  collectionName: 'components_ui_kv_rows';
-  info: {
-    description: 'Key-value display row used inside review-card';
-    displayName: 'KV Row';
-  };
-  attributes: {
-    componentId: Schema.Attribute.String;
-    label: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    source: Schema.Attribute.Component<'sdui.source', false>;
-    testId: Schema.Attribute.String;
-    value: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
   };
 }
 
@@ -762,6 +879,24 @@ export interface UiPasscodeInput extends Struct.ComponentSchema {
   };
 }
 
+export interface UiProgressBar extends Struct.ComponentSchema {
+  collectionName: 'components_ui_progress_bars';
+  info: {
+    description: 'Step progress indicator. type: ui.progress-bar';
+    displayName: 'Progress Bar';
+  };
+  attributes: {
+    componentId: Schema.Attribute.String;
+    currentStep: Schema.Attribute.Integer & Schema.Attribute.Required;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    maxStep: Schema.Attribute.Integer & Schema.Attribute.Required;
+    name: Schema.Attribute.String;
+    span: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>;
+    testId: Schema.Attribute.String;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+  };
+}
+
 export interface UiRadioGroup extends Struct.ComponentSchema {
   collectionName: 'components_ui_radio_groups';
   info: {
@@ -815,25 +950,23 @@ export interface UiRadioGroupAsync extends Struct.ComponentSchema {
 export interface UiReviewCard extends Struct.ComponentSchema {
   collectionName: 'components_ui_review_cards';
   info: {
-    description: 'Summary section with rows and optional edit. type: ui.review-card';
+    description: 'Summary section with key-value options. type: ui.review-card';
     displayName: 'Review Card';
   };
   attributes: {
-    allowChange: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    badges: Schema.Attribute.Component<'ui.badge', true>;
     componentId: Schema.Attribute.String;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    onEdit: Schema.Attribute.Component<'sdui.action', false>;
-    rows: Schema.Attribute.Component<'ui.kv-row', true> &
-      Schema.Attribute.Required;
+    name: Schema.Attribute.String;
+    options: Schema.Attribute.JSON & Schema.Attribute.Required;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -985,20 +1118,23 @@ export interface UiText extends Struct.ComponentSchema {
   };
   attributes: {
     componentId: Schema.Attribute.String;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     label: Schema.Attribute.Text &
-      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    name: Schema.Attribute.String;
+    placement: Schema.Attribute.JSON;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
+    valueSource: Schema.Attribute.JSON;
     variant: Schema.Attribute.Enumeration<
-      ['title', 'body', 'caption', 'label']
+      ['title', 'subtitle', 'body', 'note', 'caption', 'label']
     > &
       Schema.Attribute.DefaultTo<'body'>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -1009,13 +1145,21 @@ export interface UiTextInput extends Struct.ComponentSchema {
     displayName: 'Text Input';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
     componentId: Schema.Attribute.String;
-    keyboard: Schema.Attribute.Enumeration<
-      ['default', 'number-pad', 'email', 'phone-pad']
+    conditions: Schema.Attribute.JSON;
+    defaultValue: Schema.Attribute.String;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    helperText: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    inputMode: Schema.Attribute.Enumeration<
+      ['text', 'numeric', 'email', 'phone']
     > &
-      Schema.Attribute.DefaultTo<'default'>;
+      Schema.Attribute.DefaultTo<'text'>;
     label: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -1023,17 +1167,21 @@ export interface UiTextInput extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.Integer;
+    minLength: Schema.Attribute.Integer;
+    name: Schema.Attribute.String;
     placeholder: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
-    secured: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
-    validation: Schema.Attribute.Component<'sdui.validation', true>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+    validations: Schema.Attribute.JSON;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -1054,17 +1202,20 @@ declare module '@strapi/strapi' {
       'ui.banner': UiBanner;
       'ui.button': UiButton;
       'ui.camera-capture': UiCameraCapture;
+      'ui.card': UiCard;
       'ui.cascading-select': UiCascadingSelect;
       'ui.cascading-select-tier': UiCascadingSelectTier;
+      'ui.checkbox': UiCheckbox;
       'ui.checkbox-list': UiCheckboxList;
       'ui.checkbox-list-async': UiCheckboxListAsync;
+      'ui.date-input': UiDateInput;
+      'ui.divider': UiDivider;
       'ui.dropdown': UiDropdown;
       'ui.dropdown-async': UiDropdownAsync;
       'ui.hero': UiHero;
       'ui.icon-text': UiIconText;
       'ui.image-preview': UiImagePreview;
       'ui.item-list': UiItemList;
-      'ui.kv-row': UiKvRow;
       'ui.link': UiLink;
       'ui.list-item': UiListItem;
       'ui.local-state': UiLocalState;
@@ -1072,6 +1223,7 @@ declare module '@strapi/strapi' {
       'ui.money-input': UiMoneyInput;
       'ui.option': UiOption;
       'ui.passcode-input': UiPasscodeInput;
+      'ui.progress-bar': UiProgressBar;
       'ui.radio-group': UiRadioGroup;
       'ui.radio-group-async': UiRadioGroupAsync;
       'ui.review-card': UiReviewCard;

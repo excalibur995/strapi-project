@@ -3,7 +3,7 @@
  * Journey ID : ACCT_CA_APPLY
  *
  * Creates all Screens then the Journey in one pass.
- * Safe to re-run — skips any screen/journey that already exists by screenId / journeyId.
+ * Safe to re-run — skips any screen/journey that already exists by screenId / flowId.
  *
  * Usage (via bootstrap):
  *   SEED_DATA=apply-ca npm run develop
@@ -32,19 +32,16 @@ async function findScreen(strapi: StrapiInstance, screenId: string) {
   return results[0] ?? null;
 }
 
-async function findJourney(strapi: StrapiInstance, journeyId: string) {
+async function findJourney(strapi: StrapiInstance, flowId: string) {
   const results = await strapi.documents("api::journey.journey").findMany({
-    filters: { journeyId: { $eq: journeyId } },
+    filters: { flowId: { $eq: flowId } },
     status: "draft",
     limit: 1,
   });
   return results[0] ?? null;
 }
 
-async function createAndPublishScreen(
-  strapi: StrapiInstance,
-  data: Record<string, unknown>
-) {
+async function createAndPublishScreen(strapi: StrapiInstance, data: Record<string, unknown>) {
   const screenId = data.screenId as string;
   const existing = await findScreen(strapi, screenId);
 
@@ -55,9 +52,7 @@ async function createAndPublishScreen(
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const created = await strapi.documents("api::screen.screen").create({ data: data as any });
-  await strapi
-    .documents("api::screen.screen")
-    .publish({ documentId: created.documentId });
+  await strapi.documents("api::screen.screen").publish({ documentId: created.documentId });
 
   console.log(`[seed] ✓ Screen created & published: ${screenId}`);
   return created;
@@ -101,7 +96,7 @@ const screens = [
         __component: "ui.rich-text",
         // ui.rich-text.text is type "blocks" — must be a Strapi blocks array
         text: blocks(
-          "Maybank collects your mobile number for purposes including, but not limited to, security feature activation, ATM card activation, sending SMS TAC codes and Mobile App registration. SMS TACs will be sent to your registered mobile number. Your information will be stored securely in Maybank's system, which protects the confidentiality of customer data."
+          "Maybank collects your mobile number for purposes including, but not limited to, security feature activation, ATM card activation, sending SMS TAC codes and Mobile App registration. SMS TACs will be sent to your registered mobile number. Your information will be stored securely in Maybank's system, which protects the confidentiality of customer data.",
         ),
       },
       {
@@ -115,9 +110,7 @@ const screens = [
           },
         ],
         binding: { path: "mobileConsent", scope: "journeyState" },
-        validation: [
-          { rule: "required", message: "You must agree to continue" },
-        ],
+        validation: [{ rule: "required", message: "You must agree to continue" }],
       },
     ],
     footer: [
@@ -284,8 +277,7 @@ const screens = [
         mode: "document",
         overlayShape: "rectangle",
         overlayAspect: "1.586",
-        overlayHint:
-          "Please ensure your e-KTP details are visible in the frame",
+        overlayHint: "Please ensure your e-KTP details are visible in the frame",
         binding: { path: "ektpImage", scope: "journeyState" },
         // sdui.on-complete wraps a single sdui.action
         onComplete: {
@@ -351,18 +343,14 @@ const screens = [
         label: "Place of birth",
         placeholder: "Place of birth",
         binding: { path: "placeOfBirth", scope: "journeyState" },
-        validation: [
-          { rule: "required", message: "Place of birth is required" },
-        ],
+        validation: [{ rule: "required", message: "Place of birth is required" }],
       },
       {
         __component: "ui.text-input",
         label: "Date of birth",
         placeholder: "DD MM YYYY",
         binding: { path: "dateOfBirth", scope: "journeyState" },
-        validation: [
-          { rule: "required", message: "Date of birth is required" },
-        ],
+        validation: [{ rule: "required", message: "Date of birth is required" }],
       },
       {
         __component: "ui.dropdown",
@@ -437,7 +425,12 @@ const screens = [
             label: "City / Regency",
             placeholder: "Select city",
             dependsOn: "province",
-            dataSource: { endpoint: "/api/lookup/cities", method: "GET", params: { provinceCode: "{{province}}" }, mapping: { key: "code", label: "name" } },
+            dataSource: {
+              endpoint: "/api/lookup/cities",
+              method: "GET",
+              params: { provinceCode: "{{province}}" },
+              mapping: { key: "code", label: "name" },
+            },
             binding: { path: "city", scope: "journeyState" },
           },
           {
@@ -445,7 +438,12 @@ const screens = [
             label: "District",
             placeholder: "Select district",
             dependsOn: "city",
-            dataSource: { endpoint: "/api/lookup/districts", method: "GET", params: { cityCode: "{{city}}" }, mapping: { key: "code", label: "name" } },
+            dataSource: {
+              endpoint: "/api/lookup/districts",
+              method: "GET",
+              params: { cityCode: "{{city}}" },
+              mapping: { key: "code", label: "name" },
+            },
             binding: { path: "district", scope: "journeyState" },
           },
           {
@@ -453,7 +451,12 @@ const screens = [
             label: "Sub-district / Village",
             placeholder: "Select sub-district",
             dependsOn: "district",
-            dataSource: { endpoint: "/api/lookup/sub-districts", method: "GET", params: { districtCode: "{{district}}" }, mapping: { key: "code", label: "name" } },
+            dataSource: {
+              endpoint: "/api/lookup/sub-districts",
+              method: "GET",
+              params: { districtCode: "{{district}}" },
+              mapping: { key: "code", label: "name" },
+            },
             binding: { path: "subDistrict", scope: "journeyState" },
           },
         ],
@@ -532,7 +535,7 @@ const screens = [
       {
         __component: "ui.rich-text",
         text: blocks(
-          "In line with the Ministry of Finance Regulation No. 112/2022, resident individual taxpayers (Indonesian citizens and foreign nationals with a valid identity card) use their National Identification Number (NIK) as their Taxpayer Identification Number (NPWP)."
+          "In line with the Ministry of Finance Regulation No. 112/2022, resident individual taxpayers (Indonesian citizens and foreign nationals with a valid identity card) use their National Identification Number (NIK) as their Taxpayer Identification Number (NPWP).",
         ),
       },
     ],
@@ -590,9 +593,7 @@ const screens = [
           method: "GET",
           mapping: { key: "code", label: "name" },
         },
-        validation: [
-          { rule: "required", message: "Industry category is required" },
-        ],
+        validation: [{ rule: "required", message: "Industry category is required" }],
       },
       {
         __component: "ui.text-input",
@@ -626,9 +627,7 @@ const screens = [
           { key: "probation", label: "Probation" },
         ],
         binding: { path: "employmentStatus", scope: "journeyState" },
-        validation: [
-          { rule: "required", message: "Employment status is required" },
-        ],
+        validation: [{ rule: "required", message: "Employment status is required" }],
       },
       {
         __component: "ui.text-input",
@@ -664,7 +663,12 @@ const screens = [
             label: "City / Regency",
             placeholder: "Select city",
             dependsOn: "employmentProvince",
-            dataSource: { endpoint: "/api/lookup/cities", method: "GET", params: { provinceCode: "{{employmentProvince}}" }, mapping: { key: "code", label: "name" } },
+            dataSource: {
+              endpoint: "/api/lookup/cities",
+              method: "GET",
+              params: { provinceCode: "{{employmentProvince}}" },
+              mapping: { key: "code", label: "name" },
+            },
             binding: { path: "employmentCity", scope: "journeyState" },
           },
           {
@@ -672,7 +676,12 @@ const screens = [
             label: "District",
             placeholder: "Select district",
             dependsOn: "employmentCity",
-            dataSource: { endpoint: "/api/lookup/districts", method: "GET", params: { cityCode: "{{employmentCity}}" }, mapping: { key: "code", label: "name" } },
+            dataSource: {
+              endpoint: "/api/lookup/districts",
+              method: "GET",
+              params: { cityCode: "{{employmentCity}}" },
+              mapping: { key: "code", label: "name" },
+            },
             binding: { path: "employmentDistrict", scope: "journeyState" },
           },
           {
@@ -680,7 +689,12 @@ const screens = [
             label: "Sub-district / Village",
             placeholder: "Select sub-district",
             dependsOn: "employmentDistrict",
-            dataSource: { endpoint: "/api/lookup/sub-districts", method: "GET", params: { districtCode: "{{employmentDistrict}}" }, mapping: { key: "code", label: "name" } },
+            dataSource: {
+              endpoint: "/api/lookup/sub-districts",
+              method: "GET",
+              params: { districtCode: "{{employmentDistrict}}" },
+              mapping: { key: "code", label: "name" },
+            },
             binding: { path: "employmentSubDistrict", scope: "journeyState" },
           },
         ],
@@ -756,9 +770,7 @@ const screens = [
           { key: "other", label: "Other" },
         ],
         binding: { path: "sourceOfIncome", scope: "journeyState" },
-        validation: [
-          { rule: "required", message: "Source of income is required" },
-        ],
+        validation: [{ rule: "required", message: "Source of income is required" }],
       },
       {
         __component: "ui.dropdown",
@@ -769,9 +781,7 @@ const screens = [
           { key: "gte100", label: "100 or more" },
         ],
         binding: { path: "numberOfDependents", scope: "journeyState" },
-        validation: [
-          { rule: "required", message: "Number of dependents is required" },
-        ],
+        validation: [{ rule: "required", message: "Number of dependents is required" }],
       },
       {
         __component: "ui.money-input",
@@ -791,9 +801,7 @@ const screens = [
           { key: "other", label: "Other" },
         ],
         binding: { path: "purposeOfFunds", scope: "journeyState" },
-        validation: [
-          { rule: "required", message: "Purpose of funds is required" },
-        ],
+        validation: [{ rule: "required", message: "Purpose of funds is required" }],
       },
       {
         __component: "ui.money-input",
@@ -860,18 +868,14 @@ const screens = [
           { key: "other", label: "Other address" },
         ],
         binding: { path: "residentialAddressSource", scope: "journeyState" },
-        validation: [
-          { rule: "required", message: "Residential address is required" },
-        ],
+        validation: [{ rule: "required", message: "Residential address is required" }],
       },
       {
         __component: "ui.text-input",
         label: "Address",
         placeholder: "Street address",
         binding: { path: "residentialAddress", scope: "journeyState" },
-        validation: [
-          { rule: "required", message: "Residential address is required" },
-        ],
+        validation: [{ rule: "required", message: "Residential address is required" }],
       },
       {
         __component: "ui.cascading-select",
@@ -888,7 +892,12 @@ const screens = [
             label: "City / Regency",
             placeholder: "Select city",
             dependsOn: "residentialProvince",
-            dataSource: { endpoint: "/api/lookup/cities", method: "GET", params: { provinceCode: "{{residentialProvince}}" }, mapping: { key: "code", label: "name" } },
+            dataSource: {
+              endpoint: "/api/lookup/cities",
+              method: "GET",
+              params: { provinceCode: "{{residentialProvince}}" },
+              mapping: { key: "code", label: "name" },
+            },
             binding: { path: "residentialCity", scope: "journeyState" },
           },
           {
@@ -896,7 +905,12 @@ const screens = [
             label: "District",
             placeholder: "Select district",
             dependsOn: "residentialCity",
-            dataSource: { endpoint: "/api/lookup/districts", method: "GET", params: { cityCode: "{{residentialCity}}" }, mapping: { key: "code", label: "name" } },
+            dataSource: {
+              endpoint: "/api/lookup/districts",
+              method: "GET",
+              params: { cityCode: "{{residentialCity}}" },
+              mapping: { key: "code", label: "name" },
+            },
             binding: { path: "residentialDistrict", scope: "journeyState" },
           },
           {
@@ -904,7 +918,12 @@ const screens = [
             label: "Sub-district / Village",
             placeholder: "Select sub-district",
             dependsOn: "residentialDistrict",
-            dataSource: { endpoint: "/api/lookup/sub-districts", method: "GET", params: { districtCode: "{{residentialDistrict}}" }, mapping: { key: "code", label: "name" } },
+            dataSource: {
+              endpoint: "/api/lookup/sub-districts",
+              method: "GET",
+              params: { districtCode: "{{residentialDistrict}}" },
+              mapping: { key: "code", label: "name" },
+            },
             binding: { path: "residentialSubDistrict", scope: "journeyState" },
           },
         ],
@@ -918,9 +937,7 @@ const screens = [
           { key: "family", label: "Family" },
         ],
         binding: { path: "residentialOwnershipStatus", scope: "journeyState" },
-        validation: [
-          { rule: "required", message: "Ownership status is required" },
-        ],
+        validation: [{ rule: "required", message: "Ownership status is required" }],
       },
       {
         __component: "ui.dropdown",
@@ -940,9 +957,7 @@ const screens = [
         label: "Correspondence address",
         placeholder: "Street address",
         binding: { path: "correspondenceAddress", scope: "journeyState" },
-        validation: [
-          { rule: "required", message: "Correspondence address is required" },
-        ],
+        validation: [{ rule: "required", message: "Correspondence address is required" }],
       },
     ],
     footer: [
@@ -1039,8 +1054,7 @@ const screens = [
     content_version: 1,
     meta: {
       title: "Statement of Consent",
-      subtitle:
-        "By continuing, you are providing all information and documents.",
+      subtitle: "By continuing, you are providing all information and documents.",
       showBack: true,
       showClose: true,
     },
@@ -1098,7 +1112,7 @@ const screens = [
       {
         __component: "ui.rich-text",
         text: blocks(
-          "I hereby declare that the information I have provided is accurate and complete, and I consent to Maybank processing my data in accordance with the Privacy Policy."
+          "I hereby declare that the information I have provided is accurate and complete, and I consent to Maybank processing my data in accordance with the Privacy Policy.",
         ),
       },
       {
@@ -1108,7 +1122,7 @@ const screens = [
       {
         __component: "ui.rich-text",
         text: blocks(
-          "By ticking the box below, I declare that I agree to receive information on other Maybank products and services."
+          "By ticking the box below, I declare that I agree to receive information on other Maybank products and services.",
         ),
       },
       {
@@ -1194,9 +1208,7 @@ const screens = [
       {
         __component: "ui.review-card",
         label: "NPWP details",
-        rows: [
-          { label: "NPWP number", source: { path: "npwpNumber", scope: "journeyState" } },
-        ],
+        rows: [{ label: "NPWP number", source: { path: "npwpNumber", scope: "journeyState" } }],
       },
       {
         __component: "ui.review-card",
@@ -1217,9 +1229,15 @@ const screens = [
         rows: [
           { label: "Source of income", source: { path: "sourceOfIncome", scope: "journeyState" } },
           { label: "Dependents", source: { path: "numberOfDependents", scope: "journeyState" } },
-          { label: "Monthly income", source: { path: "monthlyIncome", scope: "journeyState", format: "currency", currency: "IDR" } },
+          {
+            label: "Monthly income",
+            source: { path: "monthlyIncome", scope: "journeyState", format: "currency", currency: "IDR" },
+          },
           { label: "Purpose of funds", source: { path: "purposeOfFunds", scope: "journeyState" } },
-          { label: "Transaction amount", source: { path: "monthlyTransactionAmount", scope: "journeyState", format: "currency", currency: "IDR" } },
+          {
+            label: "Transaction amount",
+            source: { path: "monthlyTransactionAmount", scope: "journeyState", format: "currency", currency: "IDR" },
+          },
           { label: "Transaction frequency", source: { path: "monthlyTransactionFrequency", scope: "journeyState" } },
         ],
       },
@@ -1354,7 +1372,7 @@ function buildJourneyData(screenDocIds: Record<string, string>) {
   const s = screenDocIds;
 
   return {
-    journeyId: "ACCT_CA_APPLY",
+    flowId: "ACCT_CA_APPLY",
     name: "Apply Current Account",
     slug: "apply-ca",
     description: "Multi-step journey to open a Global Access Current Account",
@@ -1443,65 +1461,91 @@ function buildJourneyData(screenDocIds: Record<string, string>) {
       // direction "jump"  → find by target screenId in journey.screens[]
       // direction "finish"→ clearSession + navigation.reset to preStartScreen
 
-      { type: "user", stepCode: "MOBILE_NUMBER",
+      {
+        type: "user",
+        stepCode: "MOBILE_NUMBER",
         screen: s["ACCT_CA_MOBILE_NUMBER"],
         onSubmit: [{ actionId: "mobile-number-next", direction: "next" }],
       },
-      { type: "user", stepCode: "EMAIL_REGISTRATION",
+      {
+        type: "user",
+        stepCode: "EMAIL_REGISTRATION",
         screen: s["ACCT_CA_EMAIL_REGISTRATION"],
         onSubmit: [{ actionId: "email-next", direction: "next" }],
       },
-      { type: "user", stepCode: "EKTP_INSTRUCTIONS",
+      {
+        type: "user",
+        stepCode: "EKTP_INSTRUCTIONS",
         screen: s["ACCT_CA_EKTP_INSTRUCTIONS"],
         onSubmit: [{ actionId: "start-ektp", direction: "next" }],
       },
-      { type: "user", stepCode: "EKTP_CAPTURE",
+      {
+        type: "user",
+        stepCode: "EKTP_CAPTURE",
         screen: s["ACCT_CA_EKTP_CAPTURE"],
         onSubmit: [{ actionId: "ektp-captured", direction: "next" }],
       },
       // EKTP_REVIEW has two exits: Next (forward) and Retake (back to camera)
-      { type: "user", stepCode: "EKTP_REVIEW",
+      {
+        type: "user",
+        stepCode: "EKTP_REVIEW",
         screen: s["ACCT_CA_EKTP_REVIEW"],
         onSubmit: [
           { actionId: "ektp-review-next", direction: "next" },
-          { actionId: "retake",           direction: "back" },
+          { actionId: "retake", direction: "back" },
         ],
       },
-      { type: "user", stepCode: "NPWP_DETAILS",
+      {
+        type: "user",
+        stepCode: "NPWP_DETAILS",
         screen: s["ACCT_CA_NPWP_DETAILS"],
         onSubmit: [{ actionId: "npwp-next", direction: "next" }],
       },
-      { type: "user", stepCode: "EMPLOYMENT_DETAILS",
+      {
+        type: "user",
+        stepCode: "EMPLOYMENT_DETAILS",
         screen: s["ACCT_CA_EMPLOYMENT_DETAILS"],
         onSubmit: [{ actionId: "employment-next", direction: "next" }],
       },
-      { type: "user", stepCode: "FINANCIAL_DETAILS",
+      {
+        type: "user",
+        stepCode: "FINANCIAL_DETAILS",
         screen: s["ACCT_CA_FINANCIAL_DETAILS"],
         onSubmit: [{ actionId: "financial-next", direction: "next" }],
       },
-      { type: "user", stepCode: "RESIDENTIAL_DETAILS",
+      {
+        type: "user",
+        stepCode: "RESIDENTIAL_DETAILS",
         screen: s["ACCT_CA_RESIDENTIAL_DETAILS"],
         onSubmit: [{ actionId: "residential-next", direction: "next" }],
       },
-      { type: "user", stepCode: "EKYC_INSTRUCTIONS",
+      {
+        type: "user",
+        stepCode: "EKYC_INSTRUCTIONS",
         screen: s["ACCT_CA_EKYC_INSTRUCTIONS"],
         onSubmit: [{ actionId: "start-ekyc", direction: "next" }],
       },
       // EKYC_SELFIE: camera fires api_call; on FE result, actionId routes here
-      { type: "user", stepCode: "EKYC_SELFIE",
+      {
+        type: "user",
+        stepCode: "EKYC_SELFIE",
         screen: s["ACCT_CA_EKYC_SELFIE"],
         onSubmit: [
           { actionId: "ekyc-complete", direction: "next" },
-          { actionId: "ekyc-failed",   direction: "jump", target: "ACCT_CA_EKYC_INSTRUCTIONS" },
+          { actionId: "ekyc-failed", direction: "jump", target: "ACCT_CA_EKYC_INSTRUCTIONS" },
         ],
       },
-      { type: "user", stepCode: "STATEMENT_OF_CONSENT",
+      {
+        type: "user",
+        stepCode: "STATEMENT_OF_CONSENT",
         screen: s["ACCT_CA_STATEMENT_OF_CONSENT"],
         onSubmit: [{ actionId: "consent-next", direction: "next" }],
       },
       // CONFIRMATION: slide-to-confirm triggers "submit" → next screen is the
       // system step's associated screen (FINAL_SUBMISSION runs automatically)
-      { type: "user", stepCode: "CONFIRMATION",
+      {
+        type: "user",
+        stepCode: "CONFIRMATION",
         screen: s["ACCT_CA_CONFIRMATION"],
         onSubmit: [{ actionId: "submit", direction: "next" }],
       },
@@ -1519,9 +1563,9 @@ function buildJourneyData(screenDocIds: Record<string, string>) {
       },
 
       // ── Terminal screens (no onSubmit — journey ends here) ───────────────
-      { type: "user", stepCode: "SUCCESS_SCREEN",    screen: s["ACCT_CA_SUCCESS"] },
+      { type: "user", stepCode: "SUCCESS_SCREEN", screen: s["ACCT_CA_SUCCESS"] },
       { type: "user", stepCode: "INELIGIBLE_SCREEN", screen: s["ACCT_CA_INELIGIBLE"] },
-      { type: "user", stepCode: "SUBMIT_FAILED",     screen: s["ACCT_CA_SUBMIT_FAILED"] },
+      { type: "user", stepCode: "SUBMIT_FAILED", screen: s["ACCT_CA_SUBMIT_FAILED"] },
     ],
   };
 }
@@ -1562,13 +1606,9 @@ export async function seedApplyCa(strapi: StrapiInstance) {
 
   // 4. Create & publish journey
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const journey = await strapi
-    .documents("api::journey.journey")
-    .create({ data: journeyData as any });
+  const journey = await strapi.documents("api::journey.journey").create({ data: journeyData as any });
 
-  await strapi
-    .documents("api::journey.journey")
-    .publish({ documentId: journey.documentId });
+  await strapi.documents("api::journey.journey").publish({ documentId: journey.documentId });
 
   console.log(`[seed] ✓ Journey created & published: ACCT_CA_APPLY`);
   console.log("[seed] Done.");
@@ -1620,9 +1660,7 @@ export async function updateApplyCaJourney(strapi: StrapiInstance) {
   }
 
   if (missing.length > 0) {
-    console.error(
-      `[update] Aborting — ${missing.length} screen(s) missing. Run SEED_DATA=apply-ca first.`
-    );
+    console.error(`[update] Aborting — ${missing.length} screen(s) missing. Run SEED_DATA=apply-ca first.`);
     return;
   }
 
@@ -1644,9 +1682,7 @@ export async function updateApplyCaJourney(strapi: StrapiInstance) {
   });
 
   // 4. Also build the screens[] relation (oneToMany on Journey)
-  const screensRelation = SCREEN_IDS.filter((id) => screenDocIds[id]).map(
-    (id) => ({ documentId: screenDocIds[id] })
-  );
+  const screensRelation = SCREEN_IDS.filter((id) => screenDocIds[id]).map((id) => ({ documentId: screenDocIds[id] }));
 
   // 5. Update the journey draft
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -1664,12 +1700,10 @@ export async function updateApplyCaJourney(strapi: StrapiInstance) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   await strapi.documents("api::journey.journey").update({
     documentId: journey.documentId,
-    data: { content_version: (journey.content_version ?? 1) + 1 } as any,
+    data: { content_version: (journey.version ?? 1) + 1 } as any,
   });
 
-  await strapi
-    .documents("api::journey.journey")
-    .publish({ documentId: journey.documentId });
+  await strapi.documents("api::journey.journey").publish({ documentId: journey.documentId });
 
   console.log("[update] ✓ Journey republished: ACCT_CA_APPLY");
   console.log("[update] Done.");

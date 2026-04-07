@@ -1,14 +1,26 @@
 {
   "collectionName": "components_ui_buttons",
-  "info": { "displayName": "Button" },
+  "info": { "displayName": "Button", "description": "Interactive button. type: ui.button" },
   "options": {},
   "attributes": {
     "componentId": { "type": "string" },
     "testId": { "type": "string" },
-    "label": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
-    "variant": { "type": "enumeration", "enum": ["primary", "secondary", "ghost", "danger"], "default": "primary" },
-    "guardRules": { "type": "relation", "relation": "manyToMany", "target": "api::rule-set.rule-set" },
-    "visibility": { "type": "component", "component": "sdui.visibility" },
+    "label": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "name": { "type": "string" },
+    "variant": {
+      "type": "enumeration",
+      "enum": ["primary", "secondary", "ghost", "danger", "promo"],
+      "default": "primary"
+    },
+    "enabled": { "type": "boolean", "default": true },
+    "visible": { "type": "boolean", "default": true },
+    "action": { "type": "json" },
+    "icon": { "type": "json" },
+    "placement": { "type": "json" },
     "span": { "type": "integer" }
   }
 }

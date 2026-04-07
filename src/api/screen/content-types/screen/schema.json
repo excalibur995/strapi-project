@@ -20,6 +20,10 @@
       "type": "uid",
       "required": true
     },
+    "screenKey": {
+      "type": "string",
+      "required": true
+    },
     "meta": {
       "type": "component",
       "component": "sdui.screen-meta",
@@ -28,9 +32,11 @@
     "header": {
       "type": "dynamiczone",
       "components": [
+        "ui.progress-bar",
+        "ui.text",
+        "ui.image-preview",
         "ui.hero",
         "ui.banner",
-        "ui.image-preview",
         "ui.section-label",
         "ui.tab-group",
         "ui.subtitle-label-section"
@@ -49,7 +55,9 @@
         "ui.radio-group-async",
         "ui.checkbox-list",
         "ui.checkbox-list-async",
+        "ui.checkbox",
         "ui.text-input",
+        "ui.date-input",
         "ui.dropdown",
         "ui.dropdown-async",
         "ui.cascading-select",
@@ -59,14 +67,15 @@
         "ui.image-preview",
         "ui.item-list",
         "ui.review-card",
-        "ui.kv-row",
+        "ui.card",
         "ui.money-display",
         "ui.badge",
         "ui.tab-group",
         "ui.passcode-input",
         "ui.local-state",
         "ui.rich-text",
-        "ui.link"
+        "ui.link",
+        "ui.divider"
       ]
     },
     "footer": {
@@ -74,25 +83,12 @@
       "components": [
         "ui.slide-to-confirm",
         "ui.button",
-        "ui.banner"
+        "ui.banner",
+        "ui.divider"
       ]
     },
-    "hideProgressBar": {
-      "type": "boolean",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "default": false
-    },
-    "api_version": {
-      "type": "string",
-      "default": "v1",
-      "required": true
-    },
-    "content_version": {
-      "type": "integer",
+    "version": {
+      "type": "decimal",
       "required": true,
       "default": 1
     }

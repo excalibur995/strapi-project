@@ -1,8 +1,8 @@
 {
-  "collectionName": "components_ui_review_cards",
+  "collectionName": "components_ui_dividers",
   "info": {
-    "displayName": "Review Card",
-    "description": "Summary section with key-value options. type: ui.review-card"
+    "displayName": "Divider",
+    "description": "Visual divider line with optional label. type: ui.divider"
   },
   "options": {},
   "attributes": {
@@ -13,9 +13,7 @@
       "pluginOptions": { "i18n": { "localized": true } }
     },
     "name": { "type": "string" },
-    "enabled": { "type": "boolean", "default": true },
     "visible": { "type": "boolean", "default": true },
-    "options": { "type": "json", "required": true },
-    "span": { "type": "integer" }
+    "span": { "type": "integer", "default": 12 }
   }
 }

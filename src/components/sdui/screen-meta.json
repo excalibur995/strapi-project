@@ -2,32 +2,27 @@
   "collectionName": "components_sdui_screen_metas",
   "info": {
     "displayName": "Screen Meta",
-    "description": "Screen-level title, subtitle, and navigation behaviour"
+    "description": "Screen-level title bar, subtitle, and navigation behaviour"
   },
   "options": {},
   "attributes": {
+    "label": {
+      "type": "string",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
     "title": {
       "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "required": false
+      "pluginOptions": { "i18n": { "localized": true } }
     },
     "subtitle": {
       "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
+      "pluginOptions": { "i18n": { "localized": true } }
     },
-    "showBack": {
+    "enableBackButton": {
       "type": "boolean",
       "default": true
     },
-    "showClose": {
+    "enableCloseButton": {
       "type": "boolean",
       "default": false
     },

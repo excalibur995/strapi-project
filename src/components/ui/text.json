@@ -5,9 +5,20 @@
   "attributes": {
     "componentId": { "type": "string" },
     "testId": { "type": "string" },
-    "label": { "type": "text", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
-    "variant": { "type": "enumeration", "enum": ["title", "body", "caption", "label"], "default": "body" },
-    "visibility": { "type": "component", "component": "sdui.visibility" },
+    "label": {
+      "type": "text",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "name": { "type": "string" },
+    "variant": {
+      "type": "enumeration",
+      "enum": ["title", "subtitle", "body", "note", "caption", "label"],
+      "default": "body"
+    },
+    "enabled": { "type": "boolean", "default": true },
+    "visible": { "type": "boolean", "default": true },
+    "valueSource": { "type": "json" },
+    "placement": { "type": "json" },
     "span": { "type": "integer" }
   }
 }

@@ -1,0 +1,18 @@
+{
+  "collectionName": "components_ui_progress_bars",
+  "info": {
+    "displayName": "Progress Bar",
+    "description": "Step progress indicator. type: ui.progress-bar"
+  },
+  "options": {},
+  "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
+    "name": { "type": "string" },
+    "currentStep": { "type": "integer", "required": true },
+    "maxStep": { "type": "integer", "required": true },
+    "enabled": { "type": "boolean", "default": true },
+    "visible": { "type": "boolean", "default": true },
+    "span": { "type": "integer", "default": 12 }
+  }
+}

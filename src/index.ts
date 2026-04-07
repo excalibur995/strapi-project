@@ -1,16 +1,17 @@
 import type { Core } from "@strapi/strapi";
 import { errors } from "@strapi/utils";
 import { seedApplyCa, updateApplyCaJourney } from "./seeds/apply-ca";
+import { seedApplyCaV2 } from "./seeds/apply-ca-v2";
+
 const { ValidationError } = errors;
 
 export default {
   /**
-   * An asynchronous register function that runs before
-   * your application is initialized.
-   *
-   * This gives you an opportunity to extend code.
+   * Runs before the application is initialized.
+   * Used to register middleware and extend Strapi behaviour.
    */
   register({ strapi }: { strapi: Core.Strapi }) {
+    // Block publish if neither api_version nor content_version has changed.
     strapi.documents.use(async (context, next) => {
       const targetUids = ["api::screen.screen", "api::journey.journey", "api::rule-set.rule-set"];
 
@@ -30,45 +31,44 @@ export default {
           });
 
           if (incomingDraft) {
-            const oldApi = currentPublished.api_version;
-            const oldContent = currentPublished.content_version;
-
-            const newApi = incomingDraft.api_version;
-            const newContent = incomingDraft.content_version;
-
-            if (oldApi === newApi && oldContent === newContent) {
+            if (currentPublished.version === incomingDraft.version) {
               throw new ValidationError(
-                "Before publishing, increase either the api_version or content_version. Publishing is blocked because both versions are unchanged.",
+                "Before publishing, increase the version. Publishing is blocked because the version is unchanged.",
               );
             }
           }
         }
       }
 
-      // Continue to next middleware or standard execution
       return next();
     });
   },
 
   /**
-   * An asynchronous bootstrap function that runs before
-   * your application gets started.
+   * Runs before the application starts.
    *
-   * Seeding (creates screens + journey if not present):
-   *   SEED_DATA=apply-ca npm run develop
-   *   SEED_DATA=true npm run develop
+   * Seeding — creates screens + journey if not already present:
+   *   SEED_DATA=apply-ca      npm run develop   (legacy SDUI structure)
+   *   SEED_DATA=apply-ca-v2   npm run develop   (baseline flat structure)
+   *   SEED_DATA=true          npm run develop   (alias for apply-ca)
    *
-   * Updating (patches existing journey steps + screen relations):
+   * Updating — patches existing journey steps + screen relations:
    *   UPDATE_JOURNEY=apply-ca npm run develop
-   *   UPDATE_JOURNEY=true npm run develop
+   *   UPDATE_JOURNEY=true     npm run develop
    */
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     const seedFlag = process.env.SEED_DATA;
+
     if (seedFlag === "true" || seedFlag === "apply-ca") {
       await seedApplyCa(strapi);
     }
 
+    if (seedFlag === "apply-ca-v2") {
+      await seedApplyCaV2(strapi);
+    }
+
     const updateFlag = process.env.UPDATE_JOURNEY;
+
     if (updateFlag === "true" || updateFlag === "apply-ca") {
       await updateApplyCaJourney(strapi);
     }

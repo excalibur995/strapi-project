@@ -16,12 +16,7 @@
     }
   },
   "attributes": {
-    "slug": {
-      "type": "uid",
-      "targetField": "name",
-      "required": true
-    },
-    "journeyId": {
+    "flowId": {
       "type": "uid",
       "pluginOptions": {
         "i18n": {
@@ -29,36 +24,6 @@
         }
       },
       "required": true
-    },
-    "name": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "required": true
-    },
-    "description": {
-      "type": "string",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      }
-    },
-    "segment": {
-      "type": "enumeration",
-      "default": "ALL",
-      "enum": [
-        "ETB",
-        "NTB",
-        "ALL"
-      ]
-    },
-    "checkpointEnabled": {
-      "type": "boolean",
-      "default": false
     },
     "screens": {
       "type": "relation",
@@ -66,9 +31,6 @@
       "target": "api::screen.screen"
     },
     "initialState": {
-      "type": "json"
-    },
-    "analytics": {
       "type": "json"
     },
     "presentation": {
@@ -89,28 +51,6 @@
         "formSheet"
       ]
     },
-    "steps": {
-      "type": "component",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "component": "sdui.steps",
-      "repeatable": true
-    },
-    "navigator": {
-      "type": "enumeration",
-      "pluginOptions": {
-        "i18n": {
-          "localized": true
-        }
-      },
-      "enum": [
-        "CurrentAccountJourneyNavigator",
-        "ETBOnboardCCRegisterJourney"
-      ]
-    },
     "preInitiateScreen": {
       "type": "string",
       "pluginOptions": {
@@ -120,15 +60,18 @@
       },
       "required": true
     },
-    "api_version": {
-      "type": "string",
-      "default": "v1",
-      "required": true
-    },
-    "content_version": {
-      "type": "integer",
+    "version": {
+      "type": "decimal",
       "required": true,
       "default": 1
+    },
+    "navigator": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     }
   }
 }

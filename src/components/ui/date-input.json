@@ -1,8 +1,8 @@
 {
-  "collectionName": "components_ui_text_inputs",
+  "collectionName": "components_ui_date_inputs",
   "info": {
-    "displayName": "Text Input",
-    "description": "Single-line text input. type: ui.text-input"
+    "displayName": "Date Input",
+    "description": "Date picker input. type: ui.date-input"
   },
   "options": {},
   "attributes": {
@@ -18,25 +18,15 @@
       "type": "string",
       "pluginOptions": { "i18n": { "localized": true } }
     },
-    "helperText": {
-      "type": "string",
-      "pluginOptions": { "i18n": { "localized": true } }
-    },
-    "prefix": { "type": "string" },
-    "inputMode": {
-      "type": "enumeration",
-      "enum": ["text", "numeric", "email", "phone"],
-      "default": "text"
-    },
+    "displayFormat": { "type": "string", "default": "dd MMM yyyy" },
+    "valueFormat": { "type": "string", "default": "yyyy-MM-dd" },
     "defaultValue": { "type": "string" },
-    "minLength": { "type": "integer" },
-    "maxLength": { "type": "integer" },
     "required": { "type": "boolean", "default": false },
     "enabled": { "type": "boolean", "default": true },
     "editable": { "type": "boolean", "default": true },
     "visible": { "type": "boolean", "default": true },
     "validations": { "type": "json" },
     "conditions": { "type": "json" },
-    "span": { "type": "integer" }
+    "span": { "type": "integer", "default": 12 }
   }
 }

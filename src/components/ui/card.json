@@ -1,0 +1,31 @@
+{
+  "collectionName": "components_ui_cards",
+  "info": {
+    "displayName": "Card",
+    "description": "Product/info card with dynamic bindings. type: ui.card"
+  },
+  "options": {},
+  "attributes": {
+    "componentId": { "type": "string" },
+    "testId": { "type": "string" },
+    "name": { "type": "string" },
+    "variant": {
+      "type": "enumeration",
+      "enum": ["default", "compact"],
+      "default": "default"
+    },
+    "title": {
+      "type": "string",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "subtitle": {
+      "type": "string",
+      "pluginOptions": { "i18n": { "localized": true } }
+    },
+    "icon": { "type": "string" },
+    "valueSource": { "type": "json" },
+    "enabled": { "type": "boolean", "default": true },
+    "visible": { "type": "boolean", "default": true },
+    "span": { "type": "integer", "default": 12 }
+  }
+}

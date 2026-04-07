@@ -447,47 +447,23 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
-    analytics: Schema.Attribute.JSON;
-    api_version: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'v1'>;
-    checkpointEnabled: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
-    content_version: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<1>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-    description: Schema.Attribute.String &
+    flowId: Schema.Attribute.UID &
+      Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
     initialState: Schema.Attribute.JSON;
-    journeyId: Schema.Attribute.UID &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<
       'oneToMany',
       'api::journey.journey'
     >;
-    name: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    navigator: Schema.Attribute.Enumeration<
-      ['CurrentAccountJourneyNavigator', 'ETBOnboardCCRegisterJourney']
-    > &
+    navigator: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
@@ -519,18 +495,12 @@ export interface ApiJourneyJourney extends Struct.CollectionTypeSchema {
       Schema.Attribute.DefaultTo<'card'>;
     publishedAt: Schema.Attribute.DateTime;
     screens: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
-    segment: Schema.Attribute.Enumeration<['ETB', 'NTB', 'ALL']> &
-      Schema.Attribute.DefaultTo<'ALL'>;
-    slug: Schema.Attribute.UID<'name'> & Schema.Attribute.Required;
-    steps: Schema.Attribute.Component<'sdui.steps', true> &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    version: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<1>;
   };
 }
 
@@ -644,9 +614,6 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
-    api_version: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'v1'>;
     body: Schema.Attribute.DynamicZone<
       [
         'ui.section-label',
@@ -659,7 +626,9 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
         'ui.radio-group-async',
         'ui.checkbox-list',
         'ui.checkbox-list-async',
+        'ui.checkbox',
         'ui.text-input',
+        'ui.date-input',
         'ui.dropdown',
         'ui.dropdown-async',
         'ui.cascading-select',
@@ -669,7 +638,7 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
         'ui.image-preview',
         'ui.item-list',
         'ui.review-card',
-        'ui.kv-row',
+        'ui.card',
         'ui.money-display',
         'ui.badge',
         'ui.tab-group',
@@ -677,111 +646,40 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
         'ui.local-state',
         'ui.rich-text',
         'ui.link',
+        'ui.divider',
       ]
     >;
-    content_version: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<1>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
     footer: Schema.Attribute.DynamicZone<
-      ['ui.slide-to-confirm', 'ui.button', 'ui.banner']
+      ['ui.slide-to-confirm', 'ui.button', 'ui.banner', 'ui.divider']
     >;
     header: Schema.Attribute.DynamicZone<
       [
+        'ui.progress-bar',
+        'ui.text',
+        'ui.image-preview',
         'ui.hero',
         'ui.banner',
-        'ui.image-preview',
         'ui.section-label',
         'ui.tab-group',
         'ui.subtitle-label-section',
       ]
     >;
-    hideProgressBar: Schema.Attribute.Boolean &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
     meta: Schema.Attribute.Component<'sdui.screen-meta', false> &
       Schema.Attribute.Required;
     publishedAt: Schema.Attribute.DateTime;
     screenId: Schema.Attribute.UID & Schema.Attribute.Required;
+    screenKey: Schema.Attribute.String & Schema.Attribute.Required;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
-  };
-}
-
-export interface ApiStaticScreenStaticScreen
-  extends Struct.CollectionTypeSchema {
-  collectionName: 'static_screens';
-  info: {
-    displayName: 'Static Screen';
-    pluralName: 'static-screens';
-    singularName: 'static-screen';
-  };
-  options: {
-    draftAndPublish: true;
-  };
-  attributes: {
-    api_version: Schema.Attribute.String & Schema.Attribute.Required;
-    content_version: Schema.Attribute.Integer & Schema.Attribute.Required;
-    contents: Schema.Attribute.DynamicZone<
-      [
-        'ui.text',
-        'ui.text-input',
-        'ui.tab-group',
-        'ui.slide-to-confirm',
-        'ui.section-label',
-        'ui.row',
-        'ui.rich-text',
-        'ui.review-card',
-        'ui.radio-group',
-        'ui.radio-group-async',
-        'ui.passcode-input',
-        'ui.option',
-        'ui.money-input',
-        'ui.money-display',
-        'ui.local-state',
-        'ui.list-item',
-        'ui.link',
-        'ui.kv-row',
-        'ui.item-list',
-        'ui.image-preview',
-        'ui.icon-text',
-        'ui.hero',
-        'ui.dropdown',
-        'ui.dropdown-async',
-        'ui.checkbox-list',
-        'ui.checkbox-list-async',
-        'ui.cascading-select',
-        'ui.cascading-select-tier',
-        'ui.camera-capture',
-        'ui.button',
-        'ui.banner',
-        'ui.badge',
-        'ui.account-selector',
-      ]
-    >;
-    createdAt: Schema.Attribute.DateTime;
-    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
-    locale: Schema.Attribute.String & Schema.Attribute.Private;
-    localizations: Schema.Attribute.Relation<
-      'oneToMany',
-      'api::static-screen.static-screen'
-    > &
-      Schema.Attribute.Private;
-    publishedAt: Schema.Attribute.DateTime;
-    screenId: Schema.Attribute.UID & Schema.Attribute.Required;
-    updatedAt: Schema.Attribute.DateTime;
-    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
-      Schema.Attribute.Private;
+    version: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<1>;
   };
 }
 
@@ -1300,7 +1198,6 @@ declare module '@strapi/strapi' {
       'api::lang.lang': ApiLangLang;
       'api::rule-set.rule-set': ApiRuleSetRuleSet;
       'api::screen.screen': ApiScreenScreen;
-      'api::static-screen.static-screen': ApiStaticScreenStaticScreen;
       'plugin::content-releases.release': PluginContentReleasesRelease;
       'plugin::content-releases.release-action': PluginContentReleasesReleaseAction;
       'plugin::i18n.locale': PluginI18NLocale;
