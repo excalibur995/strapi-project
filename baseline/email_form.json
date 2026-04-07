@@ -1,0 +1,167 @@
+{
+    "screenId": "email_form",
+    "screenKey": "EMAIL_FORM",
+    "type": "dynamic",
+    "description": "",
+    "version": 1,
+    "enabled": true,
+    "header": [
+        {
+            "id": "screenHeader",
+            "label": "Apply",
+            "name": "screenHeader",
+            "type": "titleBar",
+            "enabled": true,
+            "visible": true,
+            "enableBackButton": true,
+            "enableCloseButton": true,
+            "span": 12
+        },
+        {
+            "id": "progressBar",
+            "name": "progressBar",
+            "type": "progressBar",
+            "enabled": true,
+            "visible": true,
+            "data": {
+                "step": {
+                    "current": 2,
+                    "max": 11
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "productName",
+            "label": "",
+            "name": "productName",
+            "type": "text",
+            "variant": "subtitle",
+            "enabled": true,
+            "visible": true,
+            "valueSource": {
+                "type": "binding",
+                "path": "product.name"
+            },
+            "span": 12
+        },
+        {
+            "id": "detailsTitle",
+            "label": "Employment details",
+            "name": "detailsTitle",
+            "type": "text",
+            "variant": "title",
+            "enabled": true,
+            "visible": true,
+            "span": 12
+        },
+        {
+            "id": "detailsTitle",
+            "label": "Fill in your email address",
+            "name": "detailsTitle",
+            "type": "text",
+            "variant": "subtitle",
+            "enabled": true,
+            "visible": true,
+            "span": 12
+        }
+    ],
+    "body": [
+        {
+            "id": "emailAddress",
+            "label": "Email address",
+            "name": "emailAddress",
+            "type": "textInput",
+            "defaultValue": "",
+            "maxLength": 200,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "placeholder": "Enter email address",
+            "span": 12,
+            "inputMode": "email"
+        },
+        {
+            "id": "confirmEmailAddress",
+            "label": "Confirm email address",
+            "name": "confirmEmailAddress",
+            "type": "textInput",
+            "defaultValue": "",
+            "maxLength": 200,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "placeholder": "Re-enter email address",
+            "span": 12,
+            "inputMode": "email",
+            "validations": [
+                {
+                    "type": "MATCH_FIELD",
+                    "field": "emailAddress",
+                    "message": "Email addresses do not match"
+                }
+            ]
+        }
+    ],
+    "footer": [
+        {
+            "id": "nextButton",
+            "label": "Next",
+            "name": "nextButton",
+            "type": "button",
+            "variant": "primary",
+            "enabled": true,
+            "visible": true,
+            "action": {
+                "type": "NEXT_SCREEN"
+            },
+            "span": 12
+        },
+        {
+            "id": "footerDivider",
+            "label": "Or continue with an account",
+            "name": "footerDivider",
+            "type": "divider",
+            "visible": true,
+            "span": 12
+        },
+        {
+            "id": "googleAccountButton",
+            "label": "Continue with Google",
+            "name": "googleAccountButton",
+            "type": "button",
+            "variant": "secondary",
+            "enabled": true,
+            "visible": true,
+            "icon": {
+                "name": "googleLogo",
+                "position": "left"
+            },
+            "action": {
+                "type": "SOCIAL_LOGIN",
+                "provider": "GOOGLE"
+            },
+            "span": 12
+        },
+        {
+            "id": "appleAccountButton",
+            "label": "Continue with Apple",
+            "name": "appleAccountButton",
+            "type": "button",
+            "variant": "secondary",
+            "enabled": true,
+            "visible": true,
+            "icon": {
+                "name": "appleLogo",
+                "position": "left"
+            },
+            "action": {
+                "type": "SOCIAL_LOGIN",
+                "provider": "APPLE"
+            },
+            "span": 12
+        }
+    ]
+}

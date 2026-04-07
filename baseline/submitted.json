@@ -1,0 +1,116 @@
+{
+    "screenId": "applySubmitted",
+    "screenKey": "APPLY_SUBMITTED",
+    "type": "dynamic",
+    "description": "",
+    "version": 1,
+    "enabled": true,
+    "header": [],
+    "body": [
+        {
+            "id": "ektpImagePreview",
+            "label": "E-KTP upload",
+            "name": "ektpImagePreview",
+            "type": "image",
+            "enabled": true,
+            "visible": true,
+            "placement": {
+                "horizontal": "center"
+            },
+            "valueSource": {
+                "type": "binding",
+                "path": "urlToImage"
+            },
+            "span": 12
+        },
+        {
+            "id": "submittedTitle",
+            "label": "Application in progress",
+            "name": "title",
+            "type": "text",
+            "variant": "title",
+            "enabled": true,
+            "visible": true,
+            "placement": {
+                "horizontal": "center"
+            },
+            "span": 12
+        },
+        {
+            "id": "submittedApplyTime",
+            "label": "",
+            "name": "applyTime",
+            "type": "text",
+            "variant": "subtitle",
+            "enabled": true,
+            "visible": true,
+            "placement": {
+                "horizontal": "center"
+            },
+            "valueSource": {
+                "type": "binding",
+                "path": "apply.time"
+            },
+            "span": 12
+        },
+        {
+            "id": "submittedApplySummary",
+            "name": "applySummary",
+            "type": "summaryList",
+            "enabled": true,
+            "visible": true,
+            "items": [
+                {
+                    "id": "submittedName",
+                    "label": "Name",
+                    "value": ""
+                },
+                {
+                    "id": "submittedApplicationType",
+                    "label": "Application type",
+                    "value": ""
+                },
+                {
+                    "id": "submittedRegistrationNumber",
+                    "label": "Registration number",
+                    "value": ""
+                },
+                {
+                    "id": "submittedEmailAddress",
+                    "label": "Email address",
+                    "value": ""
+                }
+            ],
+            "span": 12
+        },
+        {
+            "id": "submittedNote",
+            "title": "Note:",
+            "label": "Your account will be activated once the data verification is successful. A confirmation email will be sent to you after the process is completed.",
+            "name": "note",
+            "type": "text",
+            "variant": "note",
+            "enabled": true,
+            "visible": true,
+            "placement": {
+                "horizontal": "center"
+            },
+            "span": 12
+        }
+    ],
+    "footer": [
+        {
+            "id": "doneButton",
+            "label": "Done",
+            "name": "doneButton",
+            "type": "button",
+            "variant": "primary",
+            "enabled": true,
+            "visible": true,
+            "action": {
+                "type": "NEXT_SCREEN"
+            },
+            "span": 12
+        }
+    ]
+}

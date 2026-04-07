@@ -1,0 +1,524 @@
+{
+    "screenId": "employment_details_form",
+    "screenKey": "EMPLOYMENT_DETAILS_FORM",
+    "type": "dynamic",
+    "description": "",
+    "version": 1,
+    "enabled": true,
+    "header": [
+        {
+            "id": "screenHeader",
+            "label": "Apply",
+            "name": "screenHeader",
+            "type": "titleBar",
+            "enabled": true,
+            "visible": true,
+            "enableBackButton": true,
+            "enableCloseButton": true,
+            "span": 12
+        },
+        {
+            "id": "progressBar",
+            "name": "progressBar",
+            "type": "progressBar",
+            "enabled": true,
+            "visible": true,
+            "data": {
+                "step": {
+                    "current": 5,
+                    "max": 11
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "productName",
+            "label": "",
+            "name": "productName",
+            "type": "text",
+            "variant": "subtitle",
+            "enabled": true,
+            "visible": true,
+            "valueSource": {
+                "type": "binding",
+                "path": "product.name"
+            },
+            "span": 12
+        },
+        {
+            "id": "detailsTitle",
+            "label": "Employment details",
+            "name": "detailsTitle",
+            "type": "text",
+            "variant": "title",
+            "enabled": true,
+            "visible": true,
+            "span": 12
+        }
+    ],
+    "body": [
+        {
+            "id": "employmentOccupation",
+            "label": "Occupation",
+            "name": "occupation",
+            "type": "select",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "defaultValue": null,
+            "placeholder": "Select occupation",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/occupation",
+                "valueKey": "code",
+                "displayKey": "desc"
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentIndustryCategory",
+            "label": "Industry Category",
+            "name": "industryCategory",
+            "type": "select",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "defaultValue": null,
+            "placeholder": "Select industry category",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/industryCategory",
+                "valueKey": "code",
+                "displayKey": "desc"
+            },
+            "conditions": {
+                "visibility": {
+                    "field": "occupation",
+                    "operator": "NOT_EMPTY"
+                } 
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentCompanyName",
+            "label": "Company name",
+            "name": "companyName",
+            "type": "textInput",
+            "defaultValue": "",
+            "maxLength": 200,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "placeholder": "Enter company name",
+            "span": 12,
+            "inputMode": "text",
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            }
+        },
+        {
+            "id": "employmentPositionJobTitle",
+            "label": "Position/Job title",
+            "name": "positionJobTitle",
+            "type": "select",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "defaultValue": null,
+            "placeholder": "Select position/job title",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/positionJobTitle",
+                "valueKey": "code",
+                "displayKey": "desc"
+            },
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentCompanyCategory",
+            "label": "Company category",
+            "name": "companyCategory",
+            "type": "select",
+            "defaultValue": null,
+            "placeholder": "Select company category",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/companyCategory",
+                "valueKey": "code",
+                "displayKey": "desc"
+            },
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentStatus",
+            "label": "Employment Status",
+            "name": "employmentStatus",
+            "type": "select",
+            "defaultValue": null,
+            "placeholder": "Select employment status",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/employmentStatus",
+                "valueKey": "code",
+                "displayKey": "desc"
+            },
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentOfficePhoneNumber",
+            "label": "Office phone number",
+            "name": "officePhoneNumber",
+            "type": "textInput",
+            "defaultValue": "",
+            "maxLength": 12,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "prefix": "+62",
+            "inputMode": "numeric",
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentDateJoined",
+            "label": "Datejoined",
+            "name": "dateJoined",
+            "type": "date",
+            "placeholder": "Select date joined",
+            "displayFormat": "dd MMM yyyy",
+            "valueFormat": "yyyy-MM-dd",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "validations": [
+                {
+                    "type": "NO_FUTURE_DATE",
+                    "message": "Date cannot be in the future"
+                }
+            ],
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentOfficeAddress",
+            "label": "Office address",
+            "name": "officeAddress",
+            "type": "textInput",
+            "defaultValue": "",
+            "placeholder": "Enter office address",
+            "maxLength": 300,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "inputMode": "text",
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentProvince",
+            "label": "Province",
+            "name": "province",
+            "type": "select",
+            "defaultValue": null,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "placeholder": "Select province",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/province",
+                "valueKey": "code",
+                "displayKey": "desc"
+            },
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentCity",
+            "label": "City/Regency",
+            "name": "city",
+            "type": "select",
+            "defaultValue": null,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "placeholder": "Select city/regency",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/city",
+                "valueKey": "code",
+                "displayKey": "desc",
+                "dependencies": [
+                    {
+                        "field": "employmentProvince",
+                        "param": "province"
+                    }
+                ]
+            },
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentDistrict",
+            "label": "District",
+            "name": "district",
+            "type": "select",
+            "defaultValue": null,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "placeholder": "Select district",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/district",
+                "valueKey": "code",
+                "displayKey": "desc",
+                "dependencies": [
+                    {
+                        "field": "employmentProvince",
+                        "param": "province"
+                    },
+                    {
+                        "field": "employmentCity",
+                        "param": "city"
+                    }
+                ]
+            },
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentSubdistrict",
+            "label": "Sub-district/Village",
+            "name": "subdistrict",
+            "type": "select",
+            "defaultValue": null,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "placeholder": "Select sub-district/village",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/subdistrict",
+                "valueKey": "code",
+                "displayKey": "desc",
+                "dependencies": [
+                    {
+                        "field": "employmentProvince",
+                        "param": "province"
+                    },
+                    {
+                        "field": "employmentCity",
+                        "param": "city"
+                    },
+                    {
+                        "field": "employmentDistrict",
+                        "param": "district"
+                    }
+                ]
+            },
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentAddressRT",
+            "label": "RT",
+            "name": "addressRT",
+            "type": "textInput",
+            "defaultValue": "",
+            "maxLength": 3,
+            "required": false,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "placeholder": "Enter RT",
+            "span": 6,
+            "inputMode": "numeric",
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "validations": [
+                {
+                    "type": "REGEX",
+                    "pattern": "^[0-9]{1,3}$",
+                    "message": "RT must be 1-3 digits (numbers only)"
+                }
+            ]
+        },
+        {
+            "id": "employmentAddressRW",
+            "label": "RW",
+            "name": "addressRW",
+            "type": "textInput",
+            "defaultValue": "",
+            "maxLength": 3, 
+            "required": false,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "placeholder": "Enter RW",
+            "span": 6,
+            "inputMode": "numeric",
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "validations": [
+                {
+                    "type": "REGEX",
+                    "pattern": "^[0-9]{1,3}$",
+                    "message": "RW must be 1-3 digits (numbers only)"
+                }
+            ]
+        },
+        {
+            "id": "employmentPostcode",
+            "label": "Postcode",
+            "name": "postcode",
+            "type": "select",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": false,
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/postcodes",
+                "valueKey": "code",
+                "displayKey": "desc",
+                "dependencies": [
+                    {
+                        "field": "employmentProvince",
+                        "param": "province"
+                    },
+                    {
+                        "field": "employmentCity",
+                        "param": "city"
+                    },
+                    {
+                        "field": "employmentDistrict",
+                        "param": "district"
+                    },
+                    {
+                        "field": "employmentSubdistrict",
+                        "param": "subdistrict"
+                    }
+                ]
+            },
+            "conditions": {
+                "visibility": {
+                    "field": "industryCategory",
+                    "operator": "NOT_EMPTY"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "employmentDeclarationCheckbox",
+            "label": "I hereby declare that I have no relationship with any government/state officials, politicians or public figures",
+            "name": "declarationCheckbox",
+            "title": "Declaration:",
+            "type": "checkbox",
+            "defaultValue": false,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "span": 12
+        }
+    ],
+    "footer": [
+        {
+            "id": "nextButton",
+            "label": "Next",
+            "name": "nextButton",
+            "type": "button",
+            "variant": "primary",
+            "enabled": true,
+            "visible": true,
+            "action": {
+                "type": "NEXT_SCREEN"
+            },
+            "span": 12
+        }
+    ]
+}

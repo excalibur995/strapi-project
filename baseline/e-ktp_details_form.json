@@ -1,0 +1,490 @@
+{
+    "screenId": "e-ktp_details_form",
+    "screenKey": "E_KTP_DETAILS_FORM",
+    "type": "dynamic",
+    "description": "",
+    "version": 1,
+    "enabled": true,
+    "header": [
+        {
+            "id": "screenHeader",
+            "label": "Apply",
+            "name": "screenHeader",
+            "type": "titleBar",
+            "enabled": true,
+            "visible": true,
+            "enableBackButton": true,
+            "enableCloseButton": true,
+            "span": 12
+        },
+        {
+            "id": "progressBar",
+            "name": "progressBar",
+            "type": "progressBar",
+            "enabled": true,
+            "visible": true,
+            "data": {
+                "step": {
+                    "current": 3,
+                    "max": 11
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "productName",
+            "label": "",
+            "name": "productName",
+            "type": "text",
+            "variant": "subtitle",
+            "enabled": true,
+            "visible": true,
+            "valueSource": {
+                "type": "binding",
+                "path": "product.name"
+            },
+            "span": 12
+        },
+        {
+            "id": "detailsTitle",
+            "label": "Your e-KTP details",
+            "name": "detailsTitle",
+            "type": "text",
+            "variant": "title",
+            "enabled": true,
+            "visible": true,
+            "span": 12
+        }
+    ],
+    "body": [
+        {
+            "id": "ektpImagePreview",
+            "label": "E-KTP upload",
+            "name": "ektpImagePreview",
+            "type": "image",
+            "enabled": true,
+            "editable": false,
+            "visible": true,
+            "span": 12,
+            "valueSource": {
+                "type": "binding",
+                "path": "documents.ektp.imageUrl"
+            }
+        },
+        {
+            "id": "eKTPIDNumber",
+            "label": "E-KTP number",
+            "name": "idNumber",
+            "type": "textInput",
+            "defaultValue": "",
+            "minLength": 16,
+            "maxLength": 16,
+            "inputMode": "numeric",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "span": 12,
+            "validations": [
+                {
+                    "type": "REGEX",
+                    "pattern": "^[0-9]{16}$",
+                    "message": "E-KTP number must be exactly 16 digits"
+                }
+            ]
+        },
+        {
+            "id": "eKTPName",
+            "label": "E-KTP name",
+            "name": "name",
+            "type": "textInput",
+            "defaultValue": "",
+            "maxLength": 200,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "span": 12,
+            "inputMode": "text",
+            "helperText": "The name cannot contain punctuation marks"
+        },
+        {
+            "id": "eKTPPlaceOfBirth",
+            "label": "Place of birth",
+            "name": "placeOfBirth",
+            "type": "textInput",
+            "defaultValue": "",
+            "maxLength": 80,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "inputMode": "text",
+            "span": 12
+        },
+        {
+            "id": "eKTPDateOfBirth",
+            "label": "Date of Birth",
+            "name": "dob",
+            "type": "date",
+            "displayFormat": "dd MMM yyyy",
+            "valueFormat": "yyyy-MM-dd",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "validations": [
+                {
+                    "type": "MIN_AGE",
+                    "value": 18,
+                    "message": "You must be at least 18 years old"
+                },
+                {
+                    "type": "MAX_AGE",
+                    "value": 120,
+                    "message": "Age must be less than 120"
+                },
+                {
+                    "type": "NO_FUTURE_DATE",
+                    "message": "Date cannot be in the future"
+                }
+            ],
+            "span": 12
+        },
+        {
+            "id": "eKTPGender",
+            "label": "Gender",
+            "name": "gender",
+            "type": "select",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "options": [
+                {
+                    "code": "M",
+                    "desc": "Male"
+                },
+                {
+                    "code": "F",
+                    "desc": "Female"
+                }
+            ],
+            "span": 12
+        },
+        {
+            "id": "eKTPReligion",
+            "label": "Religion",
+            "name": "religion",
+            "type": "select",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "defaultValue": null,
+            "placeholder": "Select religion",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/religion",
+                "valueKey": "code",
+                "displayKey": "desc"
+            },
+            "span": 12
+        },
+        {
+            "id": "eKTPMaritalStatus",
+            "label": "Marital status",
+            "name": "maritalStatus",
+            "type": "select",
+            "defaultValue": null,
+            "placeholder": "Select your marital status",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/maritalStatus",
+                "valueKey": "code",
+                "displayKey": "desc"
+            },
+            "span": 12
+        },
+        {
+            "id": "eKTPEducationLevel",
+            "label": "Education",
+            "name": "educationLevel",
+            "type": "select",
+            "defaultValue": null,
+            "placeholder": "Select your education level",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/educationLevel",
+                "valueKey": "code",
+                "displayKey": "desc"
+            },
+            "span": 12
+        },
+        {
+            "id": "eKTPMothersMaidenName",
+            "label": "Mother's maiden name",
+            "name": "mothersMaidenName",
+            "type": "textInput",
+            "placeholder": "Enter mother's maiden name",
+            "defaultValue": "",
+            "maxLength": 200,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "inputMode": "text",
+            "span": 12
+        },
+        {
+            "id": "eKTPAddress",
+            "label": "Address",
+            "name": "address",
+            "type": "textInput",
+            "defaultValue": "",
+            "maxLength": 300,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "inputMode": "text",
+            "span": 12
+        },
+        {
+            "id": "eKTPAddressProvince",
+            "label": "Province",
+            "name": "addressProvince",
+            "type": "select",
+            "defaultValue": null,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "placeholder": "Select province",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/province",
+                "valueKey": "code",
+                "displayKey": "desc"
+            },
+            "span": 12
+        },
+        {
+            "id": "eKTPAddressCity",
+            "label": "City/Regency",
+            "name": "addressCity",
+            "type": "select",
+            "defaultValue": null,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "placeholder": "Select city/regency",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/city",
+                "valueKey": "code",
+                "displayKey": "desc",
+                "dependencies": [
+                    {
+                        "field": "eKTPAddressProvince",
+                        "param": "province"
+                    }
+                ]
+            },
+            "span": 12
+        },
+        {
+            "id": "eKTPAddressDistrict",
+            "label": "District",
+            "name": "addressDistrict",
+            "type": "select",
+            "defaultValue": null,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "placeholder": "Select district",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/district",
+                "valueKey": "code",
+                "displayKey": "desc",
+                "dependencies": [
+                    {
+                        "field": "eKTPAddressProvince",
+                        "param": "province"
+                    },
+                    {
+                        "field": "eKTPAddressCity",
+                        "param": "city"
+                    }
+                ]
+            },
+            "span": 12
+        },
+        {
+            "id": "eKTPAddressSubdistrict",
+            "label": "Sub-district/Village",
+            "name": "addressSubdistrict",
+            "type": "select",
+            "defaultValue": null,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "placeholder": "Select sub-district/village",
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/subdistrict",
+                "valueKey": "code",
+                "displayKey": "desc",
+                "dependencies": [
+                    {
+                        "field": "eKTPAddressProvince",
+                        "param": "province"
+                    },
+                    {
+                        "field": "eKTPAddressCity",
+                        "param": "city"
+                    },
+                    {
+                        "field": "eKTPAddressDistrict",
+                        "param": "district"
+                    }
+                ]
+            },
+            "span": 12
+        },
+        {
+            "id": "eKTPAddressRT",
+            "label": "RT",
+            "name": "addressRT",
+            "type": "textInput",
+            "defaultValue": "",
+            "maxLength": 3,
+            "required": false,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "span": 6,
+            "inputMode": "numeric",
+            "validations": [
+                {
+                    "type": "REGEX",
+                    "pattern": "^[0-9]{1,3}$",
+                    "message": "RT must be 1-3 digits (numbers only)"
+                }
+            ]
+        },
+        {
+            "id": "eKTPAddressRW",
+            "label": "RW",
+            "name": "addressRW",
+            "type": "textInput",
+            "defaultValue": "",
+            "maxLength": 3,
+            "required": false,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "span": 6,
+            "inputMode": "numeric",
+            "validations": [
+                {
+                    "type": "REGEX",
+                    "pattern": "^[0-9]{1,3}$",
+                    "message": "RW must be 1-3 digits (numbers only)"
+                }
+            ]
+        },
+        {
+            "id": "eKTPPostcode",
+            "label": "Postcode",
+            "name": "postcode",
+            "type": "select",
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "dataSource": {
+                "type": "reference",
+                "endpoint": "/api/v1/retrieve/postcodes",
+                "valueKey": "code",
+                "displayKey": "desc",
+                "dependencies": [
+                    {
+                        "field": "eKTPAddressProvince",
+                        "param": "province"
+                    },
+                    {
+                        "field": "eKTPAddressCity",
+                        "param": "city"
+                    },
+                    {
+                        "field": "eKTPAddressDistrict",
+                        "param": "district"
+                    },
+                    {
+                        "field": "eKTPAddressSubdistrict",
+                        "param": "subdistrict"
+                    }
+                ]
+            },
+            "span": 12
+        },
+        {
+            "id": "eKTPTermsAndConditionsCheckbox",
+            "label": "I hereby declare that the data I have entered is accurate and matches the information stated on my e-KTP",
+            "name": "termsAndConditionsCheckbox",
+            "title": "Terms & Conditions:",
+            "type": "checkbox",
+            "defaultValue": false,
+            "required": true,
+            "enabled": true,
+            "editable": true,
+            "visible": true,
+            "span": 12
+        }
+    ],
+    "footer": [
+        {
+            "id": "nextButton",
+            "label": "Next",
+            "name": "nextButton",
+            "type": "button",
+            "variant": "primary",
+            "enabled": true,
+            "visible": true,
+            "action": {
+                "type": "NEXT_SCREEN"
+            },
+            "span": 12
+        },
+        {
+            "id": "retakeButton",
+            "label": "Retake",
+            "name": "retakeButton",
+            "type": "button",
+            "variant": "secondary",
+            "enabled": true,
+            "visible": true,
+            "action": {
+                "type": "EMIT_EVENT",
+                "params": {
+                    "eventName": "RETAKE_EKTP_IMAGE",
+                    "documentType": "E_KTP"
+                }
+            },
+            "span": 12
+        }
+    ]
+}

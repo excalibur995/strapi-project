@@ -1,0 +1,293 @@
+{
+    "screenId": "applyConfirmation",
+    "screenKey": "APPLY_CONFIRMATION",
+    "type": "dynamic",
+    "description": "",
+    "version": 1,
+    "enabled": true,
+    "header": [
+        {
+            "id": "screenHeader",
+            "label": "Confirmation",
+            "name": "screenHeader",
+            "type": "titleBar",
+            "enabled": true,
+            "visible": true,
+            "enableBackButton": true,
+            "enableCloseButton": true,
+            "span": 12
+        }
+    ],
+    "body": [
+        {
+            "id": "applyFor",
+            "label": "Apply for",
+            "name": "applyFor",
+            "type": "text",
+            "variant": "subtitle",
+            "enabled": true,
+            "visible": true,
+            "span": 12
+        },
+        {
+            "id": "productCard",
+            "name": "productCard",
+            "type": "card",
+            "variant": "default",
+            "title": "",
+            "subtitle": "",
+            "icon": "unknown",
+            "enabled": true,
+            "visible": true,
+            "valueSource": {
+                "title": {
+                    "type": "binding",
+                    "path": "product.name"
+                },
+                "subtitle": {
+                    "type": "binding",
+                    "path": "product.type"
+                },
+                "icon": {
+                    "type": "binding",
+                    "path": "product.icon"
+                }
+            },
+            "span": 12
+        },
+        {
+            "id": "redeemCodeButton",
+            "label": "Apply redemption code",
+            "name": "redeemCodeButton",
+            "type": "button",
+            "variant": "promo",
+            "placement": {
+                "horizontal": "center",
+                "vertical": "inline"
+            },
+            "enabled": true,
+            "visible": true,
+            "icon": {
+                "name": "promoTicket",
+                "position": "left"
+            },
+            "action": {
+                "type": "APPLY_PROMO"
+            },
+            "span": 12
+        },
+        {
+            "id": "confirmationContactDetailsList",
+            "name": "contactDetailsList",
+            "label": "Contact details",
+            "type": "summaryList",
+            "enabled": true,
+            "visible": true,
+            "items": [
+                {
+                    "id": "mobileNumber",
+                    "label": "Mobile number",
+                    "value": ""
+                },
+                {
+                    "id": "emailAddress",
+                    "label": "Email address",
+                    "value": ""
+                }
+            ],
+            "span": 12
+        },
+        {
+            "id": "confirmationEKTPDetailsList",
+            "name": "eKTPDetailsList",
+            "label": "E-KTP details",
+            "type": "summaryList",
+            "enabled": true,
+            "visible": true,
+            "items": [
+                {
+                    "id": "eKTPNumber",
+                    "label": "E-KTP number",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPName",
+                    "label": "E-KTP name",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPPlaceOfBirth",
+                    "label": "Place of birth",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPDateOfBirth",
+                    "label": "Date of birth",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPGender",
+                    "label": "Gender",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPReligion",
+                    "label": "Religion",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPMaritalStatus",
+                    "label": "Marital status",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPEducation",
+                    "label": "Education",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPMothersMaidenName",
+                    "label": "Mother's maiden name",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPAddress",
+                    "label": "Address",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPProvince",
+                    "label": "Province",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPCity",
+                    "label": "City/Regency",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPDistrict",
+                    "label": "District",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPSubdistrict",
+                    "label": "Sub-district/Village",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPRTRW",
+                    "label": "RT/RW",
+                    "value": ""
+                },
+                {
+                    "id": "eKTPPostcode",
+                    "label": "Postcode",
+                    "value": ""
+                }
+            ],
+            "span": 12
+        },
+        {
+            "id": "confirmationEmploymentDetailsList",
+            "name": "employmentDetailsList",
+            "label": "Employment details",
+            "type": "summaryList",
+            "enabled": true,
+            "visible": true,
+            "items": [
+                {
+                    "id": "employmentOccupation",
+                    "label": "Occupation",
+                    "value": ""
+                },
+                {
+                    "id": "employmentIndustryCategory",
+                    "label": "Industry category",
+                    "value": ""
+                },
+                {
+                    "id": "employmentCompanyName",
+                    "label": "Company name",
+                    "value": ""
+                },
+                {
+                    "id": "employmentPosition",
+                    "label": "Position/Job title",
+                    "value": ""
+                },
+                {
+                    "id": "employmentCompanyCategory",
+                    "label": "Company category",
+                    "value": ""
+                },
+                {
+                    "id": "employmentStatus",
+                    "label": "Employment status",
+                    "value": ""
+                },
+                {
+                    "id": "employmentOfficePhoneNumber",
+                    "label": "Office phone number",
+                    "value": ""
+                },
+                {
+                    "id": "employmentDateJoined",
+                    "label": "Date joined",
+                    "value": ""
+                },
+                {
+                    "id": "employmentAddress",
+                    "label": "Office address",
+                    "value": ""
+                },
+                {
+                    "id": "employmentProvince",
+                    "label": "Province",
+                    "value": ""
+                },
+                {
+                    "id": "employmentCity",
+                    "label": "City/Regency",
+                    "value": ""
+                },
+                {
+                    "id": "employmentDistrict",
+                    "label": "District",
+                    "value": ""
+                },
+                {
+                    "id": "employmentSubdistrict",
+                    "label": "Sub-district/Village",
+                    "value": ""
+                },
+                {
+                    "id": "employmentRTRW",
+                    "label": "RT/RW",
+                    "value": ""
+                },
+                {
+                    "id": "employmentPostcode",
+                    "label": "Postcode",
+                    "value": ""
+                }
+            ],
+            "span": 12
+        }
+    ],
+    "footer": [
+        {
+            "id": "nextButton",
+            "label": "Confirm",
+            "name": "nextButton",
+            "type": "button",
+            "variant": "primary",
+            "enabled": true,
+            "visible": true,
+            "action": {
+                "type": "CONFIRM_APPLY"
+            },
+            "span": 12
+        }
+    ]
+}
