@@ -48,8 +48,11 @@
       "type": "component",
       "component": "sdui.source"
     },
+    "binding": { "type": "component", "component": "sdui.binding" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
     "span": {
       "type": "integer"
-    }
+    },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

@@ -16,6 +16,9 @@
     "enabled": { "type": "boolean", "default": true },
     "visible": { "type": "boolean", "default": true },
     "options": { "type": "json", "required": true },
-    "span": { "type": "integer" }
+    "binding": { "type": "component", "component": "sdui.binding" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "span": { "type": "integer" },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

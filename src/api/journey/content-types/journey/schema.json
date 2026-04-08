@@ -16,7 +16,7 @@
     }
   },
   "attributes": {
-    "flowId": {
+    "journeyId": {
       "type": "uid",
       "pluginOptions": {
         "i18n": {

@@ -1,405 +1,554 @@
 # React Native SDUI (Server-Driven UI) Engine
 
-A Server-Driven UI engine for React Native. Designed to allow headless CMS backends (Strapi) to dynamically generate and render application native UIs via JSON payloads, based on defined component schemas.
+A Server-Driven UI engine for React Native. The Strapi backend dynamically defines screens and journeys as JSON; the frontend renders them using a component registry — no screen-level code changes required for content updates.
 
-## Core Component Interfaces
+---
 
-Based on the Strapi component mappings in `src/components/ui`, here are the core TypeScript interfaces that the frontend expects when receiving the SDUI payload.
+## Core Concepts
 
-### Common Types
+| Term | Description |
+|---|---|
+| **Journey** | A named multi-screen flow (`journeyId`, ordered `screens`, `steps`, `version`) |
+| **Screen** | A single page with three dynamic zones: `header`, `body`, `footer` |
+| **Component** | A renderable UI node identified by `__component` (e.g. `"ui.button"`) |
+| **`name`** | Stable identifier on each component — used as the `JourneyState` key for inputs |
+| **`version`** | Single decimal on both Journey and Screen — bump before publishing |
+
+---
+
+## Journey Shape
 
 ```typescript
-// Shared SDUI Base Type
-export interface SduiNode<T = string, P = any> {
-  __component: T; // e.g. 'ui.button', 'ui.text'
+interface Journey {
+  journeyId: string;           // unique journey identifier
+  preInitiateScreen: string;   // screenKey of the first screen to show
+  screens: Screen[];           // ordered list of screens in the flow
+  steps: Step[];               // system/user step definitions
+  initialState: Record<string, any>;
+  presentation: 'card' | 'modal' | 'transparentModal' | 'containedModal'
+              | 'containedTransparentModal' | 'fullScreenModal' | 'formSheet';
+  navigator?: string;
+  version: number;
+}
+```
+
+---
+
+## Screen Shape
+
+```typescript
+interface Screen {
+  screenId: string;    // uid — unique across all screens
+  screenKey: string;   // enum-style constant, e.g. "EMAIL_FORM"
+  version: number;
+  meta: ScreenMeta;
+  header: AnyUIComponent[];
+  body:   AnyUIComponent[];
+  footer: AnyUIComponent[];
+}
+
+interface ScreenMeta {
+  label?: string;             // title bar label text
+  title?: string;             // screen title (below title bar)
+  subtitle?: string;
+  enableBackButton: boolean;  // default true
+  enableCloseButton: boolean; // default false
+  onBack?: Action;
+  analytics?: Record<string, any>;
+}
+```
+
+---
+
+## TypeScript Interfaces
+
+### Base
+
+```typescript
+interface SduiNode<T extends string = string> {
+  __component: T;
   id: number;
-  // Specific component properties will be spread here or inside a props object
+  componentId?: string;
+  testId?: string;
 }
 
-// Common Visibility / Logic
-export interface SduiVisibility {
-  // Logic to determine if component should be visible
-}
-
-export interface SduiAction {
-  // Action details (e.g. NAVIGATE, SUBMIT)
-}
-
-export interface SduiBinding {
-  // Form/State binding details
+// Action is plain JSON — no sub-component hydration required
+interface Action {
+  type: string;          // e.g. "NEXT_SCREEN", "SOCIAL_LOGIN", "EMIT_EVENT"
+  [key: string]: any;   // provider, params, etc.
 }
 ```
 
-### UI Components
+---
 
-#### 1. Text (`ui.text`)
-Static text block.
+### New Components (added in baseline refactor)
+
+#### Progress Bar (`ui.progress-bar`) — header zone
 ```typescript
-export interface TextWidget extends SduiNode<'ui.text'> {
-  text: string;
-  variant: 'title' | 'body' | 'caption' | 'label'; // defaults to 'body'
-  visibility?: SduiVisibility;
+interface ProgressBarWidget extends SduiNode<'ui.progress-bar'> {
+  name?: string;
+  currentStep: number;
+  maxStep: number;
+  enabled: boolean;
+  visible: boolean;
+  span?: number;
 }
 ```
 
-#### 2. Button (`ui.button`)
-Standard action trigger.
+#### Date Input (`ui.date-input`)
 ```typescript
-export interface ButtonWidget extends SduiNode<'ui.button'> {
+interface DateInputWidget extends SduiNode<'ui.date-input'> {
   label: string;
-  variant: 'primary' | 'secondary' | 'ghost' | 'danger'; // defaults to 'primary'
-  action: SduiAction;
-  guardRules?: any[]; // Array of rule-sets
-  visibility?: SduiVisibility;
-}
-```
-
-#### 3. Text Input (`ui.text-input`)
-Single-line text input for forms.
-```typescript
-export interface TextInputWidget extends SduiNode<'ui.text-input'> {
-  label: string;
+  name?: string;
   placeholder?: string;
-  keyboard: 'default' | 'number-pad' | 'email' | 'phone'; // defaults to 'default'
-  secured: boolean; // defaults to false
-  binding: SduiBinding;
-  validation?: any[];
-  visibility?: SduiVisibility;
+  displayFormat?: string;   // e.g. "dd MMM yyyy"
+  valueFormat?: string;     // e.g. "yyyy-MM-dd"
+  defaultValue?: string;
+  required: boolean;
+  enabled: boolean;
+  editable: boolean;
+  visible: boolean;
+  validations?: ValidationRule[];
+  conditions?: VisibilityCondition;
+  span?: number;
 }
 ```
 
-#### 4. Item List & List Item
-Generic tappable list with optional tab filtering.
-
+#### Divider (`ui.divider`)
 ```typescript
-export interface ItemListWidget extends SduiNode<'ui.item-list'> {
+interface DividerWidget extends SduiNode<'ui.divider'> {
   label?: string;
-  filterBy?: SduiBinding;
-  items: ListItemWidget[];
+  name?: string;
+  visible: boolean;
+  span?: number;
 }
+```
 
-export interface ListItemWidget extends SduiNode<'ui.list-item'> {
-  key: string;
+#### Checkbox (`ui.checkbox`)
+Single standalone checkbox (distinct from `ui.checkbox-list`).
+```typescript
+interface CheckboxWidget extends SduiNode<'ui.checkbox'> {
   label: string;
-  description?: string;
-  icon?: any; // Media type
-  tab?: string;
-  onTap: SduiAction;
-  visibility?: SduiVisibility;
+  name?: string;
+  title?: string;        // section heading above the checkbox
+  defaultValue: boolean;
+  required: boolean;
+  enabled: boolean;
+  editable: boolean;
+  visible: boolean;
+  span?: number;
 }
 ```
 
-#### 5. Badge (`ui.badge`)
-Conditional label badge.
+#### Card (`ui.card`)
+Product/info card. Dynamic fields come from `valueSource` bindings.
 ```typescript
-export interface BadgeWidget extends SduiNode<'ui.badge'> {
+interface CardWidget extends SduiNode<'ui.card'> {
+  name?: string;
+  variant: 'default' | 'compact';
+  title?: string;
+  subtitle?: string;
+  icon?: string;
+  valueSource?: Record<string, { type: 'binding'; path: string }>;
+  enabled: boolean;
+  visible: boolean;
+  span?: number;
+}
+```
+
+---
+
+### Updated Components
+
+#### Text (`ui.text`)
+`text` renamed to `label`. Bindings and placement are flat JSON. No SDUI `visibility` sub-component.
+```typescript
+interface TextWidget extends SduiNode<'ui.text'> {
   label: string;
-  variant: 'success' | 'warning' | 'info' | 'error'; // defaults to 'info'
-  source?: any; // sdui.source
-  visibility?: SduiVisibility;
+  name?: string;
+  variant: 'title' | 'subtitle' | 'body' | 'note' | 'caption' | 'label';
+  enabled: boolean;
+  visible: boolean;
+  valueSource?: { type: 'binding'; path: string };
+  placement?: { horizontal?: 'left' | 'center' | 'right' };
+  span?: number;
 }
 ```
 
-#### 6. Rich Text (`ui.rich-text`)
-Dynamic formatted text blocks. (Note: React Native does not support rich text natively. Recommended library: `react-native-render-html` or `react-native-markdown-display`)
+#### Button (`ui.button`)
+`action`, `icon`, `placement` are plain JSON. No `guardRules` or SDUI `visibility`.
 ```typescript
-export interface RichTextWidget extends SduiNode<'ui.rich-text'> {
-  text: any[]; // Array of structured rich text blocks
-  visibility?: SduiVisibility;
+interface ButtonWidget extends SduiNode<'ui.button'> {
+  label: string;
+  name?: string;
+  variant: 'primary' | 'secondary' | 'ghost' | 'danger' | 'promo';
+  enabled: boolean;
+  visible: boolean;
+  action: Action;
+  icon?: { name: string; position: 'left' | 'right' };
+  placement?: { horizontal?: string; vertical?: string };
+  span?: number;
 }
 ```
 
-#### 7. Dropdown (`ui.dropdown`)
-Single-select from static options. (Note: For native-feeling dropdowns, consider `@react-native-picker/picker` or `react-native-dropdown-picker`)
+#### Text Input (`ui.text-input`)
+Flat fields. No SDUI `binding`/`validation`/`visibility` sub-components. Use `name` as JourneyState key.
 ```typescript
-export interface DropdownWidget extends SduiNode<'ui.dropdown'> {
-  label?: string;
+interface TextInputWidget extends SduiNode<'ui.text-input'> {
+  label: string;
+  name?: string;
   placeholder?: string;
-  searchable: boolean; // defaults to false
-  options: any[]; // Array of ui.option components
-  binding: SduiBinding;
-  validation?: any[];
-  visibility?: SduiVisibility;
+  helperText?: string;
+  prefix?: string;
+  inputMode: 'text' | 'numeric' | 'email' | 'phone';
+  defaultValue?: string;
+  minLength?: number;
+  maxLength?: number;
+  required: boolean;
+  enabled: boolean;
+  editable: boolean;
+  visible: boolean;
+  validations?: ValidationRule[];
+  conditions?: VisibilityCondition;
+  span?: number;
 }
 ```
 
-#### 8. Link (`ui.link`)
-Text-based actionable link (similar to a ghost button).
+#### Image Preview (`ui.image-preview`)
+`source` (sdui.source) replaced by flat `valueSource` JSON.
 ```typescript
-export interface LinkWidget extends SduiNode<'ui.link'> {
+interface ImagePreviewWidget extends SduiNode<'ui.image-preview'> {
+  label?: string;
+  name?: string;
+  enabled: boolean;
+  editable: boolean;
+  visible: boolean;
+  valueSource?: { type: 'binding'; path: string };
+  placement?: { horizontal?: string };
+  span?: number;
+}
+```
+
+#### Review Card (`ui.review-card`)
+`rows` (ui.kv-row[]) replaced by `options` — a flat JSON array. No SDUI sub-components.
+```typescript
+interface ReviewCardWidget extends SduiNode<'ui.review-card'> {
+  label?: string;
+  name?: string;
+  enabled: boolean;
+  visible: boolean;
+  options: Array<{ id: string; label: string; value: string }>;
+  span?: number;
+}
+```
+
+#### Dropdown (`ui.dropdown`)
+Static options list. No SDUI `binding`/`validation`/`visibility`. Use `name` as state key.
+```typescript
+interface DropdownWidget extends SduiNode<'ui.dropdown'> {
+  label?: string;
+  name?: string;
+  placeholder?: string;
+  defaultValue?: string;
+  searchable: boolean;
+  required: boolean;
+  enabled: boolean;
+  editable: boolean;
+  visible: boolean;
+  options: OptionWidget[];
+  conditions?: VisibilityCondition;
+  span?: number;
+}
+```
+
+#### Dropdown Async (`ui.dropdown-async`)
+`dataSource` is now flat JSON. No SDUI sub-components.
+```typescript
+interface DropdownAsyncWidget extends SduiNode<'ui.dropdown-async'> {
+  label?: string;
+  name?: string;
+  placeholder?: string;
+  defaultValue?: string;
+  searchable: boolean;
+  required: boolean;
+  enabled: boolean;
+  editable: boolean;
+  visible: boolean;
+  dataSource?: {
+    type: 'reference';
+    endpoint: string;
+    valueKey: string;
+    displayKey: string;
+    dependencies?: Array<{ field: string; param: string }>;
+  };
+  conditions?: VisibilityCondition;
+  span?: number;
+}
+```
+
+---
+
+### Unchanged Components
+
+#### Banner (`ui.banner`)
+```typescript
+interface BannerWidget extends SduiNode<'ui.banner'> {
   text: string;
-  action?: SduiAction;
-  validation?: any;
-}
-```
-
-#### 9. Radio Group (`ui.radio-group`)
-Single-select option group.
-```typescript
-export interface RadioGroupWidget extends SduiNode<'ui.radio-group'> {
+  variant: 'info' | 'warning' | 'success' | 'error';
   label?: string;
-  options: any[]; // Array of ui.option components
-  binding: SduiBinding;
-  validation?: any[];
-  visibility?: SduiVisibility;
+  icon?: any;
+  onTap?: Action;
+  visibility?: any;
 }
 ```
 
-#### 10. Checkbox List (`ui.checkbox-list`)
-Multi-select checkbox group. (Note: For checkboxes, consider `expo-checkbox` or `@react-native-community/checkbox`)
+#### Hero (`ui.hero`)
 ```typescript
-export interface CheckboxListWidget extends SduiNode<'ui.checkbox-list'> {
-  label?: string;
-  items?: any[]; // Array of ui.option components
-  binding: SduiBinding;
-  validation?: any[];
-  visibility?: SduiVisibility;
+interface HeroWidget extends SduiNode<'ui.hero'> {
+  illustration: any;
+  title: string;
+  subtitleTemplate?: string;
+  subtitleFields?: any;
+  referenceLabel?: string;
+  referenceSource?: any;
 }
 ```
 
-#### 11. Section Label (`ui.section-label`)
-Visual section divider.
+#### Section Label (`ui.section-label`)
 ```typescript
-export interface SectionLabelWidget extends SduiNode<'ui.section-label'> {
+interface SectionLabelWidget extends SduiNode<'ui.section-label'> {
   title: string;
   subtitle?: string;
 }
 ```
 
-#### 12. Hero (`ui.hero`)
-Illustrative success/error hero block.
+#### Radio Group (`ui.radio-group`)
 ```typescript
-export interface HeroWidget extends SduiNode<'ui.hero'> {
-  illustration: any; // Media type
-  title: string;
-  subtitleTemplate?: string;
-  subtitleFields?: any; // JSON object containing dynamic fields
-  referenceLabel?: string;
-  referenceSource?: any; // sdui.source
-}
-```
-
-#### 13. Banner (`ui.banner`)
-Contextual alert/banner.
-```typescript
-export interface BannerWidget extends SduiNode<'ui.banner'> {
-  text: string;
-  variant: 'info' | 'warning' | 'success' | 'error'; // defaults to 'info'
-  icon?: any; // Media type
+interface RadioGroupWidget extends SduiNode<'ui.radio-group'> {
   label?: string;
-  onTap?: SduiAction;
-  visibility?: SduiVisibility;
+  options: OptionWidget[];
+  binding: { path: string; scope: string };
+  validation?: any[];
+  visibility?: any;
 }
 ```
 
-#### 14. Account Selector (`ui.account-selector`)
-Live account picker from API.
+#### Checkbox List (`ui.checkbox-list`)
 ```typescript
-export interface AccountSelectorWidget extends SduiNode<'ui.account-selector'> {
+interface CheckboxListWidget extends SduiNode<'ui.checkbox-list'> {
   label?: string;
-  endpoint: string;
-  params?: any;
-  display?: any;
-  allowChange: boolean; // defaults to true
-  binding: SduiBinding;
+  options: OptionWidget[];
+  binding: { path: string; scope: string };
+  validation?: any[];
+  visibility?: any;
 }
 ```
 
-#### 15. Camera Capture (`ui.camera-capture`)
-Document camera with overlay.
+#### Option (`ui.option`)
 ```typescript
-export interface CameraCaptureWidget extends SduiNode<'ui.camera-capture'> {
-  mode: 'document' | 'selfie' | 'barcode'; // defaults to 'document'
-  overlayShape: 'rectangle' | 'circle' | 'none'; // defaults to 'rectangle'
-  overlayAspect?: string;
-  overlayHint?: string;
-  binding: SduiBinding;
-  onComplete: SduiAction; // sdui.on-complete
+interface OptionWidget extends SduiNode<'ui.option'> {
+  key: string;
+  label: string;
+  description?: string;
+  icon?: any;
+  onTap?: Action;
 }
 ```
 
-#### 16. Cascading Select (`ui.cascading-select`)
-Linked dropdowns e.g. country > city > district.
+#### Item List (`ui.item-list`)
 ```typescript
-export interface CascadingSelectWidget extends SduiNode<'ui.cascading-select'> {
+interface ItemListWidget extends SduiNode<'ui.item-list'> {
+  label?: string;
+  filterBy?: any;
+  options: ListItemWidget[];
+}
+
+interface ListItemWidget extends SduiNode<'ui.list-item'> {
+  key: string;
+  label: string;
+  description?: string;
+  icon?: any;
+  tab?: string;
+  onTap: Action;
+  visibility?: any;
+}
+```
+
+#### Cascading Select (`ui.cascading-select`)
+```typescript
+interface CascadingSelectWidget extends SduiNode<'ui.cascading-select'> {
   tiers: CascadingSelectTierWidget[];
   validation?: any[];
-  visibility?: SduiVisibility;
 }
 
-export interface CascadingSelectTierWidget extends SduiNode<'ui.cascading-select-tier'> {
+interface CascadingSelectTierWidget extends SduiNode<'ui.cascading-select-tier'> {
   key: string;
   label?: string;
   placeholder?: string;
   dependsOn?: string;
-  dataSource: any; // sdui.data-source
-  binding: SduiBinding;
+  dataSource: any;
+  binding: { path: string; scope: string };
 }
 ```
 
-#### 17. Async Selectors (`ui.checkbox-list-async`, `ui.dropdown-async`, `ui.radio-group-async`)
-Multi-select, searchable dropdown, and radio groups powered by live API data.
+#### Camera Capture (`ui.camera-capture`)
 ```typescript
-export interface AsyncSelectorWidget extends SduiNode<'ui.checkbox-list-async' | 'ui.dropdown-async' | 'ui.radio-group-async'> {
+interface CameraCaptureWidget extends SduiNode<'ui.camera-capture'> {
+  mode: 'document' | 'selfie' | 'barcode';
+  overlayShape: 'rectangle' | 'circle' | 'none';
+  overlayAspect?: string;
+  overlayHint?: string;
+  binding: { path: string; scope: string };
+  onComplete: { action: Action };
+}
+```
+
+#### Money Display & Money Input
+```typescript
+interface MoneyDisplayWidget extends SduiNode<'ui.money-display'> {
   label?: string;
-  placeholder?: string; // specific to dropdown
-  searchable?: boolean; // specific to dropdown (default true)
-  dataSource: any; // sdui.data-source
-  binding: SduiBinding;
-  validation?: any[];
-  visibility?: SduiVisibility;
-}
-```
-
-#### 18. Icon Text (`ui.icon-text`)
-A row displaying an icon alongside text.
-```typescript
-export interface IconTextWidget extends SduiNode<'ui.icon-text'> {
-  text: string;
-  icon: any; // Media type
-  visibility?: SduiVisibility;
-}
-```
-
-#### 19. Image Preview (`ui.image-preview`)
-Displays a base64 image from state.
-```typescript
-export interface ImagePreviewWidget extends SduiNode<'ui.image-preview'> {
-  label?: string;
-  source: any; // sdui.source
-}
-```
-
-#### 20. Review Card (`ui.review-card` & `ui.kv-row`)
-Summary section with rows and optional edit.
-```typescript
-export interface ReviewCardWidget extends SduiNode<'ui.review-card'> {
-  label?: string;
-  rows: KVRowWidget[];
-  badges?: BadgeWidget[];
-  allowChange: boolean; // default false
-  onEdit?: SduiAction;
-  visibility?: SduiVisibility;
+  currency: string;
+  source: any;
 }
 
-export interface KVRowWidget extends SduiNode<'ui.kv-row'> {
-  label?: string;
-  value?: string;
-  source?: any; // sdui.source
-}
-```
-
-#### 21. Local State (`ui.local-state`)
-Non-visual component to define local UI state.
-```typescript
-export interface LocalStateWidget extends SduiNode<'ui.local-state'> {
-  key: string;
-  initial: string;
-  allowedStates: any; // JSON object of states
-}
-```
-
-#### 22. Money (`ui.money-display` & `ui.money-input`)
-Currency formatting components.
-```typescript
-export interface MoneyDisplayWidget extends SduiNode<'ui.money-display'> {
-  label?: string;
-  currency: string; // defaults to IDR
-  source: any; // sdui.source
-}
-
-export interface MoneyInputWidget extends SduiNode<'ui.money-input'> {
+interface MoneyInputWidget extends SduiNode<'ui.money-input'> {
   label?: string;
   currency?: string;
-  min?: number;
-  max?: number;
-  binding: SduiBinding;
+  binding: { path: string; scope: string };
   validation?: any;
-  visibility?: SduiVisibility;
+  visibility?: any;
 }
 ```
 
-#### 23. Option (`ui.option`)
-Single selectable option item for dropdowns and radios.
+#### Passcode Input (`ui.passcode-input`)
 ```typescript
-export interface OptionWidget extends SduiNode<'ui.option'> {
-  key: string;
+interface PasscodeInputWidget extends SduiNode<'ui.passcode-input'> {
+  length: number;
+  masked: boolean;
+  keyboard: 'numpad' | 'default';
+  binding: { path: string; scope: string };
+  onForgot?: Action;
+  onComplete: { action: Action };
+}
+```
+
+#### Slide To Confirm (`ui.slide-to-confirm`)
+```typescript
+interface SlideToConfirmWidget extends SduiNode<'ui.slide-to-confirm'> {
   label: string;
-  description?: string;
-  icon?: any; // Media type
-  onTap?: SduiAction;
+  action: Action;
+  visibility?: any;
 }
 ```
 
-#### 24. Passcode Input (`ui.passcode-input`)
-Masked numeric passcode entry.
+#### Tab Group (`ui.tab-group`)
 ```typescript
-export interface PasscodeInputWidget extends SduiNode<'ui.passcode-input'> {
-  length: number; // defaults to 6
-  masked: boolean; // defaults to true
-  keyboard: 'numpad' | 'default'; // defaults to numpad
-  binding: SduiBinding;
-  onForgot?: SduiAction;
-  onComplete: SduiAction; // sdui.on-complete
-}
-```
-
-#### 25. Slide To Confirm (`ui.slide-to-confirm`)
-Swipe gesture action trigger.
-```typescript
-export interface SlideToConfirmWidget extends SduiNode<'ui.slide-to-confirm'> {
-  label: string;
-  action: SduiAction;
-  guardRules?: any[];
-  visibility?: SduiVisibility;
-}
-```
-
-#### 26. Tab Group (`ui.tab-group`)
-Horizontal tab switcher.
-```typescript
-export interface TabGroupWidget extends SduiNode<'ui.tab-group'> {
+interface TabGroupWidget extends SduiNode<'ui.tab-group'> {
   options: OptionWidget[];
-  binding: SduiBinding;
+  binding: { path: string; scope: string };
 }
 ```
 
-#### 27. Row (`ui.row`)
-Generic horizontal layout container.
+#### Rich Text (`ui.rich-text`)
 ```typescript
-export interface RowWidget extends SduiNode<'ui.row'> {
-  rowGroup?: string;
-  visibility?: SduiVisibility;
+interface RichTextWidget extends SduiNode<'ui.rich-text'> {
+  text: any[];
+  visibility?: any;
 }
 ```
 
-#### 28. Subtitle Label Section (`ui.subtitle-label-section`)
-Header slot component displaying a subtitle alongside a supplementary label. (Header zone only)
+#### Row (`ui.row`)
+Layout-only container. Row grouping is controlled by `span` (out of 12 columns) on sibling body components.
 ```typescript
-export interface SubtitleLabelSectionWidget extends SduiNode<'ui.subtitle-label-section'> {
-  subtitle: string;
-  label?: string;
+interface RowWidget extends SduiNode<'ui.row'> {
   rowGroup?: string;
-  visibility?: SduiVisibility;
 }
 ```
+
+#### Local State (`ui.local-state`)
+```typescript
+interface LocalStateWidget extends SduiNode<'ui.local-state'> {
+  key: string;
+  initial: string;
+  allowedStates: any;
+}
+```
+
+#### Icon Text (`ui.icon-text`)
+```typescript
+interface IconTextWidget extends SduiNode<'ui.icon-text'> {
+  label: string;
+  icon: any;
+  visibility?: any;
+}
+```
+
+#### Badge (`ui.badge`)
+```typescript
+interface BadgeWidget extends SduiNode<'ui.badge'> {
+  label: string;
+  variant: 'success' | 'warning' | 'info' | 'error';
+  source?: any;
+  visibility?: any;
+}
+```
+
+---
+
+### Shared Utility Types
+
+```typescript
+interface ValidationRule {
+  type: string;            // "REGEX", "MATCH_FIELD", "MIN_AGE", "MAX_AGE", "NO_FUTURE_DATE"
+  pattern?: string;
+  field?: string;          // for MATCH_FIELD
+  value?: number | string;
+  message: string;
+}
+
+interface VisibilityCondition {
+  visibility: {
+    field: string;
+    operator: 'NOT_EMPTY' | 'EMPTY' | 'EQUALS' | 'NOT_EQUALS';
+    value?: any;
+  };
+}
+```
+
+---
 
 ## Setup & Registration
 
-Before rendering an SDUI payload, register your base components globally. This usually happens at the app entry point.
+Register components at app entry point mapping `__component` strings to React Native components.
 
 ```typescript
 import { ComponentRegistry } from './sdui/ComponentRegistry';
-import { ButtonWidget, TextWidget, ItemListWidget } from './sdui/components';
 
-// Map JSON "__component" strings to actual React Native components
-ComponentRegistry.register('ui.button', ButtonWidget);
-ComponentRegistry.register('ui.text', TextWidget);
-ComponentRegistry.register('ui.item-list', ItemListWidget);
+ComponentRegistry.register('ui.progress-bar', ProgressBarComponent);
+ComponentRegistry.register('ui.text',         TextComponent);
+ComponentRegistry.register('ui.text-input',   TextInputComponent);
+ComponentRegistry.register('ui.date-input',   DateInputComponent);
+ComponentRegistry.register('ui.button',       ButtonComponent);
+ComponentRegistry.register('ui.checkbox',     CheckboxComponent);
+ComponentRegistry.register('ui.divider',      DividerComponent);
+ComponentRegistry.register('ui.card',         CardComponent);
+ComponentRegistry.register('ui.review-card',  ReviewCardComponent);
+ComponentRegistry.register('ui.dropdown',     DropdownComponent);
+ComponentRegistry.register('ui.dropdown-async', DropdownAsyncComponent);
+// ... all other components
 ```
+
+---
 
 ## Action Handling Strategy
 
-Do not embed domain logic (like `useNavigation` or `fetch`) directly inside SDUI widgets. Instead, use the `onAction` callback pattern. 
+Actions are **plain JSON objects** on the component — no SDUI sub-component hydration needed.
 
-The backend defines the *intent* in the `sdui.action` payload, and the wrapper screen resolves the action. This keeps widgets pure and highly reusable.
+```typescript
+// button.action, slide-to-confirm.action, etc.
+{ type: 'NEXT_SCREEN' }
+{ type: 'SOCIAL_LOGIN', provider: 'GOOGLE' }
+{ type: 'EMIT_EVENT', params: { eventName: 'RETAKE_EKTP_IMAGE' } }
+```
+
+Do not embed domain logic inside widgets. Use the `onAction` callback pattern — the backend defines *intent*, the host screen resolves it.

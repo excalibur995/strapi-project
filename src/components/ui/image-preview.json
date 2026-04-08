@@ -6,18 +6,53 @@
   },
   "options": {},
   "attributes": {
-    "componentId": { "type": "string" },
-    "testId": { "type": "string" },
+    "componentId": {
+      "type": "string"
+    },
+    "testId": {
+      "type": "string"
+    },
     "label": {
       "type": "string",
-      "pluginOptions": { "i18n": { "localized": true } }
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
-    "name": { "type": "string" },
-    "enabled": { "type": "boolean", "default": true },
-    "editable": { "type": "boolean", "default": false },
-    "visible": { "type": "boolean", "default": true },
-    "valueSource": { "type": "json" },
-    "placement": { "type": "json" },
-    "span": { "type": "integer" }
+    "name": {
+      "type": "string"
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "editable": {
+      "type": "boolean",
+      "default": false
+    },
+    "visible": {
+      "type": "boolean",
+      "default": true
+    },
+    "placement": {
+      "type": "json"
+    },
+    "span": {
+      "type": "integer"
+    },
+    "media": {
+      "type": "media",
+      "multiple": false,
+      "allowedTypes": [
+        "images",
+        "files",
+        "videos",
+        "audios"
+      ]
+    },
+    "binding": { "type": "component", "component": "sdui.binding" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

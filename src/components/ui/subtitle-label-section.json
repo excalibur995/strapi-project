@@ -18,7 +18,10 @@
     },
     "testId": {
       "type": "string"
-    }
+    },
+    "binding": { "type": "component", "component": "sdui.binding" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   },
   "config": {}
 }

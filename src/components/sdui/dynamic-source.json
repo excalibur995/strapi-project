@@ -1,0 +1,23 @@
+{
+  "collectionName": "components_sdui_dynamic_sources",
+  "info": {
+    "displayName": "Dynamic Source",
+    "description": "Source descriptor for a dynamic injector — either a runtime fact or a downstream service call"
+  },
+  "options": {},
+  "attributes": {
+    "type": {
+      "type": "enumeration",
+      "enum": ["FACT", "SERVICE"],
+      "required": true
+    },
+    "path": {
+      "type": "string",
+      "description": "Dot-path to the fact value (used when type = FACT)"
+    },
+    "serviceCode": {
+      "type": "string",
+      "description": "Downstream service identifier (used when type = SERVICE)"
+    }
+  }
+}

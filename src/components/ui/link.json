@@ -16,14 +16,12 @@
       "component": "sdui.action",
       "repeatable": false
     },
-    "validation": {
-      "type": "component",
-      "component": "sdui.validation",
-      "repeatable": false
-    },
+    "binding": { "type": "component", "component": "sdui.binding" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
     "span": {
       "type": "integer"
-    }
+    },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   },
   "config": {}
 }

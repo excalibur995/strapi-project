@@ -27,8 +27,11 @@
       "type": "component",
       "component": "sdui.visibility"
     },
+    "binding": { "type": "component", "component": "sdui.binding" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
     "span": {
       "type": "integer"
-    }
+    },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

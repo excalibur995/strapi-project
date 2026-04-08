@@ -9,6 +9,9 @@
     "variant": { "type": "enumeration", "enum": ["success", "warning", "info", "error"], "default": "info" },
     "source": { "type": "component", "component": "sdui.source" },
     "visibility": { "type": "component", "component": "sdui.visibility" },
-    "span": { "type": "integer" }
+    "binding": { "type": "component", "component": "sdui.binding" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "span": { "type": "integer" },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

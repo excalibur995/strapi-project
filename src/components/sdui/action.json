@@ -15,7 +15,9 @@
         "open_sheet",
         "open_confirm",
         "open_native",
-        "set_state"
+        "set_state",
+        "open_document",
+        "submit_journey"
       ],
       "required": true
     },

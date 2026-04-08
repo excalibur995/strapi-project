@@ -10,8 +10,9 @@
     "min": { "type": "decimal" },
     "max": { "type": "decimal" },
     "binding": { "type": "component", "component": "sdui.binding", "required": true },
-    "validation": { "type": "component", "component": "sdui.validation" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
     "visibility": { "type": "component", "component": "sdui.visibility" },
-    "span": { "type": "integer" }
+    "span": { "type": "integer" },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

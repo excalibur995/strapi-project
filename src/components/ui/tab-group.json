@@ -7,6 +7,8 @@
     "testId": { "type": "string" },
     "options": { "type": "component", "repeatable": true, "component": "ui.option", "required": true },
     "binding": { "type": "component", "component": "sdui.binding", "required": true },
-    "span": { "type": "integer" }
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "span": { "type": "integer" },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

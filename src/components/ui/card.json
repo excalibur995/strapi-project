@@ -26,6 +26,9 @@
     "valueSource": { "type": "json" },
     "enabled": { "type": "boolean", "default": true },
     "visible": { "type": "boolean", "default": true },
-    "span": { "type": "integer", "default": 12 }
+    "binding": { "type": "component", "component": "sdui.binding" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "span": { "type": "integer", "default": 12 },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

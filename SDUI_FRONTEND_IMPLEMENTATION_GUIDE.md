@@ -1,8 +1,8 @@
 # SDUI Frontend Implementation Guide (React Native + TypeScript)
 
-This guide is designed for developers (and AI agents) to construct the Frontend layer of the Server-Driven UI (SDUI) architecture using React Native and TypeScript.
+This guide is for developers and AI agents building the frontend layer of the Server-Driven UI architecture using React Native and TypeScript.
 
-The frontend has a strict responsibility: **Render what the backend sends, and style it according to the local theme system.** It does not define business logic, navigation flows, or screen content.
+**Core contract:** Render what the backend sends, style it with the local theme system. No business logic, navigation flow, or screen content belongs in the frontend.
 
 ---
 
@@ -10,17 +10,23 @@ The frontend has a strict responsibility: **Render what the backend sends, and s
 
 ### The Rendering Pipeline
 
-1. **Fetch Journey Definition**: `GET /api/journeys/id/:journeyId` gives you the configuration (which screens to show, validations, async steps).
-2. **Fetch Screen Definition**: `GET /api/screens/:documentId` gives you a tree of `__component` objects inside slots (`meta`, `header`, `body`, `footer`).
-3. **Parse & Render**: The `DynamicRenderer` takes the JSON tree, looks up the `__component` string in the **Component Registry**, and renders the corresponding React Native component.
-4. **State Management**: Form inputs interact with a global `JourneyState` store via `sdui.binding`.
-5. **Event Execution**: Buttons and triggers execute `sdui.action` payloads.
+1. **Fetch Journey** — `GET /api/journeys/id/:journeyId`
+   Returns the flow config: `journeyId`, `preInitiateScreen`, ordered `screens`, `steps`, `initialState`, `version`.
+
+2. **Fetch Screen** — `GET /api/screens/:documentId` or by `screenKey`
+   Returns `screenId`, `screenKey`, `meta`, and three component arrays: `header`, `body`, `footer`.
+
+3. **Parse & Render** — `DynamicRenderer` iterates each zone, looks up `__component` in the Component Registry, renders the matching React Native component.
+
+4. **State Management** — Input components read/write `JourneyState` using the component's `name` field as the state key.
+
+5. **Action Execution** — `action` is a plain JSON object (`{ type, ...payload }`) on buttons and other triggers. The host screen resolves the intent.
 
 ---
 
 ## 2. Global State & Context
 
-The entire journey relies on a shared state dictionary. A library like `zustand` or React Context is ideal here.
+All inputs in a journey share a single state dictionary. Use `zustand` or React Context.
 
 ```typescript
 // store/journeyStore.ts
@@ -30,15 +36,15 @@ export type JourneyState = Record<string, any>;
 interface JourneyStore {
   state: JourneyState;
 
-  // Update a specific path in the journey state (tied to sdui.binding)
-  updateField: (path: string, value: any) => void;
+  // Read a field — keyed by the component's `name`
+  getValue: (name: string) => any;
 
-  // Get a specific value (used by resolving sdui.binding & sdui.source)
-  getValue: (path: string) => any;
+  // Write a field — keyed by the component's `name`
+  updateField: (name: string, value: any) => void;
 
-  // Entire Journey definition
-  steps: any[];
-  currentStepIndex: number;
+  // Journey definition
+  journey: Journey | null;
+  currentScreenKey: string | null;
 }
 ```
 
@@ -46,154 +52,142 @@ interface JourneyStore {
 
 ## 3. Core TypeScript Interfaces
 
-Define strict types for your components early to leverage TypeScript across the registry.
+See `README.md` for the complete interface catalogue. The key interfaces for the rendering pipeline:
 
 ```typescript
 // types/sdui.ts
 
-export interface SDUIBaseComponent {
-  id: number;
-  __component: string;
+// Action is plain JSON — no sub-component hydration
+interface Action {
+  type: string;
+  [key: string]: any;
 }
 
-// === Behavioural Components (sdui.*) ===
-
-export interface SDUIBinding {
-  id: number;
-  path: string; // e.g., "accountPurpose", "npwpNumber"
-  scope: "journeyState" | "localState" | "globalState";
+interface Journey {
+  journeyId: string;
+  preInitiateScreen: string;   // screenKey of the first screen
+  screens: Screen[];
+  steps: Step[];
+  initialState: Record<string, any>;
+  presentation: string;
+  navigator?: string;
+  version: number;
 }
 
-export interface SDUIAction {
-  id: number;
-  key: string;
-  type: "navigate" | "api_call" | "set_state" | "open_modal" | "submit";
-  payload?: Record<string, any>;
-  guards?: any[]; // For rule evaluation before execution
+interface Screen {
+  screenId: string;
+  screenKey: string;
+  version: number;
+  meta: ScreenMeta;
+  header: AnyUIComponent[];
+  body:   AnyUIComponent[];
+  footer: AnyUIComponent[];
 }
 
-export interface SDUIVisibility {
-  id: number;
-  action: "show" | "hide";
-  rule: any; // Rule engine definition
-}
-
-export interface SDUIOnComplete {
-  id: number;
-  action: SDUIAction; // nested sdui.action — not flat key/type/payload
-}
-
-// === UI Components (ui.*) ===
-
-export interface UIBanner extends SDUIBaseComponent {
-  __component: "ui.banner";
-  text: string; // was `value` — renamed in schema
-  variant: "info" | "warning" | "success" | "error";
-  onTap?: SDUIAction;
-  visibility?: SDUIVisibility;
-}
-
-export interface UIText extends SDUIBaseComponent {
-  __component: "ui.text";
-  text: string; // was `value` — renamed in schema
-  variant?: "title" | "body" | "caption" | "label";
-  visibility?: SDUIVisibility;
-}
-
-export interface UIButton extends SDUIBaseComponent {
-  __component: "ui.button";
-  label: string;
-  variant: "primary" | "secondary" | "ghost" | "danger";
-  action: SDUIAction;
-  visibility?: SDUIVisibility;
-}
-
-export interface UITextInput extends SDUIBaseComponent {
-  __component: "ui.text-input";
-  placeholder?: string;
-  keyboardType?: "default" | "email-address" | "numeric" | "phone-pad";
-  binding: SDUIBinding;
-  validation?: any[];
-  visibility?: SDUIVisibility;
-}
-
-export interface UIHero extends SDUIBaseComponent {
-  __component: "ui.hero";
-  title: string;
+interface ScreenMeta {
+  label?: string;
+  title?: string;
   subtitle?: string;
-  illustration?: any; // Contains Strapi Media object
+  enableBackButton: boolean;
+  enableCloseButton: boolean;
+  onBack?: Action;
 }
-
-// Utility union of all possible UI components
-export type AnyUIComponent = UIButton | UITextInput | UIHero; /* | ...others */
 ```
 
 ---
 
 ## 4. The Component Registry
 
-The Registry maps the backend `__component` string to your concrete React Native implementation.
+Maps the backend `__component` string to the concrete React Native implementation.
 
-```tsx
+```typescript
 // registry/ComponentRegistry.ts
-import { ComponentType } from "react";
-import ButtonComponent from "../components/ui/ButtonComponent";
-import TextInputComponent from "../components/ui/TextInputComponent";
-import HeroComponent from "../components/ui/HeroComponent";
+import { ComponentType } from 'react';
 
-// Every component registered here must accept its own Strapi props
-const registry: Record<string, ComponentType<any>> = {
-  "ui.button": ButtonComponent,
-  "ui.text-input": TextInputComponent,
-  "ui.hero": HeroComponent,
-  // Add 20+ more here...
+const registry: Record<string, ComponentType<any>> = {};
+
+export const registerComponent = (name: string, component: ComponentType<any>) => {
+  registry[name] = component;
 };
 
-export const getComponent = (componentName: string) => {
-  const Component = registry[componentName];
+export const getComponent = (name: string): ComponentType<any> | null => {
+  const Component = registry[name];
   if (!Component) {
-    console.warn(`[SDUI] Unregistered component: ${componentName}`);
-    return null; /* Or return a Fallback/ErrorComponent */
+    console.warn(`[SDUI] Unregistered component: ${name}`);
+    return null;
   }
   return Component;
 };
+```
+
+Register all components at app entry:
+
+```typescript
+// All components that appear in the header, body, or footer dynamic zones
+registerComponent('ui.progress-bar',     ProgressBarComponent);
+registerComponent('ui.text',             TextComponent);
+registerComponent('ui.text-input',       TextInputComponent);
+registerComponent('ui.date-input',       DateInputComponent);
+registerComponent('ui.checkbox',         CheckboxComponent);
+registerComponent('ui.checkbox-list',    CheckboxListComponent);
+registerComponent('ui.button',           ButtonComponent);
+registerComponent('ui.divider',          DividerComponent);
+registerComponent('ui.card',             CardComponent);
+registerComponent('ui.review-card',      ReviewCardComponent);
+registerComponent('ui.dropdown',         DropdownComponent);
+registerComponent('ui.dropdown-async',   DropdownAsyncComponent);
+registerComponent('ui.banner',           BannerComponent);
+registerComponent('ui.section-label',    SectionLabelComponent);
+registerComponent('ui.hero',             HeroComponent);
+registerComponent('ui.image-preview',    ImagePreviewComponent);
+registerComponent('ui.camera-capture',   CameraCaptureComponent);
+registerComponent('ui.cascading-select', CascadingSelectComponent);
+registerComponent('ui.radio-group',      RadioGroupComponent);
+registerComponent('ui.item-list',        ItemListComponent);
+registerComponent('ui.money-input',      MoneyInputComponent);
+registerComponent('ui.money-display',    MoneyDisplayComponent);
+registerComponent('ui.passcode-input',   PasscodeInputComponent);
+registerComponent('ui.slide-to-confirm', SlideToConfirmComponent);
+registerComponent('ui.tab-group',        TabGroupComponent);
+registerComponent('ui.rich-text',        RichTextComponent);
+registerComponent('ui.link',             LinkComponent);
+registerComponent('ui.badge',            BadgeComponent);
+registerComponent('ui.local-state',      LocalStateComponent);
+registerComponent('ui.icon-text',        IconTextComponent);
+registerComponent('ui.row',              RowComponent);
 ```
 
 ---
 
 ## 5. The Dynamic Renderer
 
-This is the engine that iterates over Strapi slots (`header`, `body`, `footer`) and mounts the components.
+Iterates over a zone array and mounts each component.
 
 ```tsx
 // components/core/DynamicRenderer.tsx
-import React from "react";
-import { View } from "react-native";
-import { getComponent } from "../../registry/ComponentRegistry";
-import { useVisibilityEvaluator } from "../../hooks/useVisibilityEvaluator";
+import React from 'react';
+import { View } from 'react-native';
+import { getComponent } from '../../registry/ComponentRegistry';
 
 export const DynamicBlock: React.FC<{ block: any }> = ({ block }) => {
-  const { __component, visibility } = block;
+  const { __component, visible } = block;
 
-  // 1. Evaluate Visibility Rule (sdui.visibility)
-  const isVisible = useVisibilityEvaluator(visibility);
-  if (!isVisible) return null;
+  // Visibility is a flat boolean on the component — no hook required
+  if (visible === false) return null;
 
-  // 2. Fetch from Registry
   const Component = getComponent(__component);
   if (!Component) return null;
 
-  // 3. Render and pass through the Strapi props
   return <Component {...block} />;
 };
 
 export const DynamicZoneRenderer: React.FC<{ blocks: any[] }> = ({ blocks }) => {
-  if (!blocks || blocks.length === 0) return null;
+  if (!blocks?.length) return null;
 
   return (
     <View style={{ gap: 16 }}>
       {blocks.map((block, index) => (
-        <DynamicBlock key={`${block.__component}-${block.id || index}`} block={block} />
+        <DynamicBlock key={`${block.__component}-${block.id ?? index}`} block={block} />
       ))}
     </View>
   );
@@ -202,35 +196,57 @@ export const DynamicZoneRenderer: React.FC<{ blocks: any[] }> = ({ blocks }) => 
 
 ---
 
-## 6. Implementation Patterns: Inputs & Bindings
+## 6. Implementation Patterns: Inputs
 
-Inputs _must_ connect to the global state via `sdui.binding`.
+Inputs use the component `name` field as the `JourneyState` key. There is no SDUI `binding` sub-component — the flat `name` string is the contract.
 
 ```tsx
 // components/ui/TextInputComponent.tsx
-import React from "react";
-import { TextInput, View, Text } from "react-native";
-import { UITextInput } from "../../types/sdui";
-import { useJourneyStore } from "../../store/journeyStore";
-import { useTheme } from "../../theme/ThemeProvider"; // Local styling only!
+import React from 'react';
+import { TextInput, View, Text } from 'react-native';
+import { useJourneyStore } from '../../store/journeyStore';
+import { useTheme } from '../../theme/ThemeProvider';
+import { validateField } from '../../utils/validator';
 
-const TextInputComponent: React.FC<UITextInput> = (props) => {
-  const { binding, placeholder, keyboardType } = props;
+const TextInputComponent: React.FC<TextInputWidget> = (props) => {
+  const {
+    label, name, placeholder, inputMode,
+    prefix, helperText, required,
+    enabled, editable, validations,
+  } = props;
+
   const theme = useTheme();
+  const value   = useJourneyStore((s) => s.getValue(name));
+  const update  = useJourneyStore((s) => s.updateField);
 
-  // Subscribe to the global journey state using the binding path
-  const value = useJourneyStore((state) => state.getValue(binding.path));
-  const updateField = useJourneyStore((state) => state.updateField);
+  const handleChange = (text: string) => {
+    if (!editable || !enabled) return;
+    update(name, text);
+  };
+
+  const errors = validations
+    ? validateField(value, validations)
+    : [];
 
   return (
     <View style={theme.styles.inputContainer}>
+      <Text style={theme.styles.label}>{label}{required ? ' *' : ''}</Text>
+      {prefix && <Text style={theme.styles.prefix}>{prefix}</Text>}
       <TextInput
-        style={theme.styles.input}
+        style={[theme.styles.input, !enabled && theme.styles.disabled]}
         placeholder={placeholder}
-        keyboardType={keyboardType}
-        value={value || ""}
-        onChangeText={(text) => updateField(binding.path, text)}
+        keyboardType={inputMode === 'email' ? 'email-address'
+                    : inputMode === 'numeric' ? 'numeric'
+                    : inputMode === 'phone' ? 'phone-pad'
+                    : 'default'}
+        value={value ?? ''}
+        editable={editable && enabled}
+        onChangeText={handleChange}
       />
+      {helperText && <Text style={theme.styles.helper}>{helperText}</Text>}
+      {errors.map((err, i) => (
+        <Text key={i} style={theme.styles.error}>{err}</Text>
+      ))}
     </View>
   );
 };
@@ -238,76 +254,137 @@ const TextInputComponent: React.FC<UITextInput> = (props) => {
 export default TextInputComponent;
 ```
 
----
+### Inline Validation
 
-## 7. Implementation Patterns: The Action Engine
-
-When a user taps a button, it executes an `sdui.action`.
+`validations` is a JSON array on the component — parse and run locally:
 
 ```typescript
-// utils/actionExecutor.ts
-import { SDUIAction } from "../types/sdui";
-import { evaluateGuards } from "./ruleEngine";
-import { navigateToStep } from "./navigation";
+// utils/validator.ts
+import { ValidationRule } from '../types/sdui';
 
-export const executeAction = async (action: SDUIAction) => {
-  if (!action) return;
+export function validateField(value: any, rules: ValidationRule[]): string[] {
+  const errors: string[] = [];
 
-  // 1. Evaluate Guards (Rules)
-  if (action.guards && action.guards.length > 0) {
-    const passed = evaluateGuards(action.guards);
-    if (!passed) {
-      // Handle blocked action (e.g., show inline error via validation engine)
-      return;
+  for (const rule of rules) {
+    switch (rule.type) {
+      case 'REGEX':
+        if (!new RegExp(rule.pattern!).test(value ?? ''))
+          errors.push(rule.message);
+        break;
+      case 'MATCH_FIELD':
+        // Compare against another field — read from JourneyStore
+        break;
+      case 'MIN_AGE':
+      case 'MAX_AGE':
+      case 'NO_FUTURE_DATE':
+        // Date-specific validation
+        break;
     }
   }
 
-  // 2. Execute Action based on type
+  return errors;
+}
+```
+
+### Conditional Visibility
+
+`conditions` is a flat JSON object on the component. Evaluate it against JourneyState to decide whether to mount:
+
+```typescript
+// utils/conditionEvaluator.ts
+import { VisibilityCondition } from '../types/sdui';
+
+export function evaluateCondition(
+  condition: VisibilityCondition | undefined,
+  getState: (key: string) => any,
+): boolean {
+  if (!condition) return true;
+
+  const { field, operator, value } = condition.visibility;
+  const stateValue = getState(field);
+
+  switch (operator) {
+    case 'NOT_EMPTY': return stateValue !== null && stateValue !== undefined && stateValue !== '';
+    case 'EMPTY':     return !stateValue;
+    case 'EQUALS':    return stateValue === value;
+    case 'NOT_EQUALS':return stateValue !== value;
+    default:          return true;
+  }
+}
+```
+
+Usage in `DynamicBlock`:
+
+```tsx
+const isVisible = evaluateCondition(block.conditions, getValue);
+if (block.visible === false || !isVisible) return null;
+```
+
+---
+
+## 7. Implementation Patterns: Actions
+
+`action` is a plain JSON object directly on the component. No SDUI sub-component hydration required.
+
+```typescript
+// utils/actionExecutor.ts
+import { Action } from '../types/sdui';
+
+export const executeAction = async (action: Action, context: ActionContext) => {
+  if (!action) return;
+
   switch (action.type) {
-    case "navigate":
-      const nextStepCode = action.payload?.nextStep;
-      if (nextStepCode) navigateToStep(nextStepCode);
+    case 'NEXT_SCREEN':
+      context.navigateNext();
       break;
 
-    case "api_call":
-      // Execute side-effect API call with payload
+    case 'SOCIAL_LOGIN':
+      await context.socialLogin(action.provider);
       break;
 
-    case "set_state":
-      // Update local or global state directly
+    case 'EMIT_EVENT':
+      context.emit(action.params?.eventName, action.params);
       break;
 
-    case "submit":
-      // Resolve the current sdui.step-user with the payload
+    case 'CONFIRM_APPLY':
+      await context.submitJourney();
       break;
 
     default:
-      console.warn(`[SDUI Action Engine] Unknown action type: ${action.type}`);
+      console.warn(`[SDUI] Unknown action type: ${action.type}`);
   }
 };
 ```
 
-Using it inside a component:
+Button component:
 
 ```tsx
 // components/ui/ButtonComponent.tsx
-import React from "react";
-import { TouchableOpacity, Text } from "react-native";
-import { UIButton } from "../../types/sdui";
-import { executeAction } from "../../utils/actionExecutor";
-import { useTheme } from "../../theme/ThemeProvider";
+import React from 'react';
+import { TouchableOpacity, Text, Image } from 'react-native';
+import { ButtonWidget } from '../../types/sdui';
+import { executeAction } from '../../utils/actionExecutor';
+import { useTheme } from '../../theme/ThemeProvider';
+import { useActionContext } from '../../hooks/useActionContext';
 
-const ButtonComponent: React.FC<UIButton> = ({ label, variant, action }) => {
-  const theme = useTheme();
-  const styles = theme.getButtonStylesFor(variant);
+const ButtonComponent: React.FC<ButtonWidget> = ({
+  label, variant, enabled, visible, action, icon,
+}) => {
+  const theme   = useTheme();
+  const context = useActionContext();
+  const styles  = theme.getButtonStyles(variant);
 
-  const handlePress = () => {
-    executeAction(action);
-  };
+  if (!visible) return null;
 
   return (
-    <TouchableOpacity style={styles.container} onPress={handlePress}>
-      <Text style={styles.text}>{label}</Text>
+    <TouchableOpacity
+      style={[styles.container, !enabled && styles.disabled]}
+      onPress={() => enabled && executeAction(action, context)}
+      disabled={!enabled}
+    >
+      {icon?.position === 'left' && <Image source={{ uri: icon.name }} style={styles.icon} />}
+      <Text style={styles.label}>{label}</Text>
+      {icon?.position === 'right' && <Image source={{ uri: icon.name }} style={styles.icon} />}
     </TouchableOpacity>
   );
 };
@@ -317,21 +394,62 @@ export default ButtonComponent;
 
 ---
 
-## 8. Agent Development Strategy
+## 8. Screen Meta Rendering
 
-When instructing an AI to build components using this architecture, provide it with the following workflow:
+`meta` drives the title bar — it is NOT a component in the header zone, it's a separate object on the screen.
 
-1. **Analyze Schema**: Give the Agent the schema definitions (e.g., `src/components/ui/money-input.json`).
-2. **Generate TypeScript Interface**: Agent must first create the `interface UIMoneyInput extends SDUIBaseComponent` matching the Strapi JSON schema.
-3. **Build the React Component**:
-   - The component takes the interface as its `Props`.
-   - Apply constraints (e.g., no hardcoded styles, only use the design system / theme context).
-   - If it's an input, import the `useJourneyStore` hook and wire up the `binding.path`.
-   - If it's triggerable, import `executeAction` and wire it up.
-4. **Register**: Add the new component to the `ComponentRegistry.ts`.
+```tsx
+// components/core/ScreenHeader.tsx
+const ScreenHeader: React.FC<{ meta: ScreenMeta }> = ({ meta }) => {
+  const { label, title, subtitle, enableBackButton, enableCloseButton, onBack } = meta;
+  const context = useActionContext();
 
-### Strict Agent Directives:
+  return (
+    <View>
+      {/* Title bar */}
+      <View style={styles.titleBar}>
+        {enableBackButton && (
+          <TouchableOpacity onPress={() => onBack ? executeAction(onBack, context) : context.goBack()}>
+            <BackIcon />
+          </TouchableOpacity>
+        )}
+        {label && <Text style={styles.barLabel}>{label}</Text>}
+        {enableCloseButton && (
+          <TouchableOpacity onPress={context.closeJourney}>
+            <CloseIcon />
+          </TouchableOpacity>
+        )}
+      </View>
+      {/* Screen title / subtitle sit below the title bar */}
+      {title    && <Text style={styles.title}>{title}</Text>}
+      {subtitle && <Text style={styles.subtitle}>{subtitle}</Text>}
+    </View>
+  );
+};
+```
 
-- **NO INLINE STYLES**: Agents must use the injected `theme` context or a StyleSheet reference.
-- **NO STATELESS INPUTS**: Input components that don't hook into `sdui.binding` via the `updateField` utility are considered broken.
-- **GRACEFUL FALLBACKS**: If `binding` or `action` is missing but required by the component, do not crash. Return a developer warning view.
+---
+
+## 9. Agent Development Strategy
+
+When instructing an AI to build components using this architecture:
+
+1. **Read the schema** — check `src/components/ui/<component>.json` for the exact field list.
+2. **Generate the TypeScript interface** — extend `SduiNode<'ui.component-name'>`.
+3. **Build the React Native component**:
+   - Use `name` as the `JourneyStore` key for any input.
+   - Use `visible: boolean` directly — no `useVisibilityEvaluator` hook.
+   - Evaluate `conditions` (if present) using `evaluateCondition()`.
+   - Parse `validations` array locally using `validateField()`.
+   - Pass `action` directly to `executeAction()` — it is plain JSON.
+4. **Register** the component in `ComponentRegistry.ts`.
+
+### Strict Agent Directives
+
+- **NO INLINE STYLES** — use theme context or `StyleSheet` only.
+- **INPUT STATE KEY IS `name`** — always `useJourneyStore(s => s.getValue(name))`. Never look for a `binding` object on flat components.
+- **VISIBILITY IS FLAT** — check `block.visible === false` and `evaluateCondition(block.conditions, getValue)`. Do not use `sdui.visibility` sub-component logic on new components.
+- **VALIDATIONS ARE JSON** — `validations` is an array on the component itself. Run locally with `validateField()`.
+- **ACTIONS ARE JSON** — `action` is `{ type, ...payload }`. Pass directly to `executeAction()`. No sub-component hydration.
+- **`valueSource` IS JSON** — `{ type: 'binding', path: 'some.path' }`. Resolve by calling `getValue(valueSource.path)` from JourneyStore.
+- **GRACEFUL FALLBACKS** — if a required field (`name`, `label`) is missing, render a dev-warning view, never crash.

@@ -11,6 +11,9 @@
       "type": "integer",
       "default": 8
     },
+    "binding": { "type": "component", "component": "sdui.binding" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" },
     "columns": {
       "type": "dynamiczone",
       "components": [

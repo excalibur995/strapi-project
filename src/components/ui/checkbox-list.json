@@ -27,7 +27,7 @@
       "component": "sdui.binding",
       "required": true
     },
-    "validation": {
+    "validations": {
       "type": "component",
       "component": "sdui.validation",
       "repeatable": true
@@ -38,6 +38,7 @@
     },
     "span": {
       "type": "integer"
-    }
+    },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

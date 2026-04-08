@@ -8,6 +8,9 @@
     "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
     "currency": { "type": "string", "default": "IDR" },
     "source": { "type": "component", "component": "sdui.source", "required": true },
-    "span": { "type": "integer" }
+    "binding": { "type": "component", "component": "sdui.binding" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "span": { "type": "integer" },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

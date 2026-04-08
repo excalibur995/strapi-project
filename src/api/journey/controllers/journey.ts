@@ -137,13 +137,6 @@ const SCREENS_POPULATE = {
 
 const STEPS_POPULATE = {
   screens: SCREENS_POPULATE.screens,
-  steps: {
-    populate: {
-      screen: {
-        fields: ["screenId"],
-      },
-    },
-  },
 };
 
 export default factories.createCoreController("api::journey.journey" as any, ({ strapi }) => ({
@@ -178,10 +171,7 @@ export default factories.createCoreController("api::journey.journey" as any, ({ 
     const entity = await (strapi as any).documents("api::journey.journey").findOne({
       documentId: id,
       ...sanitizedQuery,
-      populate: {
-        ...SCREENS_POPULATE,
-        steps: STEPS_POPULATE.steps,
-      },
+      populate: { ...SCREENS_POPULATE },
     });
 
     if (!entity) {
@@ -193,19 +183,19 @@ export default factories.createCoreController("api::journey.journey" as any, ({ 
   },
 
   async findBySlug(ctx) {
-    const { flowId } = ctx.params;
+    const { journeyId } = ctx.params;
     const sanitizedQuery = await this.sanitizeQuery(ctx);
 
     const results = await (strapi as any).documents("api::journey.journey").findMany({
       ...sanitizedQuery,
       filters: Object.assign({}, sanitizedQuery.filters, {
-        flowId: { $eq: flowId },
+        journeyId: { $eq: journeyId },
       }),
       status: "published",
       populate: STEPS_POPULATE,
     });
 
-    console.log({ results, flowId });
+    console.log({ results, journeyId });
     if (!results || results.length === 0) {
       return ctx.notFound(`Journey not found`);
     }
@@ -213,7 +203,6 @@ export default factories.createCoreController("api::journey.journey" as any, ({ 
     // Return the first match (should be exactly one based on unique slug)
     const sanitizedEntity = (await this.sanitizeOutput(results[0], ctx)) as {
       screens: RawScreenEntity[];
-      steps?: Array<Record<string, unknown>>;
     };
 
     // Re-index steps as a map keyed by actionId so the FE can look up

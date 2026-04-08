@@ -11,6 +11,8 @@
     "binding": { "type": "component", "component": "sdui.binding", "required": true },
     "onForgot": { "type": "component", "component": "sdui.action" },
     "onComplete": { "type": "component", "component": "sdui.on-complete", "required": true },
-    "span": { "type": "integer" }
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "span": { "type": "integer" },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

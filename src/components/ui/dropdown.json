@@ -21,7 +21,9 @@
     "editable": { "type": "boolean", "default": true },
     "visible": { "type": "boolean", "default": true },
     "options": { "type": "component", "repeatable": true, "component": "ui.option", "required": true },
-    "conditions": { "type": "json" },
-    "span": { "type": "integer" }
+    "binding": { "type": "component", "component": "sdui.binding" },
+    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "span": { "type": "integer" },
+    "dynamic": { "type": "component", "component": "sdui.dynamic" }
   }
 }

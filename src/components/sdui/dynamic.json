@@ -1,0 +1,43 @@
+{
+  "collectionName": "components_sdui_dynamics",
+  "info": {
+    "displayName": "Dynamic Injector",
+    "description": "Declares a runtime injection onto a specific field of a UI component. Repeatable — one entry per injected target."
+  },
+  "options": {},
+  "attributes": {
+    "enabled": {
+      "type": "boolean",
+      "default": true,
+      "required": true
+    },
+    "type": {
+      "type": "enumeration",
+      "enum": ["CONTENT", "OPTIONS", "VALUE"],
+      "required": true,
+      "description": "CONTENT = textual injection (label, placeholder, …); OPTIONS = list injection (dropdown/checkbox/radio); VALUE = value prefill (defaultValue)"
+    },
+    "target": {
+      "type": "enumeration",
+      "enum": [
+        "label",
+        "title",
+        "subtitle",
+        "placeholder",
+        "description",
+        "helperText",
+        "richTextContent",
+        "options",
+        "defaultValue",
+        "prefill"
+      ],
+      "required": true,
+      "description": "The field on the component that will be overwritten at runtime"
+    },
+    "source": {
+      "type": "component",
+      "component": "sdui.dynamic-source",
+      "required": true
+    }
+  }
+}
