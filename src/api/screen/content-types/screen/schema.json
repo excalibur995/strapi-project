@@ -35,44 +35,28 @@
         "ui.progress-bar",
         "ui.text",
         "ui.image-preview",
-        "ui.hero",
         "ui.banner",
-        "ui.section-label",
-        "ui.tab-group",
-        "ui.subtitle-label-section"
+        "ui.tab-group"
       ]
     },
     "body": {
       "type": "dynamiczone",
       "components": [
-        "ui.section-label",
-        "ui.row",
         "ui.text",
-        "ui.icon-text",
         "ui.banner",
-        "ui.hero",
         "ui.radio-group",
-        "ui.radio-group-async",
-        "ui.checkbox-list",
-        "ui.checkbox-list-async",
         "ui.checkbox",
         "ui.text-input",
         "ui.date-input",
         "ui.dropdown",
         "ui.dropdown-async",
-        "ui.cascading-select",
-        "ui.account-selector",
         "ui.money-input",
         "ui.camera-capture",
         "ui.image-preview",
         "ui.item-list",
-        "ui.review-card",
-        "ui.card",
         "ui.money-display",
-        "ui.badge",
         "ui.tab-group",
         "ui.passcode-input",
-        "ui.local-state",
         "ui.rich-text",
         "ui.link",
         "ui.divider"
@@ -91,6 +75,29 @@
       "type": "decimal",
       "required": true,
       "default": 1
+    },
+    "subscreens": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::screen.screen"
+    },
+    "isHeaderNullInstead": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": false
+    },
+    "isFooterNullInstead": {
+      "type": "boolean",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      },
+      "default": false
     }
   }
 }

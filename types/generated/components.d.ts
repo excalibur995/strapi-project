@@ -240,62 +240,6 @@ export interface SduiVisibility extends Struct.ComponentSchema {
   };
 }
 
-export interface UiAccountSelector extends Struct.ComponentSchema {
-  collectionName: 'components_ui_account_selectors';
-  info: {
-    description: 'Live account picker from API. type: ui.account-selector';
-    displayName: 'Account Selector';
-  };
-  attributes: {
-    allowChange: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
-    componentId: Schema.Attribute.String;
-    display: Schema.Attribute.JSON;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    endpoint: Schema.Attribute.String & Schema.Attribute.Required;
-    label: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    params: Schema.Attribute.JSON;
-    span: Schema.Attribute.Integer;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-  };
-}
-
-export interface UiBadge extends Struct.ComponentSchema {
-  collectionName: 'components_ui_badges';
-  info: {
-    description: 'Conditional label badge inside review-card';
-    displayName: 'Badge';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    componentId: Schema.Attribute.String;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    label: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    source: Schema.Attribute.Component<'sdui.source', false>;
-    span: Schema.Attribute.Integer;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    variant: Schema.Attribute.Enumeration<
-      ['success', 'warning', 'info', 'error']
-    > &
-      Schema.Attribute.DefaultTo<'info'>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
-  };
-}
-
 export interface UiBanner extends Struct.ComponentSchema {
   collectionName: 'components_ui_banners';
   info: {
@@ -389,91 +333,6 @@ export interface UiCameraCapture extends Struct.ComponentSchema {
   };
 }
 
-export interface UiCard extends Struct.ComponentSchema {
-  collectionName: 'components_ui_cards';
-  info: {
-    description: 'Product/info card with dynamic bindings. type: ui.card';
-    displayName: 'Card';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    componentId: Schema.Attribute.String;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    icon: Schema.Attribute.String;
-    name: Schema.Attribute.String;
-    span: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>;
-    subtitle: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    testId: Schema.Attribute.String;
-    title: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    valueSource: Schema.Attribute.JSON;
-    variant: Schema.Attribute.Enumeration<['default', 'compact']> &
-      Schema.Attribute.DefaultTo<'default'>;
-    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-  };
-}
-
-export interface UiCascadingSelect extends Struct.ComponentSchema {
-  collectionName: 'components_ui_cascading_selects';
-  info: {
-    description: 'Linked dropdowns e.g. country > city > district. type: ui.cascading-select';
-    displayName: 'Cascading Select';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    componentId: Schema.Attribute.String;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    span: Schema.Attribute.Integer;
-    testId: Schema.Attribute.String;
-    tiers: Schema.Attribute.Component<'ui.cascading-select-tier', true> &
-      Schema.Attribute.Required;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
-  };
-}
-
-export interface UiCascadingSelectTier extends Struct.ComponentSchema {
-  collectionName: 'components_ui_cascading_select_tiers';
-  info: {
-    description: 'Single tier inside ui.cascading-select';
-    displayName: 'Cascading Select Tier';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
-    dataSource: Schema.Attribute.Component<'sdui.data-source', false> &
-      Schema.Attribute.Required;
-    dependsOn: Schema.Attribute.String;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    key: Schema.Attribute.String & Schema.Attribute.Required;
-    label: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    placeholder: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-  };
-}
-
 export interface UiCheckbox extends Struct.ComponentSchema {
   collectionName: 'components_ui_checkboxes';
   info: {
@@ -506,57 +365,6 @@ export interface UiCheckbox extends Struct.ComponentSchema {
       }>;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-  };
-}
-
-export interface UiCheckboxList extends Struct.ComponentSchema {
-  collectionName: 'components_ui_checkbox_lists';
-  info: {
-    description: 'Multi-select checkbox group. type: ui.checkbox-list';
-    displayName: 'Checkbox List';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
-    componentId: Schema.Attribute.String;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    label: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    options: Schema.Attribute.Component<'ui.option', true>;
-    span: Schema.Attribute.Integer;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
-  };
-}
-
-export interface UiCheckboxListAsync extends Struct.ComponentSchema {
-  collectionName: 'components_ui_checkbox_list_asyncs';
-  info: {
-    description: 'Multi-select from live API. type: ui.checkbox-list-async';
-    displayName: 'Checkbox List (Async)';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
-    componentId: Schema.Attribute.String;
-    dataSource: Schema.Attribute.Component<'sdui.data-source', false> &
-      Schema.Attribute.Required;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    label: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    span: Schema.Attribute.Integer;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
 
@@ -643,8 +451,6 @@ export interface UiDropdown extends Struct.ComponentSchema {
         };
       }>;
     name: Schema.Attribute.String;
-    options: Schema.Attribute.Component<'ui.option', true> &
-      Schema.Attribute.Required;
     placeholder: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -696,70 +502,6 @@ export interface UiDropdownAsync extends Struct.ComponentSchema {
   };
 }
 
-export interface UiHero extends Struct.ComponentSchema {
-  collectionName: 'components_ui_heros';
-  info: {
-    description: 'Illustrative success/error hero block. type: ui.hero';
-    displayName: 'Hero';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    componentId: Schema.Attribute.String;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    illustration: Schema.Attribute.Media<'images'> & Schema.Attribute.Required;
-    referenceLabel: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    referenceSource: Schema.Attribute.Component<'sdui.source', false>;
-    span: Schema.Attribute.Integer;
-    subtitleFields: Schema.Attribute.JSON;
-    subtitleTemplate: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    testId: Schema.Attribute.String;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-  };
-}
-
-export interface UiIconText extends Struct.ComponentSchema {
-  collectionName: 'components_ui_icon_texts';
-  info: {
-    description: 'A row displaying an icon alongside text. type: ui.icon-text';
-    displayName: 'Icon Text';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    componentId: Schema.Attribute.String;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'> &
-      Schema.Attribute.Required;
-    label: Schema.Attribute.Text &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    span: Schema.Attribute.Integer;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
-  };
-}
-
 export interface UiImagePreview extends Struct.ComponentSchema {
   collectionName: 'components_ui_image_previews';
   info: {
@@ -807,8 +549,6 @@ export interface UiItemList extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    options: Schema.Attribute.Component<'ui.list-item', true> &
-      Schema.Attribute.Required;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
@@ -828,54 +568,6 @@ export interface UiLink extends Struct.ComponentSchema {
     label: Schema.Attribute.String & Schema.Attribute.Required;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-  };
-}
-
-export interface UiListItem extends Struct.ComponentSchema {
-  collectionName: 'components_ui_list_items';
-  info: {
-    description: 'Single row inside ui.item-list';
-    displayName: 'List Item';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    description: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    key: Schema.Attribute.String & Schema.Attribute.Required;
-    label: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    onTap: Schema.Attribute.Component<'sdui.action', false>;
-    span: Schema.Attribute.Integer;
-    tab: Schema.Attribute.String;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
-  };
-}
-
-export interface UiLocalState extends Struct.ComponentSchema {
-  collectionName: 'components_ui_local_states';
-  info: {
-    displayName: 'Local State';
-  };
-  attributes: {
-    allowedStates: Schema.Attribute.JSON & Schema.Attribute.Required;
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    initial: Schema.Attribute.String & Schema.Attribute.Required;
-    key: Schema.Attribute.String & Schema.Attribute.Required;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
   };
 }
@@ -928,36 +620,6 @@ export interface UiMoneyInput extends Struct.ComponentSchema {
     testId: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
-  };
-}
-
-export interface UiOption extends Struct.ComponentSchema {
-  collectionName: 'components_ui_options';
-  info: {
-    description: 'Single selectable option item';
-    displayName: 'Option';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    componentId: Schema.Attribute.String;
-    description: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
-    label: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    onTap: Schema.Attribute.Component<'sdui.action', false>;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    value: Schema.Attribute.String & Schema.Attribute.Required;
   };
 }
 
@@ -1025,64 +687,10 @@ export interface UiRadioGroup extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    options: Schema.Attribute.Component<'ui.option', true> &
-      Schema.Attribute.Required;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
-  };
-}
-
-export interface UiRadioGroupAsync extends Struct.ComponentSchema {
-  collectionName: 'components_ui_radio_group_asyncs';
-  info: {
-    description: 'Single-select radio cards from live API. type: ui.radio-group-async';
-    displayName: 'Radio Group (Async)';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
-    componentId: Schema.Attribute.String;
-    dataSource: Schema.Attribute.Component<'sdui.data-source', false> &
-      Schema.Attribute.Required;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    label: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    span: Schema.Attribute.Integer;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
-  };
-}
-
-export interface UiReviewCard extends Struct.ComponentSchema {
-  collectionName: 'components_ui_review_cards';
-  info: {
-    description: 'Summary section with key-value options. type: ui.review-card';
-    displayName: 'Review Card';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    componentId: Schema.Attribute.String;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    label: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    name: Schema.Attribute.String;
-    options: Schema.Attribute.JSON & Schema.Attribute.Required;
-    span: Schema.Attribute.Integer;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -1100,80 +708,6 @@ export interface UiRichText extends Struct.ComponentSchema {
     testId: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
-  };
-}
-
-export interface UiRow extends Struct.ComponentSchema {
-  collectionName: 'components_ui_rows';
-  info: {
-    displayName: 'Row';
-    icon: 'layout';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    columns: Schema.Attribute.DynamicZone<
-      [
-        'ui.account-selector',
-        'ui.badge',
-        'ui.banner',
-        'ui.button',
-        'ui.camera-capture',
-        'ui.cascading-select',
-        'ui.checkbox-list',
-        'ui.checkbox-list-async',
-        'ui.dropdown',
-        'ui.dropdown-async',
-        'ui.hero',
-        'ui.icon-text',
-        'ui.image-preview',
-        'ui.item-list',
-        'ui.link',
-        'ui.list-item',
-        'ui.money-display',
-        'ui.money-input',
-        'ui.passcode-input',
-        'ui.radio-group',
-        'ui.radio-group-async',
-        'ui.review-card',
-        'ui.rich-text',
-        'ui.section-label',
-        'ui.slide-to-confirm',
-        'ui.tab-group',
-        'ui.text',
-        'ui.text-input',
-      ]
-    >;
-    componentId: Schema.Attribute.String;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    gap: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<8>;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-  };
-}
-
-export interface UiSectionLabel extends Struct.ComponentSchema {
-  collectionName: 'components_ui_section_labels';
-  info: {
-    description: 'Visual section divider. type: ui.section-label';
-    displayName: 'Section Label';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    key: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    span: Schema.Attribute.Integer;
-    subtitle: Schema.Attribute.String;
-    testId: Schema.Attribute.String;
-    title: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
   };
 }
 
@@ -1206,24 +740,6 @@ export interface UiSlideToConfirm extends Struct.ComponentSchema {
   };
 }
 
-export interface UiSubtitleLabelSection extends Struct.ComponentSchema {
-  collectionName: 'components_ui_subtitle_label_sections';
-  info: {
-    displayName: 'SubtitleLabelSection';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    componentId: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.Unique;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    subtitle: Schema.Attribute.String;
-    testId: Schema.Attribute.String;
-    title: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-  };
-}
-
 export interface UiTabGroup extends Struct.ComponentSchema {
   collectionName: 'components_ui_tab_groups';
   info: {
@@ -1235,8 +751,6 @@ export interface UiTabGroup extends Struct.ComponentSchema {
       Schema.Attribute.Required;
     componentId: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    options: Schema.Attribute.Component<'ui.option', true> &
-      Schema.Attribute.Required;
     span: Schema.Attribute.Integer;
     testId: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
@@ -1336,41 +850,24 @@ declare module '@strapi/strapi' {
       'sdui.steps': SduiSteps;
       'sdui.validation': SduiValidation;
       'sdui.visibility': SduiVisibility;
-      'ui.account-selector': UiAccountSelector;
-      'ui.badge': UiBadge;
       'ui.banner': UiBanner;
       'ui.button': UiButton;
       'ui.camera-capture': UiCameraCapture;
-      'ui.card': UiCard;
-      'ui.cascading-select': UiCascadingSelect;
-      'ui.cascading-select-tier': UiCascadingSelectTier;
       'ui.checkbox': UiCheckbox;
-      'ui.checkbox-list': UiCheckboxList;
-      'ui.checkbox-list-async': UiCheckboxListAsync;
       'ui.date-input': UiDateInput;
       'ui.divider': UiDivider;
       'ui.dropdown': UiDropdown;
       'ui.dropdown-async': UiDropdownAsync;
-      'ui.hero': UiHero;
-      'ui.icon-text': UiIconText;
       'ui.image-preview': UiImagePreview;
       'ui.item-list': UiItemList;
       'ui.link': UiLink;
-      'ui.list-item': UiListItem;
-      'ui.local-state': UiLocalState;
       'ui.money-display': UiMoneyDisplay;
       'ui.money-input': UiMoneyInput;
-      'ui.option': UiOption;
       'ui.passcode-input': UiPasscodeInput;
       'ui.progress-bar': UiProgressBar;
       'ui.radio-group': UiRadioGroup;
-      'ui.radio-group-async': UiRadioGroupAsync;
-      'ui.review-card': UiReviewCard;
       'ui.rich-text': UiRichText;
-      'ui.row': UiRow;
-      'ui.section-label': UiSectionLabel;
       'ui.slide-to-confirm': UiSlideToConfirm;
-      'ui.subtitle-label-section': UiSubtitleLabelSection;
       'ui.tab-group': UiTabGroup;
       'ui.text': UiText;
       'ui.text-input': UiTextInput;

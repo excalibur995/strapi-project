@@ -616,34 +616,21 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
   attributes: {
     body: Schema.Attribute.DynamicZone<
       [
-        'ui.section-label',
-        'ui.row',
         'ui.text',
-        'ui.icon-text',
         'ui.banner',
-        'ui.hero',
         'ui.radio-group',
-        'ui.radio-group-async',
-        'ui.checkbox-list',
-        'ui.checkbox-list-async',
         'ui.checkbox',
         'ui.text-input',
         'ui.date-input',
         'ui.dropdown',
         'ui.dropdown-async',
-        'ui.cascading-select',
-        'ui.account-selector',
         'ui.money-input',
         'ui.camera-capture',
         'ui.image-preview',
         'ui.item-list',
-        'ui.review-card',
-        'ui.card',
         'ui.money-display',
-        'ui.badge',
         'ui.tab-group',
         'ui.passcode-input',
-        'ui.local-state',
         'ui.rich-text',
         'ui.link',
         'ui.divider',
@@ -660,13 +647,24 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
         'ui.progress-bar',
         'ui.text',
         'ui.image-preview',
-        'ui.hero',
         'ui.banner',
-        'ui.section-label',
         'ui.tab-group',
-        'ui.subtitle-label-section',
       ]
     >;
+    isFooterNullInstead: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
+    isHeaderNullInstead: Schema.Attribute.Boolean &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }> &
+      Schema.Attribute.DefaultTo<false>;
     locale: Schema.Attribute.String;
     localizations: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
     meta: Schema.Attribute.Component<'sdui.screen-meta', false> &
@@ -674,6 +672,7 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     screenId: Schema.Attribute.UID & Schema.Attribute.Required;
     screenKey: Schema.Attribute.String & Schema.Attribute.Required;
+    subscreens: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

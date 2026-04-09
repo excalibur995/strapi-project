@@ -33,15 +33,6 @@ const HEADER_POPULATE = {
       // valueSource / placement are JSON — no deep populate needed for those
       populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
     },
-    "ui.hero": {
-      populate: {
-        referenceSource: { populate: "*" },
-        illustration: { populate: "*" },
-        binding: BINDING_POPULATE,
-        validations: VALIDATIONS_POPULATE,
-        dynamic: DYNAMIC_POPULATE,
-      },
-    },
     "ui.banner": {
       populate: {
         onTap: { populate: "*" },
@@ -52,12 +43,6 @@ const HEADER_POPULATE = {
       },
     },
     "ui.image-preview": {
-      populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-    },
-    "ui.section-label": {
-      populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-    },
-    "ui.subtitle-label-section": {
       populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
     },
     "ui.tab-group": {
@@ -117,31 +102,23 @@ const COMPONENT_POPULATE: Record<string, any> = {
   "ui.checkbox": {
     populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
   },
-  "ui.card": {
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
   "ui.divider": {
     populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
   },
   "ui.image-preview": {
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
+    populate: {
+      media: { populate: "*" },
+      binding: BINDING_POPULATE,
+      validations: VALIDATIONS_POPULATE,
+      dynamic: DYNAMIC_POPULATE,
+    },
   },
   "ui.button": {
     // action / icon / placement are JSON
     populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
   },
-  "ui.review-card": {
-    // options is JSON
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
   "ui.dropdown-async": {
     // dataSource is JSON
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
-  "ui.section-label": {
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
-  "ui.local-state": {
     populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
   },
   "ui.progress-bar": {
@@ -175,45 +152,9 @@ const COMPONENT_POPULATE: Record<string, any> = {
       dynamic: DYNAMIC_POPULATE,
     },
   },
-  "ui.icon-text": {
-    populate: {
-      icon: { populate: "*" },
-      visibility: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
   "ui.radio-group": {
     populate: {
       options: { populate: "*" },
-      visibility: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
-  "ui.radio-group-async": {
-    populate: {
-      dataSource: { populate: "*" },
-      visibility: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
-  "ui.checkbox-list": {
-    populate: {
-      options: { populate: "*" },
-      visibility: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
-  "ui.checkbox-list-async": {
-    populate: {
-      dataSource: { populate: "*" },
       visibility: { populate: "*" },
       binding: BINDING_POPULATE,
       validations: VALIDATIONS_POPULATE,
@@ -228,26 +169,8 @@ const COMPONENT_POPULATE: Record<string, any> = {
       dynamic: DYNAMIC_POPULATE,
     },
   },
-  "ui.cascading-select": {
-    populate: {
-      tiers: { populate: { dataSource: { populate: "*" }, binding: BINDING_POPULATE } },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
   "ui.rich-text": {
     populate: {
-      visibility: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
-  "ui.list-item": {
-    populate: {
-      icon: { populate: "*" },
-      onTap: { populate: "*" },
       visibility: { populate: "*" },
       binding: BINDING_POPULATE,
       validations: VALIDATIONS_POPULATE,
@@ -271,9 +194,6 @@ const COMPONENT_POPULATE: Record<string, any> = {
       dynamic: DYNAMIC_POPULATE,
     },
   },
-  "ui.account-selector": {
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
   "ui.passcode-input": {
     populate: {
       onForgot: { populate: "*" },
@@ -286,15 +206,6 @@ const COMPONENT_POPULATE: Record<string, any> = {
   "ui.money-display": {
     populate: {
       source: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
-  "ui.badge": {
-    populate: {
-      source: { populate: "*" },
-      visibility: { populate: "*" },
       binding: BINDING_POPULATE,
       validations: VALIDATIONS_POPULATE,
       dynamic: DYNAMIC_POPULATE,
@@ -316,17 +227,22 @@ const COMPONENT_POPULATE: Record<string, any> = {
       dynamic: DYNAMIC_POPULATE,
     },
   },
-  "ui.subtitle-label-section": {
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
 };
 
 const BODY_POPULATE = {
   populate: "*",
   on: {
     ...COMPONENT_POPULATE,
-    "ui.row": true,
   },
+};
+
+// ── Reusable screen-level populate (used for both top-level and subscreens) ──
+
+const SCREEN_POPULATE = {
+  meta: { populate: "*" },
+  header: HEADER_POPULATE,
+  body: BODY_POPULATE,
+  footer: FOOTER_POPULATE,
 };
 
 const MEDIA_STRIP_KEYS = new Set(["related", "createdAt", "updatedAt", "publishedAt"]);
@@ -341,7 +257,7 @@ function sanitizeMedia(value: unknown): unknown {
     return Object.fromEntries(
       Object.entries(obj)
         .filter(([k]) => !(isMedia && MEDIA_STRIP_KEYS.has(k)))
-        .map(([k, v]) => [k, sanitizeMedia(v)])
+        .map(([k, v]) => [k, sanitizeMedia(v)]),
     );
   }
   return value;
@@ -357,10 +273,10 @@ export default factories.createCoreController("api::screen.screen" as any, ({ st
       documentId: id,
       ...sanitizedQuery,
       populate: {
-        meta: { populate: "*" },
-        header: HEADER_POPULATE,
-        body: BODY_POPULATE,
-        footer: FOOTER_POPULATE,
+        ...SCREEN_POPULATE,
+        subscreens: {
+          populate: SCREEN_POPULATE,
+        },
       },
     });
 
@@ -383,10 +299,10 @@ export default factories.createCoreController("api::screen.screen" as any, ({ st
       }),
       status: "published",
       populate: {
-        meta: { populate: "*" },
-        header: HEADER_POPULATE,
-        body: BODY_POPULATE,
-        footer: FOOTER_POPULATE,
+        ...SCREEN_POPULATE,
+        subscreens: {
+          populate: SCREEN_POPULATE,
+        },
       },
     });
 

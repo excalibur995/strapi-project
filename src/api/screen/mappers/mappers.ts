@@ -24,6 +24,7 @@ export type RawScreenEntity = {
   body: StrapiComponent[];
   footer: StrapiComponent[];
   contents: StrapiComponent[];
+  subscreens?: RawScreenEntity[];
 };
 
 export type MappedScreen = {
@@ -31,11 +32,11 @@ export type MappedScreen = {
   hideProgressBar: boolean;
   version: number;
   content: Record<string, unknown>;
+  subscreens?: MappedScreen[];
 };
 
 // ui.button → "buttons"
 // ui.radio-group → "radio_groups"
-// ui.section-label → "section_labels"
 const resolveContentKey = (component: string): string => {
   const suffix = component.split(".")[1]; // e.g. "radio-group"
   const snake = suffix.replace(/-/g, "_"); // e.g. "radio_group"
@@ -91,7 +92,7 @@ const mergeGroupedComponents = (...groupedSets: Record<string, unknown[]>[]): Re
 };
 
 export const mapScreenResponse = (entity: RawScreenEntity): MappedScreen => {
-  const { screenId, hideProgressBar, content_version, meta, header, body, footer, contents } = entity;
+  const { screenId, hideProgressBar, content_version, meta, header, body, footer, contents, subscreens } = entity;
 
   const groupedHeader = groupComponents(header ?? []);
   const groupedBody = groupComponents(body ?? []);
@@ -109,6 +110,8 @@ export const mapScreenResponse = (entity: RawScreenEntity): MappedScreen => {
     ...(meta?.onBack !== undefined && { on_back: meta.onBack }),
   };
 
+  const mappedSubscreens = (subscreens ?? []).map(mapScreenResponse);
+
   return {
     screenId,
     hideProgressBar,
@@ -117,5 +120,6 @@ export const mapScreenResponse = (entity: RawScreenEntity): MappedScreen => {
       ...metaFields,
       ...mergedComponents,
     },
+    ...(mappedSubscreens.length > 0 && { subscreens: mappedSubscreens }),
   };
 };

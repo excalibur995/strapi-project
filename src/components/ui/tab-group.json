@@ -1,14 +1,33 @@
 {
   "collectionName": "components_ui_tab_groups",
-  "info": { "displayName": "Tab Group", "description": "Horizontal tab switcher. type: ui.tab-group" },
+  "info": {
+    "displayName": "Tab Group",
+    "description": "Horizontal tab switcher. type: ui.tab-group"
+  },
   "options": {},
   "attributes": {
-    "componentId": { "type": "string" },
-    "testId": { "type": "string" },
-    "options": { "type": "component", "repeatable": true, "component": "ui.option", "required": true },
-    "binding": { "type": "component", "component": "sdui.binding", "required": true },
-    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
-    "span": { "type": "integer" },
-    "dynamic": { "type": "component", "component": "sdui.dynamic" }
+    "componentId": {
+      "type": "string"
+    },
+    "testId": {
+      "type": "string"
+    },
+    "binding": {
+      "type": "component",
+      "component": "sdui.binding",
+      "required": true
+    },
+    "validations": {
+      "type": "component",
+      "component": "sdui.validation",
+      "repeatable": true
+    },
+    "span": {
+      "type": "integer"
+    },
+    "dynamic": {
+      "type": "component",
+      "component": "sdui.dynamic"
+    }
   }
 }

@@ -1,29 +1,74 @@
 {
   "collectionName": "components_ui_dropdowns",
-  "info": { "displayName": "Dropdown", "description": "Single-select from static options. type: ui.dropdown" },
+  "info": {
+    "displayName": "Dropdown",
+    "description": "Single-select from static options. type: ui.dropdown"
+  },
   "options": {},
   "attributes": {
-    "componentId": { "type": "string" },
-    "testId": { "type": "string" },
+    "componentId": {
+      "type": "string"
+    },
+    "testId": {
+      "type": "string"
+    },
     "label": {
       "type": "string",
-      "pluginOptions": { "i18n": { "localized": true } }
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
-    "name": { "type": "string" },
+    "name": {
+      "type": "string"
+    },
     "placeholder": {
       "type": "string",
-      "pluginOptions": { "i18n": { "localized": true } }
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
     },
-    "defaultValue": { "type": "string" },
-    "searchable": { "type": "boolean", "default": false },
-    "required": { "type": "boolean", "default": false },
-    "enabled": { "type": "boolean", "default": true },
-    "editable": { "type": "boolean", "default": true },
-    "visible": { "type": "boolean", "default": true },
-    "options": { "type": "component", "repeatable": true, "component": "ui.option", "required": true },
-    "binding": { "type": "component", "component": "sdui.binding" },
-    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
-    "span": { "type": "integer" },
-    "dynamic": { "type": "component", "component": "sdui.dynamic" }
+    "defaultValue": {
+      "type": "string"
+    },
+    "searchable": {
+      "type": "boolean",
+      "default": false
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "editable": {
+      "type": "boolean",
+      "default": true
+    },
+    "visible": {
+      "type": "boolean",
+      "default": true
+    },
+    "binding": {
+      "type": "component",
+      "component": "sdui.binding"
+    },
+    "validations": {
+      "type": "component",
+      "component": "sdui.validation",
+      "repeatable": true
+    },
+    "span": {
+      "type": "integer"
+    },
+    "dynamic": {
+      "type": "component",
+      "component": "sdui.dynamic"
+    }
   }
 }

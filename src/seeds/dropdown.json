@@ -769,33 +769,6 @@
         },
         "validations": [],
         "dynamic": null
-      },
-      {
-        "__component": "ui.checkbox-list",
-        "id": 6,
-        "label": "Declaration:",
-        "testId": "pep_declaration",
-        "span": 12,
-        "componentId": "pep_declaration",
-        "options": [],
-        "visibility": null,
-        "binding": {
-          "id": 731,
-          "path": "pepDeclaration",
-          "scope": "journeyState",
-          "defaultValue": null,
-          "onClear": null
-        },
-        "validations": [
-          {
-            "id": 453,
-            "rule": "required",
-            "value": null,
-            "message": "You must agree to continue",
-            "ruleSet": null
-          }
-        ],
-        "dynamic": null
       }
     ],
     "footer": [

@@ -1036,19 +1036,6 @@
         "visible": true,
         "binding": { "path": "employmentPostcode", "scope": "journeyState" },
         "span": 12
-      },
-      {
-        "__component": "ui.checkbox-list",
-        "label": "Declaration:",
-        "options": [
-          {
-            "key": "pepDeclaration",
-            "label": "I hereby declare that I have no relationship with any government/state officials, politicians or public figures."
-          }
-        ],
-        "binding": { "path": "pepDeclaration", "scope": "journeyState" },
-        "validations": [{ "rule": "required", "message": "You must agree to continue" }],
-        "span": 12
       }
     ],
     "footer": [

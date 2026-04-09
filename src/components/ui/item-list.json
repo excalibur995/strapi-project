@@ -11,7 +11,9 @@
       "required": true,
       "unique": true
     },
-    "testId": { "type": "string" },
+    "testId": {
+      "type": "string"
+    },
     "label": {
       "type": "string",
       "pluginOptions": {
@@ -24,17 +26,21 @@
       "type": "component",
       "component": "sdui.binding"
     },
-    "options": {
+    "binding": {
       "type": "component",
-      "component": "ui.list-item",
-      "repeatable": true,
-      "required": true
+      "component": "sdui.binding"
     },
-    "binding": { "type": "component", "component": "sdui.binding" },
-    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "validations": {
+      "type": "component",
+      "component": "sdui.validation",
+      "repeatable": true
+    },
     "span": {
       "type": "integer"
     },
-    "dynamic": { "type": "component", "component": "sdui.dynamic" }
+    "dynamic": {
+      "type": "component",
+      "component": "sdui.dynamic"
+    }
   }
 }

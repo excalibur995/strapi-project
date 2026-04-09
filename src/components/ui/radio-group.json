@@ -1,16 +1,45 @@
 {
   "collectionName": "components_ui_radio_groups",
-  "info": { "displayName": "Radio Group", "description": "Single-select option group. type: ui.radio-group" },
+  "info": {
+    "displayName": "Radio Group",
+    "description": "Single-select option group. type: ui.radio-group"
+  },
   "options": {},
   "attributes": {
-    "componentId": { "type": "string" },
-    "testId": { "type": "string" },
-    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
-    "options": { "type": "component", "repeatable": true, "component": "ui.option", "required": true },
-    "binding": { "type": "component", "component": "sdui.binding", "required": true },
-    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
-    "visibility": { "type": "component", "component": "sdui.visibility" },
-    "span": { "type": "integer" },
-    "dynamic": { "type": "component", "component": "sdui.dynamic" }
+    "componentId": {
+      "type": "string"
+    },
+    "testId": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "binding": {
+      "type": "component",
+      "component": "sdui.binding",
+      "required": true
+    },
+    "validations": {
+      "type": "component",
+      "component": "sdui.validation",
+      "repeatable": true
+    },
+    "visibility": {
+      "type": "component",
+      "component": "sdui.visibility"
+    },
+    "span": {
+      "type": "integer"
+    },
+    "dynamic": {
+      "type": "component",
+      "component": "sdui.dynamic"
+    }
   }
 }
