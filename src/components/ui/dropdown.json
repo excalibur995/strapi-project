@@ -54,10 +54,16 @@
       "type": "boolean",
       "default": true
     },
-    "binding": {
-      "type": "component",
-      "component": "sdui.binding"
-    },
+    "maxLength": { "type": "string" },
+    "prefix": { "type": "string" },
+    "suffix": { "type": "string" },
+    "toggleField": { "type": "boolean", "default": false },
+    "toggleFieldReff": { "type": "string" },
+    "toggleFieldCollapse": { "type": "boolean", "default": false },
+    "collapsable": { "type": "boolean", "default": false },
+    "collapseCondition": { "type": "string" },
+    "scope": { "type": "enumeration", "enum": ["journeyState", "localState", "serverState"], "default": "journeyState" },
+    "visibility": { "type": "component", "component": "sdui.visibility" },
     "validations": {
       "type": "component",
       "component": "sdui.validation",
@@ -65,6 +71,11 @@
     },
     "span": {
       "type": "integer"
+    },
+    "options": {
+      "type": "component",
+      "component": "ui.option",
+      "repeatable": true
     },
     "dynamic": {
       "type": "component",

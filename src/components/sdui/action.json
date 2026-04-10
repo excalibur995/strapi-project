@@ -1,11 +1,18 @@
 {
   "collectionName": "components_sdui_actions",
-  "info": { "displayName": "Action", "description": "Generic action for slots.actions and inline component events" },
+  "info": {
+    "displayName": "Action",
+    "description": "Generic action for slots.actions and inline component events"
+  },
   "options": {},
   "attributes": {
-    "key": { "type": "string", "required": true },
+    "key": {
+      "type": "string",
+      "required": true
+    },
     "type": {
       "type": "enumeration",
+      "required": true,
       "enum": [
         "navigate",
         "start_journey",
@@ -18,11 +25,22 @@
         "set_state",
         "open_document",
         "submit_journey"
-      ],
-      "required": true
+      ]
     },
-    "payload": { "type": "json" },
-    "guards": { "type": "relation", "relation": "manyToMany", "target": "api::rule-set.rule-set" },
-    "analytics": { "type": "json" }
+    "payload": {
+      "type": "json"
+    },
+    "guards": {
+      "type": "json"
+    },
+    "analytics": {
+      "type": "json"
+    },
+    "onSuccess": {
+      "type": "json"
+    },
+    "onFailed": {
+      "type": "json"
+    }
   }
 }

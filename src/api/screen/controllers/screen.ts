@@ -9,14 +9,13 @@ import { factories } from "@strapi/strapi";
 //   - Only list components that are allowed in that specific dynamic zone.
 //   - Only populate fields that actually exist on the component schema.
 //   - JSON fields (action, icon, placement, valueSource, dataSource) need no deep populate.
-//   - binding   → sdui.binding   — always explicit: { populate: "*" }
+//   - binding is removed — state wiring uses flat `name` + `scope` fields on each component.
 //   - validations → sdui.validation (repeatable) — always explicit: { populate: "*" }
 //   - dynamic   → sdui.dynamic with nested sdui.dynamic-source — always explicit: DYNAMIC_POPULATE
 //   - flat string / boolean / enum / json fields are returned automatically; never appear in populate.
 
 // ── Shared populate shorthands ────────────────────────────────────────────────
 
-const BINDING_POPULATE = { populate: "*" };
 const VALIDATIONS_POPULATE = { populate: "*" };
 // dynamic.source is a nested component (sdui.dynamic-source) — must be explicitly deep-populated.
 const DYNAMIC_POPULATE = { populate: { source: { populate: "*" } } };
@@ -25,35 +24,6 @@ const DYNAMIC_POPULATE = { populate: { source: { populate: "*" } } };
 
 const HEADER_POPULATE = {
   populate: "*",
-  on: {
-    "ui.progress-bar": {
-      populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-    },
-    "ui.text": {
-      // valueSource / placement are JSON — no deep populate needed for those
-      populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-    },
-    "ui.banner": {
-      populate: {
-        onTap: { populate: "*" },
-        visibility: { populate: "*" },
-        binding: BINDING_POPULATE,
-        validations: VALIDATIONS_POPULATE,
-        dynamic: DYNAMIC_POPULATE,
-      },
-    },
-    "ui.image-preview": {
-      populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-    },
-    "ui.tab-group": {
-      populate: {
-        options: { populate: "*" },
-        binding: BINDING_POPULATE,
-        validations: VALIDATIONS_POPULATE,
-        dynamic: DYNAMIC_POPULATE,
-      },
-    },
-  },
 };
 
 const FOOTER_POPULATE = {
@@ -61,171 +31,73 @@ const FOOTER_POPULATE = {
   on: {
     "ui.slide-to-confirm": {
       populate: {
-        guardRules: { populate: "*" }, // relation — must be explicit
         visibility: { populate: "*" },
-        binding: BINDING_POPULATE,
         validations: VALIDATIONS_POPULATE,
         dynamic: DYNAMIC_POPULATE,
       },
     },
     "ui.button": {
       // action / icon are JSON — no deep populate needed
-      populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
+      populate: { validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
     },
     "ui.banner": {
       populate: {
-        onTap: { populate: "*" },
+        action: { populate: "*" },
         visibility: { populate: "*" },
-        binding: BINDING_POPULATE,
         validations: VALIDATIONS_POPULATE,
         dynamic: DYNAMIC_POPULATE,
       },
     },
     "ui.divider": {
-      populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
+      populate: { validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
     },
   },
 };
 
+// Shared populate for all components: visibility + validations + dynamic
+const BASE_POPULATE = {
+  visibility: { populate: "*" },
+  validations: VALIDATIONS_POPULATE,
+  dynamic: DYNAMIC_POPULATE,
+};
+
 const COMPONENT_POPULATE: Record<string, any> = {
-  // ── Flat / JSON-only sub-fields (binding + validations + dynamic still need explicit populate) ──
-
-  "ui.text": {
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
-  "ui.text-input": {
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
-  "ui.date-input": {
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
-  "ui.checkbox": {
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
-  "ui.divider": {
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
+  "ui.text": { populate: { ...BASE_POPULATE } },
+  "ui.text-input": { populate: { ...BASE_POPULATE } },
+  "ui.date-input": { populate: { ...BASE_POPULATE } },
+  "ui.checkbox": { populate: { ...BASE_POPULATE } },
+  "ui.divider": { populate: { ...BASE_POPULATE } },
+  "ui.progress-bar": { populate: { ...BASE_POPULATE } },
+  "ui.radio-group": { populate: { ...BASE_POPULATE } },
+  "ui.tab-group": { populate: { ...BASE_POPULATE } },
+  "ui.button": { populate: { ...BASE_POPULATE } },
+  "ui.dropdown-async": { populate: { ...BASE_POPULATE } },
+  "ui.money-input": { populate: { ...BASE_POPULATE } },
+  "ui.rich-text": { populate: { ...BASE_POPULATE } },
+  "ui.review-card": { populate: { ...BASE_POPULATE } },
   "ui.image-preview": {
-    populate: {
-      media: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
+    populate: { media: { populate: "*" }, ...BASE_POPULATE },
   },
-  "ui.button": {
-    // action / icon / placement are JSON
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
-  "ui.dropdown-async": {
-    // dataSource is JSON
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
-  "ui.progress-bar": {
-    populate: { binding: BINDING_POPULATE, validations: VALIDATIONS_POPULATE, dynamic: DYNAMIC_POPULATE },
-  },
-
-  // ── Components with additional SDUI sub-components ────────────────────────
-
   "ui.dropdown": {
-    populate: {
-      options: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
-  "ui.camera-capture": {
-    populate: {
-      onComplete: { populate: { action: { populate: "*" } } },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
-  "ui.banner": {
-    populate: {
-      onTap: { populate: "*" },
-      visibility: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
-  "ui.radio-group": {
-    populate: {
-      options: { populate: "*" },
-      visibility: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
-  "ui.money-input": {
-    populate: {
-      visibility: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
-  "ui.rich-text": {
-    populate: {
-      visibility: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
+    populate: { options: { populate: "*" }, ...BASE_POPULATE },
   },
   "ui.item-list": {
-    populate: {
-      options: {
-        populate: {
-          icon: { populate: "*" },
-          onTap: { populate: "*" },
-          visibility: { populate: "*" },
-          binding: BINDING_POPULATE,
-          validations: VALIDATIONS_POPULATE,
-        },
-      },
-      filterBy: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
+    populate: { options: { populate: "*" }, ...BASE_POPULATE },
+  },
+  "ui.camera-capture": {
+    populate: { onComplete: { populate: { action: { populate: "*" } } }, ...BASE_POPULATE },
+  },
+  "ui.banner": {
+    populate: { action: { populate: "*" }, ...BASE_POPULATE },
   },
   "ui.passcode-input": {
-    populate: {
-      onForgot: { populate: "*" },
-      onComplete: { populate: { action: { populate: "*" } } },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
+    populate: { onForgot: { populate: "*" }, onComplete: { populate: { action: { populate: "*" } } }, ...BASE_POPULATE },
   },
   "ui.money-display": {
-    populate: {
-      source: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
-  },
-  "ui.tab-group": {
-    populate: {
-      options: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
+    populate: { source: { populate: "*" }, ...BASE_POPULATE },
   },
   "ui.link": {
-    populate: {
-      action: { populate: "*" },
-      binding: BINDING_POPULATE,
-      validations: VALIDATIONS_POPULATE,
-      dynamic: DYNAMIC_POPULATE,
-    },
+    populate: { action: { populate: "*" }, ...BASE_POPULATE },
   },
 };
 

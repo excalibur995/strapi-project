@@ -2,6 +2,7 @@ import type { Core } from "@strapi/strapi";
 import { errors } from "@strapi/utils";
 import { seedApplyCa, updateApplyCaJourney } from "./seeds/apply-ca";
 import { seedApplyCaV2 } from "./seeds/apply-ca-v2";
+import { seedApplyCaV3 } from "./seeds/apply-ca-v3";
 
 const { ValidationError } = errors;
 
@@ -65,6 +66,10 @@ export default {
 
     if (seedFlag === "apply-ca-v2") {
       await seedApplyCaV2(strapi);
+    }
+
+    if (seedFlag === "apply-ca-v3") {
+      await seedApplyCaV3(strapi);
     }
 
     const updateFlag = process.env.UPDATE_JOURNEY;

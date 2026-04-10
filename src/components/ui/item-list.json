@@ -6,7 +6,7 @@
   },
   "options": {},
   "attributes": {
-    "key": {
+    "componentId": {
       "type": "string",
       "required": true,
       "unique": true
@@ -22,14 +22,22 @@
         }
       }
     },
-    "filterBy": {
-      "type": "component",
-      "component": "sdui.binding"
-    },
-    "binding": {
-      "type": "component",
-      "component": "sdui.binding"
-    },
+    "name": { "type": "string" },
+    "defaultValue": { "type": "string" },
+    "maxLength": { "type": "string" },
+    "required": { "type": "boolean", "default": false },
+    "enabled": { "type": "boolean", "default": true },
+    "editable": { "type": "boolean", "default": true },
+    "prefix": { "type": "string" },
+    "suffix": { "type": "string" },
+    "toggleField": { "type": "boolean", "default": false },
+    "toggleFieldReff": { "type": "string" },
+    "toggleFieldCollapse": { "type": "boolean", "default": false },
+    "collapsable": { "type": "boolean", "default": false },
+    "collapseCondition": { "type": "string" },
+    "filterBy": { "type": "string" },
+    "scope": { "type": "enumeration", "enum": ["journeyState", "localState", "serverState"], "default": "journeyState" },
+    "visibility": { "type": "component", "component": "sdui.visibility" },
     "validations": {
       "type": "component",
       "component": "sdui.validation",
@@ -37,6 +45,11 @@
     },
     "span": {
       "type": "integer"
+    },
+    "options": {
+      "type": "component",
+      "component": "ui.option",
+      "repeatable": true
     },
     "dynamic": {
       "type": "component",

@@ -634,6 +634,7 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
         'ui.rich-text',
         'ui.link',
         'ui.divider',
+        'ui.review-card',
       ]
     >;
     createdAt: Schema.Attribute.DateTime;

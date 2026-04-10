@@ -59,7 +59,8 @@
         "ui.passcode-input",
         "ui.rich-text",
         "ui.link",
-        "ui.divider"
+        "ui.divider",
+        "ui.review-card"
       ]
     },
     "footer": {

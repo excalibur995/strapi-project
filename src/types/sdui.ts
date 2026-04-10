@@ -124,8 +124,9 @@ export interface SduiAction {
     | "open_document"
     | "submit_journey";
   payload?: Record<string, unknown>;
-  guards?: Array<{ id: number; documentId: string }>;
+  guards?: Record<string, unknown>;
   analytics?: Record<string, unknown>;
+  onSuccess?: Record<string, unknown>;
 }
 
 /** sdui.on-complete — action fired when a component self-completes (e.g. camera-capture) */
@@ -187,8 +188,26 @@ interface UiBase {
   id?: number;
   componentId?: string;
   testId?: string;
+  label?: string;
+  /** State key — replaces binding.path. The FE reads/writes journeyState[name] */
+  name?: string;
+  /** State scope — replaces binding.scope. Defaults to "journeyState" */
+  scope?: "journeyState" | "localState" | "serverState";
+  defaultValue?: string | boolean;
+  maxLength?: string | number;
+  required?: boolean;
+  enabled?: boolean;
+  editable?: boolean;
+  prefix?: string;
+  suffix?: string;
+  toggleField?: boolean;
+  toggleFieldReff?: string;
+  toggleFieldCollapse?: boolean;
+  collapsable?: boolean;
+  collapseCondition?: string;
+  visible?: boolean;
+  visibility?: SduiVisibility | null;
   span?: number;
-  binding?: SduiBinding | null;
   validations?: SduiValidationRule[];
   dynamic?: SduiDynamic | null;
 }
@@ -197,18 +216,14 @@ interface UiBase {
 // Primitive / nested sub-components (not dynamic zone members)
 // ─────────────────────────────────────────────────────────────────────────────
 
-/** ui.option — single selectable item inside dropdown / radio-group / tab-group */
+/** ui.option — single selectable item inside dropdown / item-list */
 export interface UiOption {
   id?: number;
-  componentId?: string;
   testId?: string;
-  /** Stored value submitted to state */
+  label?: string;
   value: string;
-  label: string;
-  description?: string;
-  icon?: StrapiMedia | null;
-  onTap?: SduiAction | null;
-  binding?: SduiBinding | null;
+  disabled?: boolean;
+  media?: StrapiMedia | null;
   validations?: SduiValidationRule[];
 }
 
@@ -223,7 +238,6 @@ export interface UiListItem {
   tab?: string;
   onTap?: SduiAction | null;
   visibility?: SduiVisibility | null;
-  binding?: SduiBinding | null;
   validations?: SduiValidationRule[];
   dynamic?: SduiDynamic | null;
   span?: number;
@@ -235,31 +249,19 @@ export interface UiListItem {
 
 export interface UiProgressBar extends UiBase {
   __component: "ui.progress-bar";
-  name?: string;
   currentStep: number;
   maxStep: number;
-  enabled?: boolean;
-  visible?: boolean;
 }
 
 export interface UiText extends UiBase {
   __component: "ui.text";
-  label?: string;
-  name?: string;
   variant?: "title" | "subtitle" | "body" | "note" | "caption" | "label";
-  enabled?: boolean;
-  visible?: boolean;
   valueSource?: ValueSource | null;
   placement?: Record<string, unknown> | null;
 }
 
 export interface UiImagePreview extends UiBase {
   __component: "ui.image-preview";
-  label?: string;
-  name?: string;
-  enabled?: boolean;
-  editable?: boolean;
-  visible?: boolean;
   placement?: Record<string, unknown> | null;
   media?: StrapiMedia | null;
   /** JSON path to a base64 image stored in state */
@@ -268,16 +270,13 @@ export interface UiImagePreview extends UiBase {
 
 export interface UiBanner extends UiBase {
   __component: "ui.banner";
-  label: string;
   variant?: "info" | "warning" | "success" | "error";
   icon?: StrapiMedia | null;
   onTap?: SduiAction | null;
-  visibility?: SduiVisibility | null;
 }
 
 export interface UiTabGroup extends UiBase {
   __component: "ui.tab-group";
-  options: UiOption[];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -286,131 +285,75 @@ export interface UiTabGroup extends UiBase {
 
 export interface UiRadioGroup extends UiBase {
   __component: "ui.radio-group";
-  label?: string;
-  options: UiOption[];
-  visibility?: SduiVisibility | null;
 }
 
 export interface UiCheckbox extends UiBase {
   __component: "ui.checkbox";
-  label: string;
-  name?: string;
   title?: string;
-  defaultValue?: boolean;
-  required?: boolean;
-  enabled?: boolean;
-  editable?: boolean;
-  visible?: boolean;
 }
 
 export interface UiTextInput extends UiBase {
   __component: "ui.text-input";
-  label: string;
-  name?: string;
   placeholder?: string;
   helperText?: string;
-  prefix?: string;
   inputMode?: "text" | "numeric" | "email" | "phone";
-  defaultValue?: string;
   minLength?: number;
-  maxLength?: number;
-  required?: boolean;
-  enabled?: boolean;
-  editable?: boolean;
-  visible?: boolean;
 }
 
 export interface UiDateInput extends UiBase {
   __component: "ui.date-input";
-  label: string;
-  name?: string;
   placeholder?: string;
   /** Display format, e.g. "dd MMM yyyy" */
   displayFormat?: string;
   /** Value format, e.g. "yyyy-MM-dd" */
   valueFormat?: string;
-  defaultValue?: string;
-  required?: boolean;
-  enabled?: boolean;
-  editable?: boolean;
-  visible?: boolean;
 }
 
 export interface UiDropdown extends UiBase {
   __component: "ui.dropdown";
-  label?: string;
-  name?: string;
   placeholder?: string;
-  defaultValue?: string;
   searchable?: boolean;
-  required?: boolean;
-  enabled?: boolean;
-  editable?: boolean;
-  visible?: boolean;
-  options: UiOption[];
+  options?: UiOption[];
 }
 
 export interface UiDropdownAsync extends UiBase {
   __component: "ui.dropdown-async";
-  label?: string;
-  name?: string;
   placeholder?: string;
-  defaultValue?: string;
   searchable?: boolean;
-  required?: boolean;
-  enabled?: boolean;
-  editable?: boolean;
-  visible?: boolean;
   /** JSON data source descriptor */
   dataSource?: Record<string, unknown> | null;
 }
 
 export interface UiMoneyInput extends UiBase {
   __component: "ui.money-input";
-  label?: string;
   currency?: string;
   min?: number;
   max?: number;
-  visibility?: SduiVisibility | null;
 }
 
 export interface UiCameraCapture extends UiBase {
   __component: "ui.camera-capture";
-  name?: string;
   overlayShape?: "rectangle" | "circle" | "none";
   overlayAspect?: string;
   overlayHint?: string;
   onComplete: SduiOnComplete;
 }
 
-export interface UiItemList {
+export interface UiItemList extends UiBase {
   __component: "ui.item-list";
-  id?: number;
-  testId?: string;
-  /** Unique identifier for this list */
-  key: string;
-  label?: string;
-  filterBy?: SduiBinding | null;
-  options: UiListItem[];
-  binding?: SduiBinding | null;
-  validations?: SduiValidationRule[];
-  dynamic?: SduiDynamic | null;
-  span?: number;
+  /** filterBy: state path to filter list by tab selection */
+  filterBy?: string | null;
+  options?: UiOption[];
 }
 
 export interface UiReviewCard extends UiBase {
   __component: "ui.review-card";
-  label?: string;
-  name?: string;
-  enabled?: boolean;
-  visible?: boolean;
-  /** Key-value pairs for the summary rows */
-  options: Record<string, unknown>;
+  /** JSON items for the summary rows */
+  options?: Record<string, unknown>;
 }
 
 export interface UiMoneyDisplay extends UiBase {
   __component: "ui.money-display";
-  label?: string;
   currency?: string;
   source: SduiSource;
 }
@@ -426,21 +369,16 @@ export interface UiPasscodeInput extends UiBase {
 
 export interface UiRichText extends UiBase {
   __component: "ui.rich-text";
-  content: StrapiBlock[];
-  visibility?: SduiVisibility | null;
+  content?: StrapiBlock[];
 }
 
 export interface UiLink extends UiBase {
   __component: "ui.link";
-  label: string;
   action?: SduiAction | null;
 }
 
 export interface UiDivider extends UiBase {
   __component: "ui.divider";
-  label?: string;
-  name?: string;
-  visible?: boolean;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -488,11 +426,7 @@ export type ButtonAction = NavigateActionPayload | SocialLoginActionPayload | Sd
 
 export interface UiButton extends UiBase {
   __component: "ui.button";
-  label: string;
-  name?: string;
   variant?: "primary" | "secondary" | "ghost" | "danger" | "promo";
-  enabled?: boolean;
-  visible?: boolean;
   action?: ButtonAction | null;
   icon?: Record<string, unknown> | null;
   placement?: Record<string, unknown> | null;
@@ -500,10 +434,8 @@ export interface UiButton extends UiBase {
 
 export interface UiSlideToConfirm extends UiBase {
   __component: "ui.slide-to-confirm";
-  label: string;
   action: SduiAction;
-  guardRules?: Array<{ id: number; documentId: string }>;
-  visibility?: SduiVisibility | null;
+  guardRules?: Record<string, unknown>;
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

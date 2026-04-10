@@ -8,8 +8,10 @@ export interface SduiAction extends Struct.ComponentSchema {
   };
   attributes: {
     analytics: Schema.Attribute.JSON;
-    guards: Schema.Attribute.Relation<'manyToMany', 'api::rule-set.rule-set'>;
+    guards: Schema.Attribute.JSON;
     key: Schema.Attribute.String & Schema.Attribute.Required;
+    onFailed: Schema.Attribute.JSON;
+    onSuccess: Schema.Attribute.JSON;
     payload: Schema.Attribute.JSON;
     type: Schema.Attribute.Enumeration<
       [
@@ -27,23 +29,6 @@ export interface SduiAction extends Struct.ComponentSchema {
       ]
     > &
       Schema.Attribute.Required;
-  };
-}
-
-export interface SduiBinding extends Struct.ComponentSchema {
-  collectionName: 'components_sdui_bindings';
-  info: {
-    description: 'State path binding for a component';
-    displayName: 'Binding';
-  };
-  attributes: {
-    defaultValue: Schema.Attribute.JSON;
-    onClear: Schema.Attribute.JSON;
-    path: Schema.Attribute.String & Schema.Attribute.Required;
-    scope: Schema.Attribute.Enumeration<
-      ['journeyState', 'localState', 'serverState']
-    > &
-      Schema.Attribute.DefaultTo<'journeyState'>;
   };
 }
 
@@ -141,18 +126,6 @@ export interface SduiScreenMeta extends Struct.ComponentSchema {
         };
       }>;
     onBack: Schema.Attribute.Component<'sdui.action', false>;
-    subtitle: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    title: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
   };
 }
 
@@ -247,10 +220,14 @@ export interface UiBanner extends Struct.ComponentSchema {
     displayName: 'Banner';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    action: Schema.Attribute.Component<'sdui.action', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    icon: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     label: Schema.Attribute.Text &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -258,9 +235,22 @@ export interface UiBanner extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    onTap: Schema.Attribute.Component<'sdui.action', false>;
+    maxLength: Schema.Attribute.String;
+    media: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
+    name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     variant: Schema.Attribute.Enumeration<
       ['info', 'warning', 'success', 'error']
@@ -278,9 +268,12 @@ export interface UiButton extends Struct.ComponentSchema {
   };
   attributes: {
     action: Schema.Attribute.JSON;
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     icon: Schema.Attribute.JSON;
     label: Schema.Attribute.String &
@@ -290,15 +283,28 @@ export interface UiButton extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.String;
     name: Schema.Attribute.String;
     placement: Schema.Attribute.JSON;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     variant: Schema.Attribute.Enumeration<
       ['primary', 'secondary', 'ghost', 'danger', 'promo']
     > &
       Schema.Attribute.DefaultTo<'primary'>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
@@ -310,9 +316,20 @@ export interface UiCameraCapture extends Struct.ComponentSchema {
     displayName: 'Camera Capture';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    maxLength: Schema.Attribute.String;
     name: Schema.Attribute.String;
     onComplete: Schema.Attribute.Component<'sdui.on-complete', false> &
       Schema.Attribute.Required;
@@ -327,9 +344,21 @@ export interface UiCameraCapture extends Struct.ComponentSchema {
       ['rectangle', 'circle', 'none']
     > &
       Schema.Attribute.DefaultTo<'rectangle'>;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
 
@@ -340,7 +369,8 @@ export interface UiCheckbox extends Struct.ComponentSchema {
     displayName: 'Checkbox';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -353,9 +383,16 @@ export interface UiCheckbox extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.String;
     name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
     required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
     title: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -363,7 +400,12 @@ export interface UiCheckbox extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
@@ -375,7 +417,8 @@ export interface UiDateInput extends Struct.ComponentSchema {
     displayName: 'Date Input';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
     displayFormat: Schema.Attribute.String &
@@ -390,6 +433,7 @@ export interface UiDateInput extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.String;
     name: Schema.Attribute.String;
     placeholder: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -397,12 +441,23 @@ export interface UiDateInput extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    prefix: Schema.Attribute.String;
     required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     valueFormat: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'yyyy-MM-dd'>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
@@ -414,31 +469,8 @@ export interface UiDivider extends Struct.ComponentSchema {
     displayName: 'Divider';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    componentId: Schema.Attribute.String;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    label: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    name: Schema.Attribute.String;
-    span: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>;
-    testId: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-  };
-}
-
-export interface UiDropdown extends Struct.ComponentSchema {
-  collectionName: 'components_ui_dropdowns';
-  info: {
-    description: 'Single-select from static options. type: ui.dropdown';
-    displayName: 'Dropdown';
-  };
-  attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -450,18 +482,72 @@ export interface UiDropdown extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.String;
     name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
+    span: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>;
+    suffix: Schema.Attribute.String;
+    testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
+    validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+  };
+}
+
+export interface UiDropdown extends Struct.ComponentSchema {
+  collectionName: 'components_ui_dropdowns';
+  info: {
+    description: 'Single-select from static options. type: ui.dropdown';
+    displayName: 'Dropdown';
+  };
+  attributes: {
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
+    componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
+    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    maxLength: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    options: Schema.Attribute.Component<'ui.option', true>;
     placeholder: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    prefix: Schema.Attribute.String;
     required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     searchable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
@@ -473,7 +559,8 @@ export interface UiDropdownAsync extends Struct.ComponentSchema {
     displayName: 'Dropdown (Async)';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
@@ -486,6 +573,7 @@ export interface UiDropdownAsync extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.String;
     name: Schema.Attribute.String;
     placeholder: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -493,11 +581,22 @@ export interface UiDropdownAsync extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    prefix: Schema.Attribute.String;
     required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     searchable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
@@ -509,8 +608,10 @@ export interface UiImagePreview extends Struct.ComponentSchema {
     displayName: 'Image Preview';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -520,12 +621,25 @@ export interface UiImagePreview extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.String;
     media: Schema.Attribute.Media<'images' | 'files' | 'videos' | 'audios'>;
     name: Schema.Attribute.String;
     placement: Schema.Attribute.JSON;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
@@ -537,21 +651,40 @@ export interface UiItemList extends Struct.ComponentSchema {
     displayName: 'Item List';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    filterBy: Schema.Attribute.Component<'sdui.binding', false>;
-    key: Schema.Attribute.String &
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
+    componentId: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
+    defaultValue: Schema.Attribute.String;
+    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    filterBy: Schema.Attribute.String;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    options: Schema.Attribute.Component<'ui.option', true>;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
 
@@ -562,13 +695,31 @@ export interface UiLink extends Struct.ComponentSchema {
   };
   attributes: {
     action: Schema.Attribute.Component<'sdui.action', false>;
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     label: Schema.Attribute.String & Schema.Attribute.Required;
+    maxLength: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
 
@@ -579,21 +730,39 @@ export interface UiMoneyDisplay extends Struct.ComponentSchema {
     displayName: 'Money Display';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     currency: Schema.Attribute.String & Schema.Attribute.DefaultTo<'IDR'>;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     source: Schema.Attribute.Component<'sdui.source', false> &
       Schema.Attribute.Required;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
 
@@ -603,11 +772,14 @@ export interface UiMoneyInput extends Struct.ComponentSchema {
     displayName: 'Money Input';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     currency: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
@@ -615,10 +787,45 @@ export interface UiMoneyInput extends Struct.ComponentSchema {
         };
       }>;
     max: Schema.Attribute.Decimal;
+    maxLength: Schema.Attribute.String;
     min: Schema.Attribute.Decimal;
+    name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
+    testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
+    validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+  };
+}
+
+export interface UiOption extends Struct.ComponentSchema {
+  collectionName: 'components_ui_options';
+  info: {
+    description: 'Single selectable option item. type: ui.option';
+    displayName: 'Option';
+  };
+  attributes: {
+    disabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    media: Schema.Attribute.Media<'images'>;
     testId: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    value: Schema.Attribute.String & Schema.Attribute.Required;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
@@ -630,22 +837,45 @@ export interface UiPasscodeInput extends Struct.ComponentSchema {
     displayName: 'Passcode Input';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     keyboard: Schema.Attribute.Enumeration<['numpad', 'default']> &
       Schema.Attribute.DefaultTo<'numpad'>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
     length: Schema.Attribute.Integer &
       Schema.Attribute.Required &
       Schema.Attribute.DefaultTo<6>;
     masked: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    maxLength: Schema.Attribute.String;
+    name: Schema.Attribute.String;
     onComplete: Schema.Attribute.Component<'sdui.on-complete', false> &
       Schema.Attribute.Required;
     onForgot: Schema.Attribute.Component<'sdui.action', false>;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
 
@@ -656,16 +886,38 @@ export interface UiProgressBar extends Struct.ComponentSchema {
     displayName: 'Progress Bar';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     currentStep: Schema.Attribute.Integer & Schema.Attribute.Required;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    maxLength: Schema.Attribute.String;
     maxStep: Schema.Attribute.Integer & Schema.Attribute.Required;
     name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer & Schema.Attribute.DefaultTo<12>;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
@@ -677,20 +929,78 @@ export interface UiRadioGroup extends Struct.ComponentSchema {
     displayName: 'Radio Group';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+  };
+}
+
+export interface UiReviewCard extends Struct.ComponentSchema {
+  collectionName: 'components_ui_review_cards';
+  info: {
+    description: 'Read-only summary card for confirmation screens. type: ui.review-card';
+    displayName: 'Review Card';
+  };
+  attributes: {
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
+    componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
+    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    items: Schema.Attribute.JSON;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    maxLength: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
+    span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
+    testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
+    validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
+    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
 
@@ -700,12 +1010,35 @@ export interface UiRichText extends Struct.ComponentSchema {
     displayName: 'Rich Text';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     content: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    maxLength: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -719,13 +1052,14 @@ export interface UiSlideToConfirm extends Struct.ComponentSchema {
   attributes: {
     action: Schema.Attribute.Component<'sdui.action', false> &
       Schema.Attribute.Required;
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    guardRules: Schema.Attribute.Relation<
-      'manyToMany',
-      'api::rule-set.rule-set'
-    >;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    guardRules: Schema.Attribute.JSON;
     label: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.SetPluginOptions<{
@@ -733,8 +1067,21 @@ export interface UiSlideToConfirm extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -747,13 +1094,36 @@ export interface UiTabGroup extends Struct.ComponentSchema {
     displayName: 'Tab Group';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false> &
-      Schema.Attribute.Required;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
+    label: Schema.Attribute.String &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
+    maxLength: Schema.Attribute.String;
+    name: Schema.Attribute.String;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
 }
 
@@ -764,9 +1134,12 @@ export interface UiText extends Struct.ComponentSchema {
     displayName: 'Text';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
+    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     label: Schema.Attribute.Text &
       Schema.Attribute.SetPluginOptions<{
@@ -774,16 +1147,29 @@ export interface UiText extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
+    maxLength: Schema.Attribute.String;
     name: Schema.Attribute.String;
     placement: Schema.Attribute.JSON;
+    prefix: Schema.Attribute.String;
+    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     valueSource: Schema.Attribute.JSON;
     variant: Schema.Attribute.Enumeration<
       ['title', 'subtitle', 'body', 'note', 'caption', 'label']
     > &
       Schema.Attribute.DefaultTo<'body'>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
@@ -795,7 +1181,8 @@ export interface UiTextInput extends Struct.ComponentSchema {
     displayName: 'Text Input';
   };
   attributes: {
-    binding: Schema.Attribute.Component<'sdui.binding', false>;
+    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -829,9 +1216,19 @@ export interface UiTextInput extends Struct.ComponentSchema {
       }>;
     prefix: Schema.Attribute.String;
     required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    scope: Schema.Attribute.Enumeration<
+      ['journeyState', 'localState', 'serverState']
+    > &
+      Schema.Attribute.DefaultTo<'journeyState'>;
     span: Schema.Attribute.Integer;
+    suffix: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    toggleFieldCollapse: Schema.Attribute.Boolean &
+      Schema.Attribute.DefaultTo<false>;
+    toggleFieldReff: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
+    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
   };
 }
@@ -840,7 +1237,6 @@ declare module '@strapi/strapi' {
   export module Public {
     export interface ComponentSchemas {
       'sdui.action': SduiAction;
-      'sdui.binding': SduiBinding;
       'sdui.data-source': SduiDataSource;
       'sdui.dynamic': SduiDynamic;
       'sdui.dynamic-source': SduiDynamicSource;
@@ -863,9 +1259,11 @@ declare module '@strapi/strapi' {
       'ui.link': UiLink;
       'ui.money-display': UiMoneyDisplay;
       'ui.money-input': UiMoneyInput;
+      'ui.option': UiOption;
       'ui.passcode-input': UiPasscodeInput;
       'ui.progress-bar': UiProgressBar;
       'ui.radio-group': UiRadioGroup;
+      'ui.review-card': UiReviewCard;
       'ui.rich-text': UiRichText;
       'ui.slide-to-confirm': UiSlideToConfirm;
       'ui.tab-group': UiTabGroup;
