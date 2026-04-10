@@ -29,13 +29,21 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": ["images"]
+      "allowedTypes": [
+        "images"
+      ]
     },
-    "visibility": { "type": "component", "component": "sdui.visibility" },
+    "visibility": {
+      "type": "component",
+      "component": "sdui.visibility"
+    },
     "validations": {
       "type": "component",
       "component": "sdui.validation",
       "repeatable": true
+    },
+    "dependsOn": {
+      "type": "string"
     }
   }
 }

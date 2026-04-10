@@ -1,30 +1,105 @@
 {
   "collectionName": "components_ui_slide_to_confirms",
-  "info": { "displayName": "Slide To Confirm" },
+  "info": {
+    "displayName": "Slide To Confirm"
+  },
   "options": {},
   "attributes": {
-    "componentId": { "type": "string" },
-    "testId": { "type": "string" },
-    "label": { "type": "string", "required": true, "pluginOptions": { "i18n": { "localized": true } } },
-    "name": { "type": "string" },
-    "defaultValue": { "type": "string" },
-    "maxLength": { "type": "string" },
-    "required": { "type": "boolean", "default": false },
-    "enabled": { "type": "boolean", "default": true },
-    "editable": { "type": "boolean", "default": true },
-    "prefix": { "type": "string" },
-    "suffix": { "type": "string" },
-    "toggleField": { "type": "boolean", "default": false },
-    "toggleFieldReff": { "type": "string" },
-    "toggleFieldCollapse": { "type": "boolean", "default": false },
-    "collapsable": { "type": "boolean", "default": false },
-    "collapseCondition": { "type": "string" },
-    "action": { "type": "component", "component": "sdui.action", "required": true },
-    "guardRules": { "type": "json" },
-    "scope": { "type": "enumeration", "enum": ["journeyState", "localState", "serverState"], "default": "journeyState" },
-    "visibility": { "type": "component", "component": "sdui.visibility" },
-    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
-    "span": { "type": "integer" },
-    "dynamic": { "type": "component", "component": "sdui.dynamic" }
+    "componentId": {
+      "type": "string"
+    },
+    "testId": {
+      "type": "string"
+    },
+    "label": {
+      "type": "string",
+      "required": true,
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "name": {
+      "type": "string"
+    },
+    "defaultValue": {
+      "type": "string"
+    },
+    "maxLength": {
+      "type": "string"
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "editable": {
+      "type": "boolean",
+      "default": true
+    },
+    "prefix": {
+      "type": "string"
+    },
+    "suffix": {
+      "type": "string"
+    },
+    "toggleField": {
+      "type": "boolean",
+      "default": false
+    },
+    "toggleFieldReff": {
+      "type": "string"
+    },
+    "toggleFieldCollapse": {
+      "type": "boolean",
+      "default": false
+    },
+    "collapsable": {
+      "type": "boolean",
+      "default": false
+    },
+    "collapseCondition": {
+      "type": "string"
+    },
+    "action": {
+      "type": "component",
+      "component": "sdui.action",
+      "required": true
+    },
+    "guardRules": {
+      "type": "json"
+    },
+    "scope": {
+      "type": "enumeration",
+      "enum": [
+        "journeyState",
+        "localState",
+        "serverState"
+      ],
+      "default": "journeyState"
+    },
+    "visibility": {
+      "type": "component",
+      "component": "sdui.visibility"
+    },
+    "validations": {
+      "type": "component",
+      "component": "sdui.validation",
+      "repeatable": true
+    },
+    "span": {
+      "type": "integer"
+    },
+    "dynamic": {
+      "type": "component",
+      "component": "sdui.dynamic"
+    },
+    "dependsOn": {
+      "type": "string"
+    }
   }
 }

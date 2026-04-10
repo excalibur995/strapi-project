@@ -225,6 +225,7 @@ export interface UiBanner extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -272,6 +273,7 @@ export interface UiButton extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -320,6 +322,7 @@ export interface UiCameraCapture extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -373,6 +376,7 @@ export interface UiCheckbox extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -421,6 +425,7 @@ export interface UiDateInput extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     displayFormat: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'dd MMM yyyy'>;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -473,6 +478,7 @@ export interface UiDivider extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -514,6 +520,7 @@ export interface UiDropdown extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -564,6 +571,7 @@ export interface UiDropdownAsync extends Struct.ComponentSchema {
     componentId: Schema.Attribute.String;
     dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -612,6 +620,7 @@ export interface UiImagePreview extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -657,6 +666,7 @@ export interface UiItemList extends Struct.ComponentSchema {
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -699,6 +709,7 @@ export interface UiLink extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -735,6 +746,7 @@ export interface UiMoneyDisplay extends Struct.ComponentSchema {
     componentId: Schema.Attribute.String;
     currency: Schema.Attribute.String & Schema.Attribute.DefaultTo<'IDR'>;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -777,6 +789,7 @@ export interface UiMoneyInput extends Struct.ComponentSchema {
     componentId: Schema.Attribute.String;
     currency: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -815,6 +828,7 @@ export interface UiOption extends Struct.ComponentSchema {
     displayName: 'Option';
   };
   attributes: {
+    dependsOn: Schema.Attribute.String;
     disabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     label: Schema.Attribute.String &
       Schema.Attribute.SetPluginOptions<{
@@ -841,6 +855,7 @@ export interface UiPasscodeInput extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -891,6 +906,7 @@ export interface UiProgressBar extends Struct.ComponentSchema {
     componentId: Schema.Attribute.String;
     currentStep: Schema.Attribute.Integer & Schema.Attribute.Required;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -933,6 +949,7 @@ export interface UiRadioGroup extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -973,6 +990,7 @@ export interface UiReviewCard extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -1015,6 +1033,7 @@ export interface UiRichText extends Struct.ComponentSchema {
     componentId: Schema.Attribute.String;
     content: Schema.Attribute.Blocks & Schema.Attribute.Required;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -1056,6 +1075,7 @@ export interface UiSlideToConfirm extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -1098,6 +1118,7 @@ export interface UiTabGroup extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -1138,6 +1159,7 @@ export interface UiText extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -1185,6 +1207,7 @@ export interface UiTextInput extends Struct.ComponentSchema {
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     defaultValue: Schema.Attribute.String;
+    dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
     editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
     enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;

@@ -11,20 +11,59 @@
     "testId": {
       "type": "string"
     },
-    "label": { "type": "string", "pluginOptions": { "i18n": { "localized": true } } },
-    "name": { "type": "string" },
-    "defaultValue": { "type": "string" },
-    "maxLength": { "type": "string" },
-    "required": { "type": "boolean", "default": false },
-    "enabled": { "type": "boolean", "default": true },
-    "editable": { "type": "boolean", "default": true },
-    "prefix": { "type": "string" },
-    "suffix": { "type": "string" },
-    "toggleField": { "type": "boolean", "default": false },
-    "toggleFieldReff": { "type": "string" },
-    "toggleFieldCollapse": { "type": "boolean", "default": false },
-    "collapsable": { "type": "boolean", "default": false },
-    "collapseCondition": { "type": "string" },
+    "label": {
+      "type": "string",
+      "pluginOptions": {
+        "i18n": {
+          "localized": true
+        }
+      }
+    },
+    "name": {
+      "type": "string"
+    },
+    "defaultValue": {
+      "type": "string"
+    },
+    "maxLength": {
+      "type": "string"
+    },
+    "required": {
+      "type": "boolean",
+      "default": false
+    },
+    "enabled": {
+      "type": "boolean",
+      "default": true
+    },
+    "editable": {
+      "type": "boolean",
+      "default": true
+    },
+    "prefix": {
+      "type": "string"
+    },
+    "suffix": {
+      "type": "string"
+    },
+    "toggleField": {
+      "type": "boolean",
+      "default": false
+    },
+    "toggleFieldReff": {
+      "type": "string"
+    },
+    "toggleFieldCollapse": {
+      "type": "boolean",
+      "default": false
+    },
+    "collapsable": {
+      "type": "boolean",
+      "default": false
+    },
+    "collapseCondition": {
+      "type": "string"
+    },
     "content": {
       "type": "blocks",
       "required": true
@@ -34,12 +73,30 @@
       "component": "sdui.visibility",
       "repeatable": false
     },
-    "scope": { "type": "enumeration", "enum": ["journeyState", "localState", "serverState"], "default": "journeyState" },
-    "validations": { "type": "component", "component": "sdui.validation", "repeatable": true },
+    "scope": {
+      "type": "enumeration",
+      "enum": [
+        "journeyState",
+        "localState",
+        "serverState"
+      ],
+      "default": "journeyState"
+    },
+    "validations": {
+      "type": "component",
+      "component": "sdui.validation",
+      "repeatable": true
+    },
     "span": {
       "type": "integer"
     },
-    "dynamic": { "type": "component", "component": "sdui.dynamic" }
+    "dynamic": {
+      "type": "component",
+      "component": "sdui.dynamic"
+    },
+    "dependsOn": {
+      "type": "string"
+    }
   },
   "config": {}
 }
