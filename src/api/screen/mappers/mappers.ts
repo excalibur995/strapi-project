@@ -24,15 +24,43 @@ export type RawScreenEntity = {
   body: StrapiComponent[];
   footer: StrapiComponent[];
   contents: StrapiComponent[];
-  subscreens?: RawScreenEntity[];
 };
 
-export type MappedScreen = {
-  screenId: string;
-  hideProgressBar: boolean;
-  version: number;
-  content: Record<string, unknown>;
-  subscreens?: MappedScreen[];
+export type MappedScreen = Exclude<RawScreenEntity, "header" | "body" | "footer"> & {
+  sections?: Array<{
+    type: "header" | "body" | "footer";
+    components: any[];
+  }>;
+};
+
+// ui.button → "Button", ui.radio-group → "RadioGroup"
+const COMPONENT_TYPE_MAP: Record<string, string> = {
+  "ui.progress-bar": "ProgressBar",
+  "ui.text": "Text",
+  "ui.image-preview": "ImagePreview",
+  "ui.banner": "Banner",
+  "ui.tab-group": "TabGroup",
+  "ui.radio-group": "RadioGroup",
+  "ui.checkbox": "Checkbox",
+  "ui.text-input": "TextInput",
+  "ui.date-input": "DateInput",
+  "ui.dropdown": "Dropdown",
+  "ui.money-input": "MoneyInput",
+  "ui.camera-capture": "CameraCapture",
+  "ui.item-list": "ItemList",
+  "ui.money-display": "MoneyDisplay",
+  "ui.passcode-input": "PasscodeInput",
+  "ui.rich-text": "RichText",
+  "ui.link": "Link",
+  "ui.divider": "Divider",
+  "ui.review-card": "ReviewCard",
+  "ui.slide-to-confirm": "SlideToConfirm",
+  "ui.button": "Button",
+  "ui.option": "Option",
+};
+
+const resolveComponentType = (component: string): string => {
+  return COMPONENT_TYPE_MAP[component] ?? "Unknown";
 };
 
 // ui.button → "buttons"
@@ -64,7 +92,13 @@ const resolveContentKey = (component: string): string => {
   return IRREGULAR[snake] ?? `${snake}s`;
 };
 
-const stripStrapiFields = ({ __component, id, ...rest }: StrapiComponent): Record<string, unknown> => rest;
+const stripStrapiFields = ({ __component, id, ...rest }: StrapiComponent): Record<string, unknown> => {
+  const result = { ...rest };
+  if (__component) {
+    result.type = resolveComponentType(__component);
+  }
+  return result;
+};
 
 const groupComponents = (components: StrapiComponent[]): Record<string, unknown[]> => {
   return components.reduce<Record<string, unknown[]>>((acc, component) => {
@@ -91,35 +125,27 @@ const mergeGroupedComponents = (...groupedSets: Record<string, unknown[]>[]): Re
   }, {});
 };
 
-export const mapScreenResponse = (entity: RawScreenEntity): MappedScreen => {
-  const { screenId, hideProgressBar, content_version, meta, header, body, footer, contents, subscreens } = entity;
+const stripComponents = (components: StrapiComponent[]): Record<string, unknown>[] => components.map(stripStrapiFields);
 
-  const groupedHeader = groupComponents(header ?? []);
-  const groupedBody = groupComponents(body ?? []);
-  const groupedFooter = groupComponents(footer ?? []);
-  const groupedContents = groupComponents(contents ?? []);
+export const mapScreenResponse = (entity: RawScreenEntity) => {
+  const groupedHeader = groupComponents(entity.header ?? []);
+  const groupedBody = groupComponents(entity.body ?? []);
+  const groupedFooter = groupComponents(entity.footer ?? []);
 
-  const mergedComponents = mergeGroupedComponents(groupedHeader, groupedBody, groupedFooter, groupedContents);
+  const removedKey = ["documentId", "createdAt", "updatedAt", "publishedAt", "locale"];
 
-  const metaFields: Record<string, unknown> = {
-    ...(meta?.title !== undefined && { title: meta.title }),
-    ...(meta?.subtitle !== undefined && { subtitle: meta.subtitle }),
-    ...(meta?.showBack !== undefined && { show_back: meta.showBack }),
-    ...(meta?.showClose !== undefined && { show_close: meta.showClose }),
-    ...(meta?.analytics !== undefined && { analytics: meta.analytics }),
-    ...(meta?.onBack !== undefined && { on_back: meta.onBack }),
-  };
+  const sections: MappedScreen["sections"] = [];
+  if (entity.header.length > 0) {
+    sections.push({ type: "header", components: stripComponents(entity.header) });
+  }
+  if (entity.body.length > 0) {
+    sections.push({ type: "body", components: stripComponents(entity.body) });
+  }
+  if (entity.footer.length > 0) {
+    sections.push({ type: "footer", components: stripComponents(entity.footer) });
+  }
 
-  const mappedSubscreens = (subscreens ?? []).map(mapScreenResponse);
+  const cleanedRest = Object.fromEntries(Object.entries(entity).filter(([key]) => !removedKey.includes(key)));
 
-  return {
-    screenId,
-    hideProgressBar,
-    version: content_version ?? 1,
-    content: {
-      ...metaFields,
-      ...mergedComponents,
-    },
-    ...(mappedSubscreens.length > 0 && { subscreens: mappedSubscreens }),
-  };
+  return { ...cleanedRest };
 };

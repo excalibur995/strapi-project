@@ -160,6 +160,25 @@ export interface SduiDataSource {
   cacheTtlMs?: number;
 }
 
+/**
+ * UiDataSource — lightweight remote options descriptor for dropdown / item-list.
+ *
+ * - `url`       — base endpoint. For dependent calls the client appends `/{value}.json`.
+ * - `dependsOn` — name of the parent state field whose selected value is used as the
+ *                 URL path segment. `null` means the call is unconditional (e.g. province list).
+ *
+ * @example
+ * // Province — unconditional
+ * { url: "https://wilayah.id/api/provinces.json", dependsOn: null }
+ *
+ * // City — fetched after province is selected; client calls url + "/" + ektpReviewProvince + ".json"
+ * { url: "https://wilayah.id/api/regencies", dependsOn: "ektpReviewProvince" }
+ */
+export interface UiDataSource {
+  url: string;
+  dependsOn: string | null;
+}
+
 /** sdui.screen-meta — screen-level navigation bar configuration */
 export interface SduiScreenMeta {
   label?: string;
@@ -186,6 +205,8 @@ export interface ValueSource {
 
 interface UiBase {
   id?: number;
+  /** PascalCase component type — e.g. "Button", "TextInput", "ProgressBar" */
+  type?: string;
   componentId?: string;
   testId?: string;
   label?: string;
@@ -207,9 +228,12 @@ interface UiBase {
   collapseCondition?: string;
   visible?: boolean;
   visibility?: SduiVisibility | null;
+  dataSource?: UiDataSource | null;
   span?: number;
   validations?: SduiValidationRule[];
   dynamic?: SduiDynamic | null;
+  /** Field names to clear in journeyState when this component's value changes */
+  cascadeResets?: string[];
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -225,6 +249,7 @@ export interface UiOption {
   disabled?: boolean;
   media?: StrapiMedia | null;
   validations?: SduiValidationRule[];
+  dataSource?: UiDataSource | null;
 }
 
 /** ui.list-item — single row inside ui.item-list */
@@ -314,6 +339,8 @@ export interface UiDropdown extends UiBase {
   placeholder?: string;
   searchable?: boolean;
   options?: UiOption[];
+  /** Direct parent field name this dropdown watches for filtering its options */
+  dependsOn?: string | null;
 }
 
 export interface UiDropdownAsync extends UiBase {
@@ -321,7 +348,7 @@ export interface UiDropdownAsync extends UiBase {
   placeholder?: string;
   searchable?: boolean;
   /** JSON data source descriptor */
-  dataSource?: Record<string, unknown> | null;
+  dataSource?: UiDataSource | null;
 }
 
 export interface UiMoneyInput extends UiBase {
@@ -469,6 +496,12 @@ export type BodyComponent =
 
 export type AnyUiComponent = HeaderComponent | FooterComponent | BodyComponent;
 
+/** Section within a screen — groups components by zone type */
+export interface ScreenSection {
+  type: "header" | "body" | "footer";
+  components: Record<string, unknown[]>;
+}
+
 // ─────────────────────────────────────────────────────────────────────────────
 // Screen
 // ─────────────────────────────────────────────────────────────────────────────
@@ -483,6 +516,7 @@ export interface Screen {
   header: HeaderComponent[];
   body: BodyComponent[];
   footer: FooterComponent[];
+  sections?: ScreenSection[];
   locale?: string;
   createdAt?: string;
   updatedAt?: string;

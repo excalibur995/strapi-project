@@ -1,0 +1,201 @@
+{
+  "cities": {
+    "options": [
+      {
+        "value": "jakarta-pusat",
+        "label": "Jakarta Pusat",
+        "dependsOn": "dki-jakarta"
+      },
+      {
+        "value": "jakarta-utara",
+        "label": "Jakarta Utara",
+        "dependsOn": "dki-jakarta"
+      },
+      {
+        "value": "jakarta-barat",
+        "label": "Jakarta Barat",
+        "dependsOn": "dki-jakarta"
+      },
+      {
+        "value": "jakarta-selatan",
+        "label": "Jakarta Selatan",
+        "dependsOn": "dki-jakarta"
+      },
+      {
+        "value": "jakarta-timur",
+        "label": "Jakarta Timur",
+        "dependsOn": "dki-jakarta"
+      },
+      {
+        "value": "kepulauan-seribu",
+        "label": "Kepulauan Seribu",
+        "dependsOn": "dki-jakarta"
+      },
+      {
+        "value": "kota-tangerang",
+        "label": "Kota Tangerang",
+        "dependsOn": "banten"
+      },
+      {
+        "value": "kota-tangerang-selatan",
+        "label": "Kota Tangerang Selatan",
+        "dependsOn": "banten"
+      },
+      {
+        "value": "kota-serang",
+        "label": "Kota Serang",
+        "dependsOn": "banten"
+      },
+      {
+        "value": "kota-cilegon",
+        "label": "Kota Cilegon",
+        "dependsOn": "banten"
+      },
+      {
+        "value": "kabupaten-tangerang",
+        "label": "Kabupaten Tangerang",
+        "dependsOn": "banten"
+      },
+      {
+        "value": "kabupaten-serang",
+        "label": "Kabupaten Serang",
+        "dependsOn": "banten"
+      },
+      {
+        "value": "kabupaten-lebak",
+        "label": "Kabupaten Lebak",
+        "dependsOn": "banten"
+      },
+      {
+        "value": "kabupaten-pandeglang",
+        "label": "Kabupaten Pandeglang",
+        "dependsOn": "banten"
+      },
+      {
+        "value": "kota-bandung",
+        "label": "Kota Bandung",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kota-bekasi",
+        "label": "Kota Bekasi",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kota-bogor",
+        "label": "Kota Bogor",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kota-depok",
+        "label": "Kota Depok",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kota-cimahi",
+        "label": "Kota Cimahi",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kota-sukabumi",
+        "label": "Kota Sukabumi",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kota-cirebon",
+        "label": "Kota Cirebon",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kota-tasikmalaya",
+        "label": "Kota Tasikmalaya",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-bandung",
+        "label": "Kabupaten Bandung",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-bandung-barat",
+        "label": "Kabupaten Bandung Barat",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-bekasi",
+        "label": "Kabupaten Bekasi",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-bogor",
+        "label": "Kabupaten Bogor",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-cianjur",
+        "label": "Kabupaten Cianjur",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-cirebon",
+        "label": "Kabupaten Cirebon",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-garut",
+        "label": "Kabupaten Garut",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-indramayu",
+        "label": "Kabupaten Indramayu",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-karawang",
+        "label": "Kabupaten Karawang",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-kuningan",
+        "label": "Kabupaten Kuningan",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-majalengka",
+        "label": "Kabupaten Majalengka",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-purwakarta",
+        "label": "Kabupaten Purwakarta",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-subang",
+        "label": "Kabupaten Subang",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-sukabumi",
+        "label": "Kabupaten Sukabumi",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-sumedang",
+        "label": "Kabupaten Sumedang",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-tasikmalaya",
+        "label": "Kabupaten Tasikmalaya",
+        "dependsOn": "jawa-barat"
+      },
+      {
+        "value": "kabupaten-pangandaran",
+        "label": "Kabupaten Pangandaran",
+        "dependsOn": "jawa-barat"
+      }
+    ]
+  }
+}

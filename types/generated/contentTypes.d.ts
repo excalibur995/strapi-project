@@ -555,12 +555,6 @@ export interface ApiRuleSetRuleSet extends Struct.CollectionTypeSchema {
     };
   };
   attributes: {
-    api_version: Schema.Attribute.String &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<'v1'>;
-    content_version: Schema.Attribute.Integer &
-      Schema.Attribute.Required &
-      Schema.Attribute.DefaultTo<1>;
     createdAt: Schema.Attribute.DateTime;
     createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
@@ -594,6 +588,12 @@ export interface ApiRuleSetRuleSet extends Struct.CollectionTypeSchema {
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;
+    version: Schema.Attribute.Decimal &
+      Schema.Attribute.SetPluginOptions<{
+        i18n: {
+          localized: true;
+        };
+      }>;
   };
 }
 
@@ -623,7 +623,6 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
         'ui.text-input',
         'ui.date-input',
         'ui.dropdown',
-        'ui.dropdown-async',
         'ui.money-input',
         'ui.camera-capture',
         'ui.image-preview',
@@ -673,7 +672,6 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
     publishedAt: Schema.Attribute.DateTime;
     screenId: Schema.Attribute.UID & Schema.Attribute.Required;
     screenKey: Schema.Attribute.String & Schema.Attribute.Required;
-    subscreens: Schema.Attribute.Relation<'oneToMany', 'api::screen.screen'>;
     updatedAt: Schema.Attribute.DateTime;
     updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
       Schema.Attribute.Private;

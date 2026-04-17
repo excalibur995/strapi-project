@@ -1,0 +1,9 @@
+{
+  "provinces": {
+    "options": [
+      { "value": "dki-jakarta", "label": "DKI Jakarta" },
+      { "value": "banten", "label": "Banten" },
+      { "value": "jawa-barat", "label": "Jawa Barat" }
+    ]
+  }
+}

@@ -6,6 +6,9 @@
   },
   "options": {},
   "attributes": {
+    "type": {
+      "type": "string"
+    },
     "componentId": {
       "type": "string"
     },
@@ -45,12 +48,7 @@
     },
     "inputMode": {
       "type": "enumeration",
-      "enum": [
-        "text",
-        "numeric",
-        "email",
-        "phone"
-      ],
+      "enum": ["text", "numeric", "email", "phone"],
       "default": "text"
     },
     "defaultValue": {
@@ -101,11 +99,7 @@
     },
     "scope": {
       "type": "enumeration",
-      "enum": [
-        "journeyState",
-        "localState",
-        "serverState"
-      ],
+      "enum": ["journeyState", "localState", "serverState"],
       "default": "journeyState"
     },
     "visibility": {
@@ -126,6 +120,12 @@
     },
     "dependsOn": {
       "type": "string"
+    },
+    "cascadeResets": {
+      "type": "string"
+    },
+    "dataSource": {
+      "type": "json"
     }
   }
 }

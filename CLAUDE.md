@@ -1,0 +1,1 @@
+Write the code and briefly explain important points with comments. I DON’T like reading your chat, so ask briefly if needed, and NEVER explain anything here unless requested

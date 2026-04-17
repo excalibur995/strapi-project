@@ -3,6 +3,7 @@
  */
 
 import { factories } from "@strapi/strapi";
+import { RawScreenEntity, mapScreenResponse } from "../mappers/mappers";
 
 // We must use the fragment API to populate nested components inside dynamic zones in Strapi v5.
 // Rules:
@@ -71,7 +72,6 @@ const COMPONENT_POPULATE: Record<string, any> = {
   "ui.radio-group": { populate: { ...BASE_POPULATE } },
   "ui.tab-group": { populate: { ...BASE_POPULATE } },
   "ui.button": { populate: { ...BASE_POPULATE } },
-  "ui.dropdown-async": { populate: { ...BASE_POPULATE } },
   "ui.money-input": { populate: { ...BASE_POPULATE } },
   "ui.rich-text": { populate: { ...BASE_POPULATE } },
   "ui.review-card": { populate: { ...BASE_POPULATE } },
@@ -91,7 +91,11 @@ const COMPONENT_POPULATE: Record<string, any> = {
     populate: { action: { populate: "*" }, ...BASE_POPULATE },
   },
   "ui.passcode-input": {
-    populate: { onForgot: { populate: "*" }, onComplete: { populate: { action: { populate: "*" } } }, ...BASE_POPULATE },
+    populate: {
+      onForgot: { populate: "*" },
+      onComplete: { populate: { action: { populate: "*" } } },
+      ...BASE_POPULATE,
+    },
   },
   "ui.money-display": {
     populate: { source: { populate: "*" }, ...BASE_POPULATE },
@@ -108,7 +112,7 @@ const BODY_POPULATE = {
   },
 };
 
-// ── Reusable screen-level populate (used for both top-level and subscreens) ──
+// ── Reusable screen-level populate ──
 
 const SCREEN_POPULATE = {
   meta: { populate: "*" },
@@ -144,12 +148,7 @@ export default factories.createCoreController("api::screen.screen" as any, ({ st
     const entity = await (strapi as any).documents("api::screen.screen").findOne({
       documentId: id,
       ...sanitizedQuery,
-      populate: {
-        ...SCREEN_POPULATE,
-        subscreens: {
-          populate: SCREEN_POPULATE,
-        },
-      },
+      populate: SCREEN_POPULATE,
     });
 
     if (!entity) {
@@ -157,7 +156,10 @@ export default factories.createCoreController("api::screen.screen" as any, ({ st
     }
 
     const sanitizedEntity = await this.sanitizeOutput(entity, ctx);
-    return this.transformResponse(sanitizeMedia(sanitizedEntity));
+    const cleaned = sanitizeMedia(sanitizedEntity) as RawScreenEntity;
+    const mapped = mapScreenResponse(cleaned);
+
+    return this.transformResponse(mapped);
   },
 
   async findById(ctx) {
@@ -170,12 +172,7 @@ export default factories.createCoreController("api::screen.screen" as any, ({ st
         screenId: { $eq: screenId },
       }),
       status: "published",
-      populate: {
-        ...SCREEN_POPULATE,
-        subscreens: {
-          populate: SCREEN_POPULATE,
-        },
-      },
+      populate: SCREEN_POPULATE,
     });
 
     console.log({ results, screenId });
@@ -184,7 +181,8 @@ export default factories.createCoreController("api::screen.screen" as any, ({ st
     }
 
     const sanitizedEntity = await this.sanitizeOutput(results[0], ctx);
-    const mapped = sanitizeMedia(sanitizedEntity);
+    const cleaned = sanitizeMedia(sanitizedEntity) as RawScreenEntity;
+    const mapped = mapScreenResponse(cleaned);
 
     return this.transformResponse(mapped);
   },

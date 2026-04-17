@@ -1,0 +1,551 @@
+{
+  "subDistricts": {
+    "options": [
+      {
+        "value": "gambir",
+        "label": "Gambir",
+        "dependsOn": "jakarta-pusat"
+      },
+      {
+        "value": "sawah-besar",
+        "label": "Sawah Besar",
+        "dependsOn": "jakarta-pusat"
+      },
+      {
+        "value": "kemayoran",
+        "label": "Kemayoran",
+        "dependsOn": "jakarta-pusat"
+      },
+      {
+        "value": "senen",
+        "label": "Senen",
+        "dependsOn": "jakarta-pusat"
+      },
+      {
+        "value": "cempaka-putih",
+        "label": "Cempaka Putih",
+        "dependsOn": "jakarta-pusat"
+      },
+      {
+        "value": "menteng",
+        "label": "Menteng",
+        "dependsOn": "jakarta-pusat"
+      },
+      {
+        "value": "tanah-abang",
+        "label": "Tanah Abang",
+        "dependsOn": "jakarta-pusat"
+      },
+      {
+        "value": "johar-baru",
+        "label": "Johar Baru",
+        "dependsOn": "jakarta-pusat"
+      },
+      {
+        "value": "penjaringan",
+        "label": "Penjaringan",
+        "dependsOn": "jakarta-utara"
+      },
+      {
+        "value": "pademangan",
+        "label": "Pademangan",
+        "dependsOn": "jakarta-utara"
+      },
+      {
+        "value": "tanjung-priok",
+        "label": "Tanjung Priok",
+        "dependsOn": "jakarta-utara"
+      },
+      {
+        "value": "koja",
+        "label": "Koja",
+        "dependsOn": "jakarta-utara"
+      },
+      {
+        "value": "kelapa-gading",
+        "label": "Kelapa Gading",
+        "dependsOn": "jakarta-utara"
+      },
+      {
+        "value": "cilincing",
+        "label": "Cilincing",
+        "dependsOn": "jakarta-utara"
+      },
+      {
+        "value": "palmerah",
+        "label": "Palmerah",
+        "dependsOn": "jakarta-barat"
+      },
+      {
+        "value": "grogol-petamburan",
+        "label": "Grogol Petamburan",
+        "dependsOn": "jakarta-barat"
+      },
+      {
+        "value": "tambora",
+        "label": "Tambora",
+        "dependsOn": "jakarta-barat"
+      },
+      {
+        "value": "taman-sari",
+        "label": "Taman Sari",
+        "dependsOn": "jakarta-barat"
+      },
+      {
+        "value": "kembangan",
+        "label": "Kembangan",
+        "dependsOn": "jakarta-barat"
+      },
+      {
+        "value": "cengkareng",
+        "label": "Cengkareng",
+        "dependsOn": "jakarta-barat"
+      },
+      {
+        "value": "kalideres",
+        "label": "Kalideres",
+        "dependsOn": "jakarta-barat"
+      },
+      {
+        "value": "kebon-jeruk",
+        "label": "Kebon Jeruk",
+        "dependsOn": "jakarta-barat"
+      },
+      {
+        "value": "kebayoran-baru",
+        "label": "Kebayoran Baru",
+        "dependsOn": "jakarta-selatan"
+      },
+      {
+        "value": "kebayoran-lama",
+        "label": "Kebayoran Lama",
+        "dependsOn": "jakarta-selatan"
+      },
+      {
+        "value": "pesanggrahan",
+        "label": "Pesanggrahan",
+        "dependsOn": "jakarta-selatan"
+      },
+      {
+        "value": "cilandak",
+        "label": "Cilandak",
+        "dependsOn": "jakarta-selatan"
+      },
+      {
+        "value": "pasar-minggu",
+        "label": "Pasar Minggu",
+        "dependsOn": "jakarta-selatan"
+      },
+      {
+        "value": "jagakarsa",
+        "label": "Jagakarsa",
+        "dependsOn": "jakarta-selatan"
+      },
+      {
+        "value": "mampang-prapatan",
+        "label": "Mampang Prapatan",
+        "dependsOn": "jakarta-selatan"
+      },
+      {
+        "value": "pancoran",
+        "label": "Pancoran",
+        "dependsOn": "jakarta-selatan"
+      },
+      {
+        "value": "tebet",
+        "label": "Tebet",
+        "dependsOn": "jakarta-selatan"
+      },
+      {
+        "value": "setiabudi",
+        "label": "Setiabudi",
+        "dependsOn": "jakarta-selatan"
+      },
+      {
+        "value": "matraman",
+        "label": "Matraman",
+        "dependsOn": "jakarta-timur"
+      },
+      {
+        "value": "jatinegara",
+        "label": "Jatinegara",
+        "dependsOn": "jakarta-timur"
+      },
+      {
+        "value": "kramat-jati",
+        "label": "Kramat Jati",
+        "dependsOn": "jakarta-timur"
+      },
+      {
+        "value": "pasar-rebo",
+        "label": "Pasar Rebo",
+        "dependsOn": "jakarta-timur"
+      },
+      {
+        "value": "ciracas",
+        "label": "Ciracas",
+        "dependsOn": "jakarta-timur"
+      },
+      {
+        "value": "cipayung",
+        "label": "Cipayung",
+        "dependsOn": "jakarta-timur"
+      },
+      {
+        "value": "makassar",
+        "label": "Makassar",
+        "dependsOn": "jakarta-timur"
+      },
+      {
+        "value": "duren-sawit",
+        "label": "Duren Sawit",
+        "dependsOn": "jakarta-timur"
+      },
+      {
+        "value": "cakung",
+        "label": "Cakung",
+        "dependsOn": "jakarta-timur"
+      },
+      {
+        "value": "pulogadung",
+        "label": "Pulogadung",
+        "dependsOn": "jakarta-timur"
+      },
+      {
+        "value": "batuceper",
+        "label": "Batuceper",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "benda",
+        "label": "Benda",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "ciledug",
+        "label": "Ciledug",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "cipondoh",
+        "label": "Cipondoh",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "jatiuwung",
+        "label": "Jatiuwung",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "karang-tengah",
+        "label": "Karang Tengah",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "karawaci",
+        "label": "Karawaci",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "larangan",
+        "label": "Larangan",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "neglasari",
+        "label": "Neglasari",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "periuk",
+        "label": "Periuk",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "pinang",
+        "label": "Pinang",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "tangerang",
+        "label": "Tangerang",
+        "dependsOn": "kota-tangerang"
+      },
+      {
+        "value": "ciputat",
+        "label": "Ciputat",
+        "dependsOn": "kota-tangerang-selatan"
+      },
+      {
+        "value": "ciputat-timur",
+        "label": "Ciputat Timur",
+        "dependsOn": "kota-tangerang-selatan"
+      },
+      {
+        "value": "pamulang",
+        "label": "Pamulang",
+        "dependsOn": "kota-tangerang-selatan"
+      },
+      {
+        "value": "pondok-aren",
+        "label": "Pondok Aren",
+        "dependsOn": "kota-tangerang-selatan"
+      },
+      {
+        "value": "serpong",
+        "label": "Serpong",
+        "dependsOn": "kota-tangerang-selatan"
+      },
+      {
+        "value": "serpong-utara",
+        "label": "Serpong Utara",
+        "dependsOn": "kota-tangerang-selatan"
+      },
+      {
+        "value": "setu",
+        "label": "Setu",
+        "dependsOn": "kota-tangerang-selatan"
+      },
+      {
+        "value": "buahbatu",
+        "label": "Buahbatu",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "cicendo",
+        "label": "Cicendo",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "cidadap",
+        "label": "Cidadap",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "cinambo",
+        "label": "Cinambo",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "coblong",
+        "label": "Coblong",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "gedebage",
+        "label": "Gedebage",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "kiaracondong",
+        "label": "Kiaracondong",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "lengkong",
+        "label": "Lengkong",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "mandalajati",
+        "label": "Mandalajati",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "antapani",
+        "label": "Antapani",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "arcamanik",
+        "label": "Arcamanik",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "astanaanyar",
+        "label": "Astanaanyar",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "sukajadi",
+        "label": "Sukajadi",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "sukasari",
+        "label": "Sukasari",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "sumur-bandung",
+        "label": "Sumur Bandung",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "ujungberung",
+        "label": "Ujungberung",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "regol",
+        "label": "Regol",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "rancasari",
+        "label": "Rancasari",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "panyileukan",
+        "label": "Panyileukan",
+        "dependsOn": "kota-bandung"
+      },
+      {
+        "value": "bantargebang",
+        "label": "Bantargebang",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "bekasi-barat",
+        "label": "Bekasi Barat",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "bekasi-selatan",
+        "label": "Bekasi Selatan",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "bekasi-timur",
+        "label": "Bekasi Timur",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "bekasi-utara",
+        "label": "Bekasi Utara",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "jatiasih",
+        "label": "Jatiasih",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "jatisampurna",
+        "label": "Jatisampurna",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "medansatria",
+        "label": "Medan Satria",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "mustikajaya",
+        "label": "Mustikajaya",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "pondokgede",
+        "label": "Pondokgede",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "pondok-melati",
+        "label": "Pondok Melati",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "rawalumbu",
+        "label": "Rawalumbu",
+        "dependsOn": "kota-bekasi"
+      },
+      {
+        "value": "bogor-barat",
+        "label": "Bogor Barat",
+        "dependsOn": "kota-bogor"
+      },
+      {
+        "value": "bogor-selatan",
+        "label": "Bogor Selatan",
+        "dependsOn": "kota-bogor"
+      },
+      {
+        "value": "bogor-tengah",
+        "label": "Bogor Tengah",
+        "dependsOn": "kota-bogor"
+      },
+      {
+        "value": "bogor-timur",
+        "label": "Bogor Timur",
+        "dependsOn": "kota-bogor"
+      },
+      {
+        "value": "bogor-utara",
+        "label": "Bogor Utara",
+        "dependsOn": "kota-bogor"
+      },
+      {
+        "value": "tanah-sareal",
+        "label": "Tanah Sareal",
+        "dependsOn": "kota-bogor"
+      },
+      {
+        "value": "beji",
+        "label": "Beji",
+        "dependsOn": "kota-depok"
+      },
+      {
+        "value": "bojongsari",
+        "label": "Bojongsari",
+        "dependsOn": "kota-depok"
+      },
+      {
+        "value": "cilodong",
+        "label": "Cilodong",
+        "dependsOn": "kota-depok"
+      },
+      {
+        "value": "cimanggis",
+        "label": "Cimanggis",
+        "dependsOn": "kota-depok"
+      },
+      {
+        "value": "cinere",
+        "label": "Cinere",
+        "dependsOn": "kota-depok"
+      },
+      {
+        "value": "cipayung-depok",
+        "label": "Cipayung",
+        "dependsOn": "kota-depok"
+      },
+      {
+        "value": "limo",
+        "label": "Limo",
+        "dependsOn": "kota-depok"
+      },
+      {
+        "value": "pancoran-mas",
+        "label": "Pancoran Mas",
+        "dependsOn": "kota-depok"
+      },
+      {
+        "value": "sawangan",
+        "label": "Sawangan",
+        "dependsOn": "kota-depok"
+      },
+      {
+        "value": "sukmajaya",
+        "label": "Sukmajaya",
+        "dependsOn": "kota-depok"
+      },
+      {
+        "value": "tapos",
+        "label": "Tapos",
+        "dependsOn": "kota-depok"
+      }
+    ]
+  }
+}

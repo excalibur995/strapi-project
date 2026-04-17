@@ -221,9 +221,11 @@ export interface UiBanner extends Struct.ComponentSchema {
   };
   attributes: {
     action: Schema.Attribute.Component<'sdui.action', false>;
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -252,6 +254,7 @@ export interface UiBanner extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     variant: Schema.Attribute.Enumeration<
       ['info', 'warning', 'success', 'error']
@@ -269,9 +272,11 @@ export interface UiButton extends Struct.ComponentSchema {
   };
   attributes: {
     action: Schema.Attribute.JSON;
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -301,6 +306,7 @@ export interface UiButton extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     variant: Schema.Attribute.Enumeration<
       ['primary', 'secondary', 'ghost', 'danger', 'promo']
@@ -318,9 +324,11 @@ export interface UiCameraCapture extends Struct.ComponentSchema {
     displayName: 'Camera Capture';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -360,6 +368,7 @@ export interface UiCameraCapture extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -372,9 +381,11 @@ export interface UiCheckbox extends Struct.ComponentSchema {
     displayName: 'Checkbox';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -408,6 +419,7 @@ export interface UiCheckbox extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -421,9 +433,11 @@ export interface UiDateInput extends Struct.ComponentSchema {
     displayName: 'Date Input';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     displayFormat: Schema.Attribute.String &
@@ -459,6 +473,7 @@ export interface UiDateInput extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     valueFormat: Schema.Attribute.String &
       Schema.Attribute.DefaultTo<'yyyy-MM-dd'>;
@@ -474,9 +489,11 @@ export interface UiDivider extends Struct.ComponentSchema {
     displayName: 'Divider';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -503,6 +520,7 @@ export interface UiDivider extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -516,9 +534,11 @@ export interface UiDropdown extends Struct.ComponentSchema {
     displayName: 'Dropdown';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -553,56 +573,7 @@ export interface UiDropdown extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
-    validations: Schema.Attribute.Component<'sdui.validation', true>;
-    visibility: Schema.Attribute.Component<'sdui.visibility', false>;
-    visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-  };
-}
-
-export interface UiDropdownAsync extends Struct.ComponentSchema {
-  collectionName: 'components_ui_dropdown_asyncs';
-  info: {
-    description: 'Single-select from API data source. type: ui.dropdown-async';
-    displayName: 'Dropdown (Async)';
-  };
-  attributes: {
-    collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    collapseCondition: Schema.Attribute.String;
-    componentId: Schema.Attribute.String;
-    dataSource: Schema.Attribute.JSON;
-    defaultValue: Schema.Attribute.String;
-    dependsOn: Schema.Attribute.String;
-    dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
-    editable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    enabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    label: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    maxLength: Schema.Attribute.String;
-    name: Schema.Attribute.String;
-    placeholder: Schema.Attribute.String &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }>;
-    prefix: Schema.Attribute.String;
-    required: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    scope: Schema.Attribute.Enumeration<
-      ['journeyState', 'localState', 'serverState']
-    > &
-      Schema.Attribute.DefaultTo<'journeyState'>;
-    searchable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
-    span: Schema.Attribute.Integer;
-    suffix: Schema.Attribute.String;
-    testId: Schema.Attribute.String;
-    toggleField: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
-    toggleFieldCollapse: Schema.Attribute.Boolean &
-      Schema.Attribute.DefaultTo<false>;
-    toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -616,9 +587,11 @@ export interface UiImagePreview extends Struct.ComponentSchema {
     displayName: 'Image Preview';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -647,6 +620,7 @@ export interface UiImagePreview extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -660,11 +634,13 @@ export interface UiItemList extends Struct.ComponentSchema {
     displayName: 'Item List';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -693,6 +669,7 @@ export interface UiItemList extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -705,9 +682,11 @@ export interface UiLink extends Struct.ComponentSchema {
   };
   attributes: {
     action: Schema.Attribute.Component<'sdui.action', false>;
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -729,6 +708,7 @@ export interface UiLink extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -741,10 +721,12 @@ export interface UiMoneyDisplay extends Struct.ComponentSchema {
     displayName: 'Money Display';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     currency: Schema.Attribute.String & Schema.Attribute.DefaultTo<'IDR'>;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -773,6 +755,7 @@ export interface UiMoneyDisplay extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -784,10 +767,12 @@ export interface UiMoneyInput extends Struct.ComponentSchema {
     displayName: 'Money Input';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     currency: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -816,6 +801,7 @@ export interface UiMoneyInput extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -828,6 +814,7 @@ export interface UiOption extends Struct.ComponentSchema {
     displayName: 'Option';
   };
   attributes: {
+    dataSource: Schema.Attribute.JSON;
     dependsOn: Schema.Attribute.String;
     disabled: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     label: Schema.Attribute.String &
@@ -837,7 +824,9 @@ export interface UiOption extends Struct.ComponentSchema {
         };
       }>;
     media: Schema.Attribute.Media<'images'>;
+    path: Schema.Attribute.String;
     testId: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     value: Schema.Attribute.String & Schema.Attribute.Required;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
@@ -851,9 +840,11 @@ export interface UiPasscodeInput extends Struct.ComponentSchema {
     displayName: 'Passcode Input';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -889,6 +880,7 @@ export interface UiPasscodeInput extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -901,10 +893,12 @@ export interface UiProgressBar extends Struct.ComponentSchema {
     displayName: 'Progress Bar';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     currentStep: Schema.Attribute.Integer & Schema.Attribute.Required;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -932,6 +926,7 @@ export interface UiProgressBar extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -945,9 +940,11 @@ export interface UiRadioGroup extends Struct.ComponentSchema {
     displayName: 'Radio Group';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -974,6 +971,7 @@ export interface UiRadioGroup extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -986,9 +984,11 @@ export interface UiReviewCard extends Struct.ComponentSchema {
     displayName: 'Review Card';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -1016,6 +1016,7 @@ export interface UiReviewCard extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -1028,10 +1029,12 @@ export interface UiRichText extends Struct.ComponentSchema {
     displayName: 'Rich Text';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
     content: Schema.Attribute.Blocks & Schema.Attribute.Required;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -1058,6 +1061,7 @@ export interface UiRichText extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -1071,9 +1075,11 @@ export interface UiSlideToConfirm extends Struct.ComponentSchema {
   attributes: {
     action: Schema.Attribute.Component<'sdui.action', false> &
       Schema.Attribute.Required;
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -1102,6 +1108,7 @@ export interface UiSlideToConfirm extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -1114,9 +1121,11 @@ export interface UiTabGroup extends Struct.ComponentSchema {
     displayName: 'Tab Group';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -1143,6 +1152,7 @@ export interface UiTabGroup extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
   };
@@ -1155,9 +1165,11 @@ export interface UiText extends Struct.ComponentSchema {
     displayName: 'Text';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -1185,6 +1197,7 @@ export interface UiText extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     valueSource: Schema.Attribute.JSON;
     variant: Schema.Attribute.Enumeration<
@@ -1203,9 +1216,11 @@ export interface UiTextInput extends Struct.ComponentSchema {
     displayName: 'Text Input';
   };
   attributes: {
+    cascadeResets: Schema.Attribute.String;
     collapsable: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<false>;
     collapseCondition: Schema.Attribute.String;
     componentId: Schema.Attribute.String;
+    dataSource: Schema.Attribute.JSON;
     defaultValue: Schema.Attribute.String;
     dependsOn: Schema.Attribute.String;
     dynamic: Schema.Attribute.Component<'sdui.dynamic', false>;
@@ -1250,6 +1265,7 @@ export interface UiTextInput extends Struct.ComponentSchema {
     toggleFieldCollapse: Schema.Attribute.Boolean &
       Schema.Attribute.DefaultTo<false>;
     toggleFieldReff: Schema.Attribute.String;
+    type: Schema.Attribute.String;
     validations: Schema.Attribute.Component<'sdui.validation', true>;
     visibility: Schema.Attribute.Component<'sdui.visibility', false>;
     visible: Schema.Attribute.Boolean & Schema.Attribute.DefaultTo<true>;
@@ -1276,7 +1292,6 @@ declare module '@strapi/strapi' {
       'ui.date-input': UiDateInput;
       'ui.divider': UiDivider;
       'ui.dropdown': UiDropdown;
-      'ui.dropdown-async': UiDropdownAsync;
       'ui.image-preview': UiImagePreview;
       'ui.item-list': UiItemList;
       'ui.link': UiLink;

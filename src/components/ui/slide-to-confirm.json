@@ -5,6 +5,9 @@
   },
   "options": {},
   "attributes": {
+    "type": {
+      "type": "string"
+    },
     "componentId": {
       "type": "string"
     },
@@ -75,11 +78,7 @@
     },
     "scope": {
       "type": "enumeration",
-      "enum": [
-        "journeyState",
-        "localState",
-        "serverState"
-      ],
+      "enum": ["journeyState", "localState", "serverState"],
       "default": "journeyState"
     },
     "visibility": {
@@ -100,6 +99,12 @@
     },
     "dependsOn": {
       "type": "string"
+    },
+    "cascadeResets": {
+      "type": "string"
+    },
+    "dataSource": {
+      "type": "json"
     }
   }
 }

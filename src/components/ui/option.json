@@ -6,6 +6,9 @@
   },
   "options": {},
   "attributes": {
+    "type": {
+      "type": "string"
+    },
     "testId": {
       "type": "string"
     },
@@ -29,9 +32,7 @@
       "type": "media",
       "multiple": false,
       "required": false,
-      "allowedTypes": [
-        "images"
-      ]
+      "allowedTypes": ["images"]
     },
     "visibility": {
       "type": "component",
@@ -43,6 +44,12 @@
       "repeatable": true
     },
     "dependsOn": {
+      "type": "string"
+    },
+    "dataSource": {
+      "type": "json"
+    },
+    "path": {
       "type": "string"
     }
   }

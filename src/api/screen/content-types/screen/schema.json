@@ -49,7 +49,6 @@
         "ui.text-input",
         "ui.date-input",
         "ui.dropdown",
-        "ui.dropdown-async",
         "ui.money-input",
         "ui.camera-capture",
         "ui.image-preview",
@@ -76,11 +75,6 @@
       "type": "decimal",
       "required": true,
       "default": 1
-    },
-    "subscreens": {
-      "type": "relation",
-      "relation": "oneToMany",
-      "target": "api::screen.screen"
     },
     "isHeaderNullInstead": {
       "type": "boolean",
