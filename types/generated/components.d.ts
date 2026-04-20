@@ -125,7 +125,6 @@ export interface SduiScreenMeta extends Struct.ComponentSchema {
           localized: true;
         };
       }>;
-    onBack: Schema.Attribute.Component<'sdui.action', false>;
   };
 }
 

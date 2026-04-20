@@ -22,10 +22,6 @@
       "type": "boolean",
       "default": false
     },
-    "onBack": {
-      "type": "component",
-      "component": "sdui.action"
-    },
     "analytics": {
       "type": "json"
     }
