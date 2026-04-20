@@ -651,14 +651,7 @@ export interface ApiScreenScreen extends Struct.CollectionTypeSchema {
         'ui.tab-group',
       ]
     >;
-    isFooterNullInstead: Schema.Attribute.Boolean &
-      Schema.Attribute.SetPluginOptions<{
-        i18n: {
-          localized: true;
-        };
-      }> &
-      Schema.Attribute.DefaultTo<false>;
-    isHeaderNullInstead: Schema.Attribute.Boolean &
+    isFullScreen: Schema.Attribute.Boolean &
       Schema.Attribute.SetPluginOptions<{
         i18n: {
           localized: true;
